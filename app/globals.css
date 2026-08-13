@@ -1,3 +1,159 @@
 @import 'tailwindcss';
 
-/* Design tokens, fonts, and pixel-panel primitives land here in Fase 2. */
+/* ============================================================
+   Zenith — "Warm Nebula" design tokens (Fase 2)
+   Tailwind v4 CSS-first theme: --color-* / --font-* vars below
+   auto-generate matching utilities (bg-comet, text-star, etc).
+   ============================================================ */
+@theme {
+  --color-comet: #ff8b4c;
+  --color-star: #ffc857;
+  --color-void: #1b1235;
+  --color-nebula: #3e2a63;
+  --color-starchart: #f5e9d6;
+  --color-aurora: #6fcf97;
+
+  /* Populated at runtime by the next/font variables set on <html> in
+     app/layout.tsx — kept as indirection so components can reference a
+     stable --font-display/--font-body/--font-stat name regardless of
+     which underlying font family backs it. */
+  --font-display: var(--font-press-start-2p), cursive;
+  --font-body: var(--font-nunito), sans-serif;
+  --font-stat: var(--font-vt323), monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-void);
+    color: var(--color-starchart);
+    font-family: var(--font-body);
+  }
+}
+
+/* ============================================================
+   Pixel frame — shared 9-slice-style notched border + hard offset
+   shadow used by PixelPanel and PixelButton. Two stacked pseudo
+   layers (border color, then inset fill) clipped to the same
+   notched-corner polygon, so the "border" reads as a solid pixel
+   outline rather than a blurred CSS border-radius.
+   ============================================================ */
+@layer components {
+  .pixel-frame {
+    --pixel-notch: 8px;
+    --pixel-border-width: 3px;
+    --pixel-border-color: var(--color-star);
+    --pixel-fill-color: var(--color-nebula);
+    --pixel-shadow-color: rgba(0, 0, 0, 0.55);
+    --pixel-shadow-offset: 4px;
+
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+    box-shadow: var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 0
+      var(--pixel-shadow-color);
+  }
+
+  .pixel-frame::before,
+  .pixel-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(
+      var(--pixel-notch) 0,
+      calc(100% - var(--pixel-notch)) 0,
+      100% var(--pixel-notch),
+      100% calc(100% - var(--pixel-notch)),
+      calc(100% - var(--pixel-notch)) 100%,
+      var(--pixel-notch) 100%,
+      0 calc(100% - var(--pixel-notch)),
+      0 var(--pixel-notch)
+    );
+  }
+
+  .pixel-frame::before {
+    background-color: var(--pixel-border-color);
+    z-index: 0;
+  }
+
+  .pixel-frame::after {
+    background-color: var(--pixel-fill-color);
+    inset: var(--pixel-border-width);
+    z-index: 1;
+  }
+
+  .pixel-frame > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* "Launch console" press effect used by PixelButton: on press, the
+     button travels into its own shadow instead of the shadow blurring,
+     matching the brief's "turun 2px + shadow snap" cue. */
+  .pixel-frame-pressable {
+    cursor: pointer;
+    transition: transform 60ms ease-out;
+  }
+
+  .pixel-frame-pressable:active:not(:disabled) {
+    transform: translate(
+      var(--pixel-shadow-offset),
+      var(--pixel-shadow-offset)
+    );
+    box-shadow: none;
+  }
+
+  .pixel-frame-pressable:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .pixel-frame-pressable:focus-visible {
+    outline: 3px solid var(--color-aurora);
+    outline-offset: 3px;
+  }
+
+  /* Starfield background layers — self-contained CSS dot fields (no
+     external image requests), drifting slowly. Density/opacity are set
+     per-layer via inline style from the `intensity` prop. */
+  .starfield-layer {
+    position: absolute;
+    inset: -20% 0;
+    background-repeat: repeat;
+    background-image: radial-gradient(
+      circle,
+      var(--color-starchart) 1px,
+      transparent 1.6px
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .starfield-layer[data-animated='true'] {
+      animation: starfield-drift linear infinite;
+    }
+  }
+
+  .starfield-nebula-haze {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+        circle at 20% 30%,
+        color-mix(in srgb, var(--color-nebula) 70%, transparent) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        color-mix(in srgb, var(--color-comet) 35%, transparent) 0%,
+        transparent 40%
+      );
+    filter: blur(8px);
+  }
+}
+
+@keyframes starfield-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -1000px;
+  }
+}

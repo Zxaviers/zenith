@@ -47,9 +47,44 @@ reference, never pushed to during this rework).
   `npm run test` (24/24 vitest tests still passing) ✅, `npm run lint`
   (0 errors, 1 pre-existing warning unrelated to this migration) ✅.
 
+### Fase 2 — Design System "Warm Nebula" ✅
+- Tokens implemented Tailwind-v4-native, via a CSS `@theme` block in
+  `app/globals.css` (not a `tailwind.config.ts` — see decision below),
+  which auto-generates matching utilities (`bg-comet`, `text-void`,
+  `font-display`, etc). Verified in the compiled CSS output.
+- Colors: `comet` `#FF8B4C`, `star` `#FFC857`, `void` `#1B1235`, `nebula`
+  `#3E2A63`, `starchart` `#F5E9D6`, `aurora` `#6FCF97`.
+- Fonts wired in `app/layout.tsx` via `next/font/google` (Press Start 2P /
+  Nunito / VT323), exposed as `--font-display` / `--font-body` /
+  `--font-stat` CSS vars consumed by the `@theme` block — see decision
+  below on why `next/font/google` instead of `next/font/local`.
+- Built `components/ui/`:
+  - `PixelPanel.tsx` — notched-corner "pixel frame" (shared `.pixel-frame`
+    CSS: two clipped pseudo-layers for border + fill, hard offset
+    box-shadow, no blur), `nebula`/`starchart` variants.
+  - `PixelButton.tsx` — same pixel-frame base + `.pixel-frame-pressable`
+    (press-to-launch effect: translates into its own shadow on `:active`,
+    shadow disappears), `comet`/`ghost` variants, visible
+    `:focus-visible` aurora outline (not the blurry default).
+  - `StarNode.tsx` — small glowing circular node, `locked` / `unlocked` /
+    `active` states, accessible (`aria-label`, keyboard-operable button,
+    `disabled` when locked). Visual-only primitive for now; grouping +
+    connector lines + rich tooltips are a Fase 4 concern (Constellation).
+  - `StarfieldBackground.tsx` — pure-CSS layered dot field + nebula haze,
+    `intensity: 'low' | 'medium' | 'high'` prop, server-renderable (no
+    client JS needed since it's CSS-animation only), animation gated
+    behind `prefers-reduced-motion: no-preference` so it degrades to a
+    static field rather than disappearing.
+  - `lib/utils.ts` — `cn()` helper (`clsx` + `tailwind-merge`), standard
+    convention for the primitives above and whatever composes them later.
+- Added `app/style-guide/page.tsx` showing all tokens + components live.
+- Validated: `npm run build:next` (5 routes now, including `/style-guide`,
+  all compiling/prerendering cleanly) ✅, `npm run build` (Vite, still
+  unaffected) ✅, `npm run lint` (0 errors, same 1 pre-existing warning) ✅.
+
 ## In progress
 
-Nothing — Fase 1 complete, moving to Fase 2 next.
+Nothing — Fase 2 complete, moving to Fase 3 next.
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 
@@ -97,6 +132,23 @@ Nothing — Fase 1 complete, moving to Fase 2 next.
   "outside the project" / similar errors even for root-level test paths);
   worked around using `write_file` (which creates the file but not missing
   parent dirs) plus plain shell `mkdir -p`/`mv` via the terminal tool.
+- **Tokens via CSS `@theme`, not `tailwind.config.ts`.** The playbook's
+  wording ("tambahkan ke tailwind.config.ts") assumes Tailwind v3-style JS
+  config, but this project is already on Tailwind v4
+  (`@tailwindcss/postcss`, `@import 'tailwindcss'` in CSS — set up before
+  this rework started). v4's idiomatic, first-class way to extend the
+  theme is a CSS `@theme {}` block, which is what generates the utility
+  classes directly (confirmed `bg-comet`, `text-void`, etc. in the
+  compiled output). A `tailwind.config.ts` would have been redundant/inert
+  for this purpose under v4, so skipped it rather than add a file that
+  does nothing.
+- **`next/font/google` instead of `next/font/local`** for Press Start 2P /
+  Nunito / VT323. Both approaches self-host (no runtime request to
+  Google's CDN, which is the actual goal behind the playbook's wording);
+  `next/font/local` would additionally require sourcing and committing the
+  actual `.woff2` files ourselves with correct licensing, which is extra
+  manual work for the same runtime outcome. Reversible later if we ever
+  need fully offline builds or a font not on Google Fonts.
 
 ## Credential/tooling status
 
@@ -106,5 +158,6 @@ Nothing — Fase 1 complete, moving to Fase 2 next.
 - Node v24.9.0 / npm 11.8.0 available.
 
 ## Next up
-Fase 2 — Design System "Warm Nebula" (tokens, PixelPanel/PixelButton/
-StarNode/StarfieldBackground primitives, `/style-guide` preview page).
+Fase 3 — Rebranding Konten (metadata, package.json name, README,
+favicon/manifest/OG image, section copy rewrite to "Zenith" per
+ZENITH_PLAYBOOK.md §0.1's personal-vs-brand line).
