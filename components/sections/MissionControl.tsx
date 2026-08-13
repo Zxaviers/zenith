@@ -103,31 +103,38 @@ export function MissionControl() {
               </div>
             </div>
 
-            {/* Audio wave frequency visualizer */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-void/60 border border-white/10" aria-hidden="true">
-              {[40, 75, 100, 60, 90, 45, 80].map((height, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 rounded-full bg-star"
-                  animate={{ height: [`${height * 0.2}%`, `${height}%`, `${height * 0.3}%`] }}
-                  transition={{
-                    duration: 0.8 + i * 0.1,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  style={{ height: `${height}%`, maxHeight: '18px', minHeight: '4px' }}
-                />
-              ))}
-              <span className="ml-2 font-stat text-[11px] text-aurora">LIVE COM</span>
+            {/* Audio wave frequency & signal visualizer */}
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex flex-col text-right font-stat text-[11px] text-starchart/70">
+                <span>SIGNAL // 98.4%</span>
+                <span className="text-aurora">ENCRYPTION: AES-256</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-void/80 border border-star/20" aria-hidden="true">
+                {[40, 75, 100, 60, 90, 45, 80].map((height, i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1 rounded-full bg-star"
+                    animate={{ height: [`${height * 0.2}%`, `${height}%`, `${height * 0.3}%`] }}
+                    transition={{
+                      duration: 0.8 + i * 0.1,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    style={{ height: `${height}%`, maxHeight: '18px', minHeight: '4px' }}
+                  />
+                ))}
+                <span className="ml-2 font-stat text-[11px] text-aurora font-bold">LIVE COM</span>
+              </div>
             </div>
           </div>
 
-          {/* Dialogue Text Terminal Box */}
-          <div className="relative min-h-[120px] rounded-md bg-void/70 border border-white/5 p-4 md:p-6 shadow-inner">
+          {/* Dialogue Text Terminal Box with subtle CRT Scanlines */}
+          <div className="relative min-h-[120px] rounded-md bg-void/80 border border-white/10 p-5 md:p-6 shadow-inner overflow-hidden">
+            <div className="hud-scanline absolute inset-0 opacity-25" aria-hidden="true" />
             <AnimatePresence mode="wait">
               <motion.p
                 key={currentIndex}
-                className="font-body text-lg leading-relaxed text-starchart md:text-xl font-normal"
+                className="relative z-10 font-body text-lg leading-relaxed text-starchart md:text-xl font-normal"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}

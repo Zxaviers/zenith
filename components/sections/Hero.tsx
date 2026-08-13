@@ -13,13 +13,14 @@ export function Hero() {
     >
       <StarfieldBackground intensity="high" className="z-0" />
 
-      {/* Central Warm Nebula Core Glows */}
+      {/* Central Warm Nebula Core Glows with Breathing Animation */}
       <div
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] md:h-[700px] md:w-[700px] rounded-full bg-nebula/30 blur-[120px] z-0"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] md:h-[700px] md:w-[700px] rounded-full bg-nebula/30 blur-[120px] z-0 animate-nebula-pulse"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[280px] w-[280px] md:h-[400px] md:w-[400px] rounded-full bg-comet/15 blur-[80px] z-0"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[280px] w-[280px] md:h-[400px] md:w-[400px] rounded-full bg-comet/15 blur-[80px] z-0 animate-nebula-pulse"
+        style={{ animationDelay: '2s' }}
         aria-hidden="true"
       />
 

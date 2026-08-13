@@ -158,12 +158,25 @@ export function Constellation() {
         >
           {/* Interactive Constellation Map */}
           <div className="md:col-span-2">
-            <div className="relative mx-auto aspect-square w-full max-w-md rounded-lg border border-white/5 bg-void/60 p-4 shadow-inner">
+            {/* Telemetry Header */}
+            <div className="flex justify-between items-center mb-2 px-2 text-[11px] font-stat text-starchart/60">
+              <span className="text-star/80">SECTOR // {activeTab.toUpperCase()}_SYSTEM_MAP</span>
+              <span>COORDS: 14h 29m / -62°40&apos;</span>
+            </div>
+
+            <div className="relative mx-auto aspect-square w-full max-w-md rounded-lg border border-white/10 bg-void/70 p-4 shadow-2xl overflow-hidden">
+              {/* Rotating Radar Sweep Beam */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                <div className="h-full w-full rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(255,200,87,0.12)_360deg)] animate-[spin_8s_linear_infinite]" />
+              </div>
+
               {/* Radial radar ring guides */}
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-15">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-20" aria-hidden="true">
                 <div className="h-3/4 w-3/4 rounded-full border border-dashed border-starchart" />
                 <div className="absolute h-1/2 w-1/2 rounded-full border border-dashed border-starchart" />
                 <div className="absolute h-1/4 w-1/4 rounded-full border border-starchart" />
+                <div className="absolute h-full w-0.5 bg-starchart/10" />
+                <div className="absolute w-full h-0.5 bg-starchart/10" />
               </div>
 
               {/* Constellation Link SVG */}
