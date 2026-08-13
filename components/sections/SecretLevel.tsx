@@ -41,10 +41,11 @@ export function SecretLevel() {
           canvas: canvasRef.current,
           width: 800,
           height: 600,
-          background: [0, 0, 0],
+          background: [27, 18, 53],
           focus: false,
         })
 
+        k.loadFont('pixel', '/fonts/PressStart2P.woff2')
         k.loadSprite('player', '/sprites/rocketSatu.png')
         k.loadSprite('enemy1', '/sprites/planetBiru.png')
         k.loadSprite('enemy2', '/sprites/planetMerah.png')
@@ -61,16 +62,16 @@ export function SecretLevel() {
         ]
 
         k.scene('start', () => {
-          k.add([k.text('SECRET LEVEL', { size: 64, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center')])
-          k.add([k.text('Press SPACE to Start', { size: 24, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2 + 20), k.anchor('center')])
-          k.add([k.text('Use Arrows to Move, SPACE to Shoot', { size: 16, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center')])
+          k.add([k.text('SECRET LEVEL', { size: 64, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center'), k.color(245, 233, 214)])
+          k.add([k.text('Press SPACE to Start', { size: 24, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 20), k.anchor('center'), k.color(245, 233, 214)])
+          k.add([k.text('Use Arrows to Move, SPACE to Shoot', { size: 16, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center'), k.color(255, 200, 87)])
           k.onKeyPress('space', () => k.go('main'))
         })
 
         k.scene('main', () => {
           const difficulty = { speed: 50, spawnRate: 10, pattern: k.choose(patterns) }
           let score = 0
-          const scoreLabel = k.add([k.text('Score: 0', { size: 24, font: 'sans-serif' }), k.pos(20, 20), k.fixed()])
+          const scoreLabel = k.add([k.text('Score: 0', { size: 24, font: 'pixel' }), k.pos(20, 20), k.fixed(), k.color(245, 233, 214)])
 
           const player = k.add([
             k.sprite('player'),
@@ -153,9 +154,9 @@ export function SecretLevel() {
         })
 
         k.scene('gameover', ({ finalScore }: { finalScore: number }) => {
-          k.add([k.text('GAME OVER', { size: 64, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center')])
-          k.add([k.text('Score: ' + finalScore, { size: 40, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2), k.anchor('center')])
-          k.add([k.text('Press SPACE to Replay', { size: 24, font: 'sans-serif' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center')])
+          k.add([k.text('GAME OVER', { size: 64, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center'), k.color(255, 139, 76)])
+          k.add([k.text('Score: ' + finalScore, { size: 40, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2), k.anchor('center'), k.color(255, 139, 76)])
+          k.add([k.text('Press SPACE to Replay', { size: 24, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center'), k.color(255, 200, 87)])
           k.onKeyPress('space', () => k.go('start'))
         })
 
