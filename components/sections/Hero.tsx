@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Typewriter } from 'react-simple-typewriter'
+import { TypewriterText } from '@/components/ui/TypewriterText'
 import { StarfieldBackground } from '@/components/ui/StarfieldBackground'
 import { PixelButton } from '@/components/ui/PixelButton'
 
@@ -73,18 +73,15 @@ export function Hero() {
 
         {/* Dynamic Subtitle */}
         <h2 className="mb-10 font-body text-xl sm:text-2xl md:text-3xl font-medium text-starchart/90">
-          <Typewriter
+          <TypewriterText
             words={[
               'Computer Engineering Student',
               'Web & Systems Developer',
               'IoT & Embedded Hardware Learner',
               'AI & Data Explorer',
             ]}
-            loop={0}
-            cursor
-            cursorStyle="|"
             typeSpeed={60}
-            deleteSpeed={40}
+            deleteSpeed={35}
             delaySpeed={2000}
           />
         </h2>
