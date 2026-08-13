@@ -18,28 +18,34 @@ export function Hero() {
     >
       <StarfieldBackground intensity="high" className="z-0" />
 
+      {/* Central Nebula Glow for Composition Unity */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-nebula/20 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-comet/10 rounded-full blur-[80px] pointer-events-none z-0" />
+
+      {/* Hero Sprites */}
       <div
         aria-hidden="true"
-        className="absolute left-[5%] top-[15%] z-10 h-[120px] w-[120px] animate-float-slow pixel-asset md:left-[10%] md:h-[200px] md:w-[200px]"
+        className="absolute left-[10%] top-[25%] z-10 h-[100px] w-[100px] animate-float-slow pixel-asset md:left-[15%] md:top-[20%] md:h-[160px] md:w-[160px]"
         style={{
           backgroundImage: "url('/sprites/rocketSatu.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          transform: 'rotate(10deg)',
+          transform: 'rotate(25deg)',
         }}
       />
       <div
         aria-hidden="true"
-        className="absolute bottom-[15%] right-[5%] z-10 h-[100px] w-[100px] animate-float-slow pixel-asset md:right-[10%] md:h-[180px] md:w-[180px]"
+        className="absolute bottom-[20%] right-[10%] z-10 h-[80px] w-[80px] animate-float-slow pixel-asset md:right-[15%] md:bottom-[15%] md:h-[140px] md:w-[140px]"
         style={{
           backgroundImage: "url('/sprites/planetMerah.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          transform: 'rotate(-10deg)',
+          transform: 'rotate(-15deg)',
+          animationDelay: '1s',
         }}
       />
 
-      <div className="absolute inset-0 z-20 bg-gradient-to-b from-void/60 via-void/20 to-void/90" />
+      <div className="absolute inset-0 z-20 bg-gradient-to-b from-void/40 via-void/10 to-void/95 pointer-events-none" />
 
       <div className="relative z-30 px-6">
         <motion.h1

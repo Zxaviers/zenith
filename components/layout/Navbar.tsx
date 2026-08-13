@@ -95,7 +95,10 @@ export function Navbar() {
   const isDevlogActive = pathname?.startsWith('/devlog')
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/10 bg-void/90 px-8 py-4">
+    <nav 
+      className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between px-6 py-3 pixel-frame md:left-8 md:right-8 lg:left-1/2 lg:right-auto lg:w-[900px] lg:-translate-x-1/2"
+      style={{ '--pixel-fill-color': 'rgba(27, 18, 53, 0.85)', '--pixel-border-color': 'var(--color-star)' } as React.CSSProperties}
+    >
       <Link href="/" className="flex items-center gap-2">
         <Image src="/sprites/black.png" alt="Logo" width={48} height={48} className="h-12 w-12 pixel-asset" />
         <h1 className="font-display text-lg text-starchart">Zenith</h1>
@@ -111,9 +114,10 @@ export function Navbar() {
       </button>
 
       <ul
-        className={`absolute left-0 right-0 top-full z-40 w-full flex-col bg-void/95 p-4 transition-all duration-300 ease-in-out overflow-hidden
-        xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-6 xl:bg-transparent xl:p-0
+        className={`absolute left-0 right-0 top-[120%] z-40 w-full flex-col bg-void/95 p-4 transition-all duration-300 ease-in-out overflow-hidden pixel-frame
+        xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:before:hidden xl:after:hidden
         ${isOpen ? 'flex max-h-[400px] opacity-100' : 'max-h-0 opacity-0 xl:max-h-none xl:opacity-100'}`}
+        style={isOpen ? { '--pixel-fill-color': 'var(--color-void)', '--pixel-border-color': 'var(--color-comet)' } as React.CSSProperties : {}}
       >
         {MENU_ITEMS.map((item) => {
           const targetId = slugify(item)

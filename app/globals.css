@@ -119,11 +119,11 @@
     position: absolute;
     inset: -20% 0;
     background-repeat: repeat;
-    background-image: radial-gradient(
-      circle,
-      var(--color-starchart) 1px,
-      transparent 1.6px
-    );
+    background-image:
+      radial-gradient(circle at 20% 30%, var(--color-starchart) 1px, transparent 1.6px),
+      radial-gradient(circle at 75% 15%, var(--color-starchart) 1.5px, transparent 2px),
+      radial-gradient(circle at 45% 80%, var(--color-starchart) 1px, transparent 1.6px),
+      radial-gradient(circle at 85% 65%, var(--color-starchart) 0.8px, transparent 1.2px);
   }
 
   @media (prefers-reduced-motion: no-preference) {

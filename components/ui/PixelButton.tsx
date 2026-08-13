@@ -50,7 +50,7 @@ export function PixelButton({
       style={{ ...variantStyle, ...style }}
       {...props}
     >
-      {children}
+      <span className="relative z-10">{children}</span>
     </button>
   )
 }
