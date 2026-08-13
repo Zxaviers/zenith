@@ -1,7 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { StarNode } from '@/components/ui/StarNode'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { cn } from '@/lib/utils'
@@ -11,42 +11,68 @@ interface Skill {
   name: string
   description: string
   level: 'Proficient' | 'Familiar' | 'Basic'
+  levelScore: number
   icon: string
-  /** Position within the constellation, as a percentage of the container. */
   x: number
   y: number
 }
 
-// Ported from src/Sections/Skills.jsx's SKILL_DATA — same skills/levels,
-// repositioned from a CSS grid (row/col) onto percentage coordinates so
-// they can be connected with real constellation lines instead of grid
-// divider lines.
-const SKILL_DATA: Record<string, { title: string; skills: Skill[] }> = {
+interface ConstellationCategory {
+  title: string
+  shortLabel: string
+  skills: Skill[]
+  links: [string, string][]
+}
+
+const SKILL_DATA: Record<string, ConstellationCategory> = {
   web: {
     title: '🌐 Web Development',
+    shortLabel: 'Web',
     skills: [
-      { id: 'react', name: 'React', description: 'Building reactive UIs for web applications.', level: 'Proficient', icon: '⚛️', x: 50, y: 15 },
-      { id: 'tailwind', name: 'Tailwind', description: 'Rapid styling with utility-first CSS.', level: 'Proficient', icon: '🍃', x: 15, y: 50 },
-      { id: 'laravel', name: 'Laravel', description: 'Server-side logic with PHP framework.', level: 'Familiar', icon: '🐘', x: 85, y: 50 },
-      { id: 'firebase', name: 'Firebase', description: 'Real-time DB, Auth, & Hosting.', level: 'Familiar', icon: '🔥', x: 50, y: 85 },
+      { id: 'react', name: 'React', description: 'Component architecture, hooks, state management, and modern reactive UIs.', level: 'Proficient', levelScore: 90, icon: '⚛️', x: 28, y: 25 },
+      { id: 'tailwind', name: 'Tailwind', description: 'Utility-first rapid responsive styling and custom design systems.', level: 'Proficient', levelScore: 92, icon: '🍃', x: 72, y: 22 },
+      { id: 'laravel', name: 'Laravel', description: 'Robust backend REST APIs, MVC structure, and relational DB integration.', level: 'Familiar', levelScore: 75, icon: '🐘', x: 78, y: 75 },
+      { id: 'firebase', name: 'Firebase', description: 'Real-time database, cloud authentication, storage, and hosting solutions.', level: 'Familiar', levelScore: 78, icon: '🔥', x: 22, y: 72 },
+    ],
+    links: [
+      ['react', 'tailwind'],
+      ['tailwind', 'laravel'],
+      ['laravel', 'firebase'],
+      ['firebase', 'react'],
+      ['react', 'laravel'],
     ],
   },
   iot: {
     title: '⚙️ IoT & Embedded',
+    shortLabel: 'IoT',
     skills: [
-      { id: 'cpp', name: 'C/C++', description: 'Low-level, high-performance programming.', level: 'Proficient', icon: '💻', x: 50, y: 15 },
-      { id: 'esp32', name: 'ESP32', description: 'Microcontroller programming.', level: 'Proficient', icon: '🤖', x: 15, y: 50 },
-      { id: 'sensors', name: 'Sensors', description: 'Data acquisition and integration.', level: 'Familiar', icon: '🌡️', x: 85, y: 50 },
-      { id: 'arduino', name: 'Arduino', description: 'Microcontroller programming.', level: 'Proficient', icon: '📟', x: 50, y: 85 },
+      { id: 'cpp', name: 'C/C++', description: 'Low-level hardware registers, firmware efficiency, and real-time execution.', level: 'Proficient', levelScore: 88, icon: '💻', x: 50, y: 15 },
+      { id: 'esp32', name: 'ESP32', description: 'Dual-core WiFi/BLE microcontroller firmware, telemetry, and FreeRTOS.', level: 'Proficient', levelScore: 92, icon: '🤖', x: 18, y: 55 },
+      { id: 'sensors', name: 'Sensors', description: 'ADS1115, MPU6050, I2C/SPI bus integration, and signal filtration.', level: 'Familiar', levelScore: 82, icon: '🌡️', x: 82, y: 52 },
+      { id: 'arduino', name: 'Arduino', description: 'Rapid hardware prototyping, sensor interfacing, and actuator control.', level: 'Proficient', levelScore: 85, icon: '📟', x: 50, y: 85 },
+    ],
+    links: [
+      ['cpp', 'esp32'],
+      ['cpp', 'sensors'],
+      ['esp32', 'arduino'],
+      ['sensors', 'arduino'],
+      ['esp32', 'sensors'],
     ],
   },
   tools: {
     title: '🧰 Tools & Workflow',
+    shortLabel: 'Tools',
     skills: [
-      { id: 'git', name: 'Git/VS Code', description: 'Version control & code editing.', level: 'Proficient', icon: '🛠️', x: 50, y: 15 },
-      { id: 'ps', name: 'Photoshop', description: 'Pixel art & asset creation.', level: 'Familiar', icon: '🎨', x: 15, y: 50 },
-      { id: 'blender', name: 'Blender', description: '3D modeling basics.', level: 'Basic', icon: '🧊', x: 85, y: 50 },
-      { id: 'linux', name: 'Linux', description: 'Server management & OS.', level: 'Familiar', icon: '🐧', x: 50, y: 85 },
+      { id: 'git', name: 'Git & GitHub', description: 'Distributed version control, branching strategies, and CI/CD pipelines.', level: 'Proficient', levelScore: 88, icon: '🛠️', x: 20, y: 28 },
+      { id: 'linux', name: 'Linux / CLI', description: 'Server administration, bash scripting, and environment configuration.', level: 'Familiar', levelScore: 75, icon: '🐧', x: 50, y: 48 },
+      { id: 'ps', name: 'Photoshop', description: 'Pixel art asset creation, sprite alignment, and graphic design.', level: 'Familiar', levelScore: 80, icon: '🎨', x: 80, y: 22 },
+      { id: 'blender', name: 'Blender', description: '3D spatial reasoning, low-poly asset modeling, and rendering basics.', level: 'Basic', levelScore: 55, icon: '🧊', x: 75, y: 78 },
+    ],
+    links: [
+      ['git', 'linux'],
+      ['linux', 'ps'],
+      ['ps', 'blender'],
+      ['linux', 'blender'],
     ],
   },
 }
@@ -62,54 +88,85 @@ const LEVEL_SIZE: Record<Skill['level'], number> = {
 export function Constellation() {
   const [activeTab, setActiveTab] = useState<string>('web')
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null)
+  const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null)
   const gradientId = useId()
 
-  const currentSkills = SKILL_DATA[activeTab].skills
+  const currentCategory = SKILL_DATA[activeTab]
+  const currentSkills = currentCategory.skills
+  const currentLinks = currentCategory.links
 
   const handleTabClick = (key: string) => {
     setActiveTab(key)
     setSelectedSkill(null)
+    setHoveredSkillId(null)
   }
 
-  // Connect every skill to the constellation's center point — reads as a
-  // small rasi bintang (star cluster) rather than a rigid grid.
-  const centerX = 50
-  const centerY = 50
+  const activeFocusId = hoveredSkillId || selectedSkill?.id
 
   return (
-    <section id="constellation" className="relative px-6 py-24">
-      <motion.h2
-        className="mb-12 text-center font-display text-2xl text-starchart md:text-3xl"
+    <section id="constellation" className="relative px-6 py-24 scroll-mt-24">
+      <motion.div
+        className="mb-12 text-center"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        Constellation
-      </motion.h2>
+        <h2 className="font-display text-2xl text-starchart md:text-3xl">Constellation</h2>
+        <p className="mt-2 font-body text-base text-starchart/80 md:text-lg">
+          Interactive star map telemetry & technical competencies
+        </p>
+      </motion.div>
 
       <PixelPanel variant="nebula" className="mx-auto max-w-5xl">
-        <div className="mb-6 flex flex-wrap justify-center gap-2 border-b border-white/10 pb-4">
-          {CATEGORY_KEYS.map((key) => (
-            <button
-              key={key}
-              onClick={() => handleTabClick(key)}
-              className={cn(
-                'rounded-sm px-4 py-2 font-display text-[10px] transition-colors',
-                activeTab === key
-                  ? 'bg-void text-comet'
-                  : 'text-starchart/80 hover:text-starchart'
-              )}
-              aria-pressed={activeTab === key}
-            >
-              {SKILL_DATA[key].title}
-            </button>
-          ))}
+        {/* Category Tabs */}
+        <div
+          role="tablist"
+          aria-label="Skill Categories"
+          className="mb-8 flex flex-wrap justify-center gap-3 border-b border-white/10 pb-5"
+        >
+          {CATEGORY_KEYS.map((key) => {
+            const isSelected = activeTab === key
+            return (
+              <button
+                key={key}
+                role="tab"
+                id={`tab-${key}`}
+                aria-controls={`panel-${key}`}
+                aria-selected={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                onClick={() => handleTabClick(key)}
+                className={cn(
+                  'relative rounded-sm px-4 py-2 font-display text-xs transition-all duration-200 cursor-pointer',
+                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora focus-visible:outline-offset-2',
+                  isSelected
+                    ? 'bg-void text-star shadow-[0_0_12px_rgba(255,200,87,0.3)] border border-star/40'
+                    : 'text-starchart/80 hover:text-starchart hover:bg-void/40'
+                )}
+              >
+                {SKILL_DATA[key].title}
+              </button>
+            )
+          })}
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div
+          id={`panel-${activeTab}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+          className="grid grid-cols-1 gap-8 md:grid-cols-3 items-center"
+        >
+          {/* Interactive Constellation Map */}
           <div className="md:col-span-2">
-            <div className="relative mx-auto aspect-square w-full max-w-md">
+            <div className="relative mx-auto aspect-square w-full max-w-md rounded-lg border border-white/5 bg-void/60 p-4 shadow-inner">
+              {/* Radial radar ring guides */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-15">
+                <div className="h-3/4 w-3/4 rounded-full border border-dashed border-starchart" />
+                <div className="absolute h-1/2 w-1/2 rounded-full border border-dashed border-starchart" />
+                <div className="absolute h-1/4 w-1/4 rounded-full border border-starchart" />
+              </div>
+
+              {/* Constellation Link SVG */}
               <svg
                 className="pointer-events-none absolute inset-0 h-full w-full"
                 viewBox="0 0 100 100"
@@ -118,49 +175,78 @@ export function Constellation() {
               >
                 <defs>
                   <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="var(--color-star)" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="var(--color-comet)" stopOpacity="0.6" />
+                    <stop offset="0%" stopColor="var(--color-star)" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="var(--color-comet)" stopOpacity="0.8" />
                   </linearGradient>
+                  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="1" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
                 </defs>
-                {currentSkills.map((skill) => (
-                  <line
-                    key={skill.id}
-                    x1={centerX}
-                    y1={centerY}
-                    x2={skill.x}
-                    y2={skill.y}
-                    stroke={`url(#${gradientId})`}
-                    strokeWidth={0.6}
-                    strokeDasharray="2 2"
-                  />
-                ))}
+
+                {currentLinks.map(([sourceId, targetId]) => {
+                  const source = currentSkills.find((s) => s.id === sourceId)
+                  const target = currentSkills.find((s) => s.id === targetId)
+                  if (!source || !target) return null
+
+                  const isLinkActive = activeFocusId === sourceId || activeFocusId === targetId
+
+                  return (
+                    <line
+                      key={`${sourceId}-${targetId}`}
+                      x1={`${source.x}%`}
+                      y1={`${source.y}%`}
+                      x2={`${target.x}%`}
+                      y2={`${target.y}%`}
+                      stroke={isLinkActive ? 'var(--color-star)' : `url(#${gradientId})`}
+                      strokeWidth={isLinkActive ? 1.4 : 0.8}
+                      strokeDasharray={isLinkActive ? 'none' : '3 3'}
+                      filter={isLinkActive ? 'url(#glow)' : undefined}
+                      className="transition-all duration-300"
+                    />
+                  )
+                })}
               </svg>
 
-              {currentSkills.map((skill) => (
-                <div
-                  key={skill.id}
-                  className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
-                  style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
-                >
-                  <StarNode
-                    label={`${skill.name} — ${skill.level}`}
-                    size={LEVEL_SIZE[skill.level]}
-                    state={selectedSkill?.id === skill.id ? 'active' : 'unlocked'}
-                    onClick={() => setSelectedSkill(skill)}
-                  />
-                  <span
-                    className="font-stat text-xs text-starchart/80 md:text-sm"
-                    aria-hidden="true"
+              {/* Star Nodes */}
+              {currentSkills.map((skill) => {
+                const isSelected = selectedSkill?.id === skill.id
+                const isHovered = hoveredSkillId === skill.id
+
+                return (
+                  <div
+                    key={skill.id}
+                    className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5 z-20"
+                    style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
+                    onMouseEnter={() => setHoveredSkillId(skill.id)}
+                    onMouseLeave={() => setHoveredSkillId(null)}
                   >
-                    {skill.icon} {skill.name}
-                  </span>
-                </div>
-              ))}
+                    <StarNode
+                      label={`${skill.name} — ${skill.level}`}
+                      size={LEVEL_SIZE[skill.level]}
+                      state={isSelected ? 'active' : isHovered ? 'active' : 'unlocked'}
+                      onClick={() => setSelectedSkill(skill)}
+                    />
+                    <span
+                      className={cn(
+                        'font-stat text-xs md:text-sm px-1.5 py-0.5 rounded transition-colors',
+                        isSelected || isHovered
+                          ? 'bg-void text-star font-bold shadow'
+                          : 'text-starchart/85 bg-void/40'
+                      )}
+                      aria-hidden="true"
+                    >
+                      {skill.icon} {skill.name}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
+          {/* Skill Telemetry & Detail Panel */}
           <div className="md:col-span-1">
-            <SkillDescription skill={selectedSkill} />
+            <SkillDescription skill={selectedSkill || currentSkills[0]} />
           </div>
         </div>
       </PixelPanel>
@@ -168,29 +254,61 @@ export function Constellation() {
   )
 }
 
-function SkillDescription({ skill }: { skill: Skill | null }) {
-  if (!skill) {
-    return (
-      <PixelPanel variant="nebula" className="h-full">
-        <h4 className="mb-2 font-display text-sm text-starchart/80">Select a star</h4>
-        <p className="font-body text-base text-starchart/80">
-          Click a node on the constellation to view its details.
-        </p>
-      </PixelPanel>
-    )
-  }
-
+function SkillDescription({ skill }: { skill: Skill }) {
   return (
-    <motion.div key={skill.id} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
-      <PixelPanel variant="nebula" className="h-full">
-        <h4 className="mb-2 font-display text-sm text-comet">{skill.name.toUpperCase()}</h4>
-        <span className="rounded-sm bg-star px-2 py-1 font-stat text-sm text-void">
-          Lv. {skill.level}
-        </span>
-        <p className="mt-6 font-body text-base text-starchart/90 md:text-lg">
-          {skill.description}
-        </p>
-      </PixelPanel>
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={skill.id}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.25 }}
+      >
+        <PixelPanel variant="void" className="border border-star/30">
+          <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl" aria-hidden="true">{skill.icon}</span>
+              <h3 className="font-display text-sm text-comet">{skill.name.toUpperCase()}</h3>
+            </div>
+            <span
+              className={cn(
+                'rounded-sm px-2 py-0.5 font-stat text-xs font-bold uppercase tracking-wider',
+                skill.level === 'Proficient' && 'bg-aurora/20 text-aurora border border-aurora/40',
+                skill.level === 'Familiar' && 'bg-star/20 text-star border border-star/40',
+                skill.level === 'Basic' && 'bg-starchart/20 text-starchart border border-starchart/40'
+              )}
+            >
+              {skill.level}
+            </span>
+          </div>
+
+          {/* Proficiency Power Gauge */}
+          <div className="mb-5 space-y-1.5">
+            <div className="flex justify-between font-stat text-xs text-starchart/80">
+              <span>MASTERY FREQUENCY</span>
+              <span className="text-star">{skill.levelScore}%</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-sm bg-nebula/60 border border-white/10">
+              <motion.div
+                className="h-full bg-gradient-to-r from-comet via-star to-aurora"
+                initial={{ width: 0 }}
+                animate={{ width: `${skill.levelScore}%` }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              />
+            </div>
+          </div>
+
+          <p className="font-body text-base leading-relaxed text-starchart/90">
+            {skill.description}
+          </p>
+
+          <div className="mt-6 pt-3 border-t border-white/10 text-right">
+            <span className="font-stat text-xs text-starchart/60">
+              [TELEMETRY NODE // SYNCHRONIZED]
+            </span>
+          </div>
+        </PixelPanel>
+      </motion.div>
+    </AnimatePresence>
   )
 }

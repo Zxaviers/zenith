@@ -39,6 +39,7 @@ export function StarNode({
   ...props
 }: StarNodeProps) {
   const isLocked = state === 'locked'
+  const isActive = state === 'active'
 
   return (
     <button
@@ -47,11 +48,11 @@ export function StarNode({
       title={label}
       disabled={disabled ?? isLocked}
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center rounded-full transition-transform duration-150',
+        'relative inline-flex shrink-0 items-center justify-center rounded-full transition-all duration-300',
         'focus-visible:outline focus-visible:outline-3 focus-visible:outline-aurora focus-visible:outline-offset-2',
-        state === 'active' && 'scale-125',
-        !isLocked && 'cursor-pointer hover:scale-125',
-        isLocked && 'cursor-not-allowed',
+        isActive && 'scale-125 ring-2 ring-star/60 ring-offset-2 ring-offset-void animate-pulse',
+        !isLocked && !isActive && 'cursor-pointer hover:scale-125 hover:ring-2 hover:ring-comet/40',
+        isLocked && 'cursor-not-allowed opacity-40',
         className
       )}
       style={{

@@ -3,14 +3,11 @@ import { cn } from '@/lib/utils'
 
 export interface PixelPanelProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * `nebula` — light text on a dark nebula-violet fill with a star-gold
-   * border. The default; used for most cockpit-HUD style cards.
-   *
-   * `starchart` — dark text on a cream "star chart" fill with a
-   * nebula-violet border. Use sparingly for panels that want to read like
-   * an old astronomer's paper chart rather than a HUD display.
+   * `nebula` — light text on a dark nebula-violet fill with a star-gold border.
+   * `starchart` — dark text on a cream star chart fill with a nebula border.
+   * `void` — deep space dark fill with a subtle comet/star border for nested telemetry.
    */
-  variant?: 'nebula' | 'starchart'
+  variant?: 'nebula' | 'starchart' | 'void'
   children: ReactNode
 }
 
@@ -32,6 +29,13 @@ const variantStyles: Record<
     },
     text: 'text-void',
   },
+  void: {
+    style: {
+      '--pixel-fill-color': 'var(--color-void)',
+      '--pixel-border-color': 'rgba(255, 139, 76, 0.4)',
+    },
+    text: 'text-starchart',
+  },
 }
 
 export function PixelPanel({
@@ -49,7 +53,7 @@ export function PixelPanel({
       style={{ ...variantStyle, ...style }}
       {...props}
     >
-      {children}
+      <div className="relative z-10">{children}</div>
     </div>
   )
 }

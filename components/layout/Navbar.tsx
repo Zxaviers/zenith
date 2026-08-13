@@ -4,33 +4,24 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 const MENU_ITEMS = [
-  'Home',
-  'Mission Control',
-  'Constellation',
-  'Flight Path',
-  'Mission Log',
-  'Send a Transmission',
+  { label: 'Home', id: 'home' },
+  { label: 'Mission Control', id: 'mission-control' },
+  { label: 'Constellation', id: 'constellation' },
+  { label: 'Flight Path', id: 'flight-path' },
+  { label: 'Mission Log', id: 'mission-log' },
+  { label: 'Transmission', id: 'send-a-transmission' },
 ]
 
-function slugify(label: string) {
-  return label.toLowerCase().replace(/\s+/g, '-')
-}
-
-/**
- * Ported from src/Sections/Navbar.jsx (Vite/react-router) to Next's App
- * Router. Same behavior: smooth-scrolls to in-page sections when already
- * on "/", navigates to "/#id" first when on another route (devlog, project
- * case study, etc).
- */
 export function Navbar() {
   const [active, setActive] = useState('home')
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
 
-  const smoothScrollTo = (targetY: number, duration = 1000) => {
+  const smoothScrollTo = (targetY: number, duration = 800) => {
     const startY = window.scrollY
     const distance = targetY - startY
     let startTime: number | null = null
@@ -52,9 +43,9 @@ export function Navbar() {
   const handleScroll = (id: string) => {
     const el = document.getElementById(id)
     if (el) {
-      const yOffset = -80
+      const yOffset = -90
       const targetY = el.getBoundingClientRect().top + window.pageYOffset + yOffset
-      smoothScrollTo(targetY, 1000)
+      smoothScrollTo(targetY, 800)
     }
   }
 
@@ -68,12 +59,10 @@ export function Navbar() {
     }
   }
 
-  // After navigating to "/#id" from another route, wait for the section
-  // to render then scroll to it.
   useEffect(() => {
     if (pathname === '/' && window.location.hash) {
       const id = window.location.hash.replace('#', '')
-      const timer = setTimeout(() => handleScroll(id), 50)
+      const timer = setTimeout(() => handleScroll(id), 60)
       return () => clearTimeout(timer)
     }
   }, [pathname])
@@ -86,7 +75,7 @@ export function Navbar() {
           if (entry.isIntersecting) setActive(entry.target.id)
         })
       },
-      { threshold: 0.6 }
+      { threshold: 0.5 }
     )
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
@@ -95,59 +84,96 @@ export function Navbar() {
   const isDevlogActive = pathname?.startsWith('/devlog')
 
   return (
-    <nav 
-      className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between px-6 py-3 pixel-frame md:left-8 md:right-8 lg:left-1/2 lg:right-auto lg:w-[900px] lg:-translate-x-1/2"
-      style={{ '--pixel-fill-color': 'rgba(27, 18, 53, 0.85)', '--pixel-border-color': 'var(--color-star)' } as React.CSSProperties}
-    >
-      <Link href="/" className="flex items-center gap-2">
-        <Image src="/sprites/black.png" alt="Logo" width={48} height={48} className="h-12 w-12 pixel-asset" />
-        <h1 className="font-display text-lg text-starchart">Zenith</h1>
-      </Link>
-
-      <button
-        className="text-3xl leading-none text-nebula xl:hidden"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        aria-expanded={isOpen}
+    <header className="fixed top-3 left-0 right-0 z-50 px-4 md:px-6 pointer-events-none">
+      <nav
+        aria-label="Main Mission Navigation"
+        className="mx-auto max-w-5xl pointer-events-auto flex items-center justify-between px-5 py-2.5 rounded-lg border border-star/40 bg-void/90 shadow-2xl backdrop-blur-md"
+        style={{
+          boxShadow: '0 8px 32px 0 rgba(27, 18, 53, 0.8), 0 0 12px 1px rgba(255, 200, 87, 0.15)',
+        }}
       >
-        {isOpen ? '✕' : '☰'}
-      </button>
+        {/* Brand Wordmark & Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora rounded"
+          aria-label="Zenith Homepage"
+        >
+          <div className="relative rounded bg-void/90 p-1 border border-star/30 group-hover:border-star transition-colors">
+            <Image
+              src="/sprites/black.png"
+              alt=""
+              width={28}
+              height={28}
+              className="h-7 w-7 pixel-asset"
+              priority
+            />
+          </div>
+          <span className="font-display text-base tracking-wider text-starchart group-hover:text-star transition-colors">
+            ZENITH
+          </span>
+        </Link>
 
-      <ul
-        className={`absolute left-0 right-0 top-[120%] z-40 w-full flex-col bg-void/95 p-4 transition-all duration-300 ease-in-out overflow-hidden pixel-frame
-        xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:before:hidden xl:after:hidden
-        ${isOpen ? 'flex max-h-[400px] opacity-100' : 'max-h-0 opacity-0 xl:max-h-none xl:opacity-100'}`}
-        style={isOpen ? { '--pixel-fill-color': 'var(--color-void)', '--pixel-border-color': 'var(--color-comet)' } as React.CSSProperties : {}}
-      >
-        {MENU_ITEMS.map((item) => {
-          const targetId = slugify(item)
-          return (
-            <li key={item} className="group relative py-2 xl:py-0">
-              <a
-                href={`/#${targetId}`}
-                onClick={(e) => handleNavClick(e, targetId)}
-                className={`rounded-md px-3 py-2 font-display text-[10px] transition-all duration-300 group-hover:text-starchart xl:text-[10px] ${
-                  pathname === '/' && active === targetId ? 'text-comet' : 'text-starchart/80'
-                }`}
-              >
-                {item}
-              </a>
-            </li>
-          )
-        })}
+        {/* Mobile Menu Toggle */}
+        <button
+          className="text-2xl leading-none text-star xl:hidden p-1 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close mission navigation menu' : 'Open mission navigation menu'}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? '✕' : '☰'}
+        </button>
 
-        <li className="group relative py-2 xl:py-0">
-          <Link
-            href="/devlog"
-            onClick={() => setIsOpen(false)}
-            className={`rounded-md px-3 py-2 font-display text-[10px] transition-all duration-300 group-hover:text-starchart ${
-              isDevlogActive ? 'text-comet' : 'text-starchart/80'
-            }`}
-          >
-            Devlog
-          </Link>
-        </li>
-      </ul>
-    </nav>
+        {/* Navigation Items List */}
+        <ul
+          className={cn(
+            'absolute left-4 right-4 top-[120%] z-40 flex-col rounded-lg border border-star/30 bg-void/95 p-4 shadow-2xl transition-all duration-300 ease-in-out backdrop-blur-lg',
+            'xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-1.5 xl:bg-transparent xl:p-0 xl:border-none xl:shadow-none',
+            isOpen ? 'flex' : 'hidden xl:flex'
+          )}
+        >
+          {MENU_ITEMS.map((item) => {
+            const isActive = pathname === '/' && active === item.id
+            return (
+              <li key={item.id} className="relative py-1.5 xl:py-0">
+                <a
+                  href={`/#${item.id}`}
+                  onClick={(e) => handleNavClick(e, item.id)}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded px-3 py-1.5 font-display text-[11px] transition-all duration-200',
+                    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora',
+                    isActive
+                      ? 'bg-nebula/80 text-star shadow-inner border border-star/30'
+                      : 'text-starchart/80 hover:text-starchart hover:bg-white/5'
+                  )}
+                >
+                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />}
+                  {item.label}
+                </a>
+              </li>
+            )
+          })}
+
+          {/* Devlog Nav Link */}
+          <li className="relative py-1.5 xl:py-0 xl:ml-2 xl:pl-2 xl:border-l xl:border-white/10">
+            <Link
+              href="/devlog"
+              onClick={() => setIsOpen(false)}
+              aria-current={isDevlogActive ? 'page' : undefined}
+              className={cn(
+                'flex items-center gap-1.5 rounded px-3 py-1.5 font-display text-[11px] transition-all duration-200',
+                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora',
+                isDevlogActive
+                  ? 'bg-nebula/80 text-comet shadow-inner border border-comet/30'
+                  : 'text-starchart/80 hover:text-starchart hover:bg-white/5'
+              )}
+            >
+              {isDevlogActive && <span className="h-1.5 w-1.5 rounded-full bg-comet" />}
+              Devlog
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
   )
 }
