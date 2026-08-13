@@ -137,7 +137,7 @@ export default function Skills({ id }) {
         viewport={{ once: true }}
       >
         <h2 className="mb-4 text-4xl font-bold tracking-tight text-white font-pixel-title">
-          Skill Tree
+          Constellation
         </h2>
       </motion.div>
 

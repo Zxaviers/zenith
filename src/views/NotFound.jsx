@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default function NotFound() {
   useEffect(() => {
-    document.title = '404 — Lost in Space | Zxaviers'
+    document.title = '404 — Lost in Space | Zenith'
   }, [])
 
   return (

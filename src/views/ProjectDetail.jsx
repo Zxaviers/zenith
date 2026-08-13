@@ -11,7 +11,7 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     if (project) {
-      document.title = `${project.title} — ${project.desc} | Zxaviers`
+      document.title = `${project.title} — ${project.desc} | Zenith`
     }
   }, [project])
 

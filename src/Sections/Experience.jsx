@@ -177,7 +177,7 @@ export default function Experience({ id }) {
     <div className="relative z-10 p-4 mx-auto overflow-hidden text-white shadow-xl md:p-10 max-w-auto bg-white/10 pixel-border-box">
    <div className="relative z-10">
     <h2 className="mb-12 text-3xl font-bold text-center text-white md:text-4xl font-pixel-title">
-     Mission Log 
+     Flight Path
     </h2>
     
     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

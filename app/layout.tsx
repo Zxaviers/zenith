@@ -24,12 +24,14 @@ const stat = VT323({
   display: 'swap',
 })
 
-// Placeholder metadata — replaced with the full Zenith brand + Metadata API
-// setup in Fase 3/6. Kept intentionally minimal for the Fase 1/2 scaffold.
+// Full Metadata API (title template, OG/Twitter tags, JSON-LD) lands in
+// Fase 6. This is the Fase 3 brand-copy pass — same title/description now
+// used by index.html and public/manifest.json, so both apps agree while
+// they coexist.
 export const metadata: Metadata = {
-  title: 'Zenith (Next.js scaffold)',
+  title: 'Zenith | Computer Engineering Student & Web Developer',
   description:
-    'Next.js App Router scaffold for the Zenith rework. Content migration in progress.',
+    'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
 }
 
 export default function RootLayout({

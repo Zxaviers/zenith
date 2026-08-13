@@ -14,14 +14,20 @@ describe('Navbar', () => {
   it('renders the main navigation links', () => {
     renderNavbar()
 
-    ;['Home', 'Agents', 'Skill Tree', 'Mission Log', 'Artifacts', 'Devlog'].forEach(
-      (label) => {
-        expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
-      }
-    )
+    ;[
+      'Home',
+      'Mission Control',
+      'Constellation',
+      'Flight Path',
+      'Mission Log',
+      'Send a Transmission',
+      'Devlog',
+    ].forEach((label) => {
+      expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
+    })
   })
 
-  it('does not render a Contact link (moved into the page section)', () => {
+  it('does not render a generic "Contact" link (it uses the "Send a Transmission" label)', () => {
     renderNavbar()
 
     expect(

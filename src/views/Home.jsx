@@ -27,7 +27,7 @@ import rocketGif from '../assets/rocket_pixel.gif'
 
 export default function Home() {
   useEffect(() => {
-    document.title = 'Zxaviers | Computer Engineering Student & Web Developer'
+    document.title = 'Zenith | Computer Engineering Student & Web Developer'
   }, [])
 
   const heroTypewriter = useMemo(
@@ -58,13 +58,13 @@ export default function Home() {
         // ✅ 3. Kirim aset BARU ke Hero
         assets={{ rocket: rocketSatu, planet: planetMerah }}
       />
-      <About id="agents" rocketGif={rocketGif} />
-      <Skills id="skill-tree" />
-      <Experience id="mission-log" />
-      <Projects projects={projects} id="artifacts" />
+      <About id="mission-control" rocketGif={rocketGif} />
+      <Skills id="constellation" />
+      <Experience id="flight-path" />
+      <Projects projects={projects} id="mission-log" />
       <SecretGame id="secret-level" />
       <Contact
-        id="contact"
+        id="send-a-transmission"
         icons={{
           github: githubPixel,
           linkedin: linkedinPixel,

@@ -6,7 +6,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const Navbar = React.memo(({ logo }) => {
   const [active, setActive] = useState('home')
   const [isOpen, setIsOpen] = useState(false)
-  const menuItems = ['Home', 'Agents', 'Skill Tree', 'Mission Log', 'Artifacts']
+  const menuItems = [
+    'Home',
+    'Mission Control',
+    'Constellation',
+    'Flight Path',
+    'Mission Log',
+    'Send a Transmission',
+  ]
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -87,7 +94,7 @@ const Navbar = React.memo(({ logo }) => {
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 border-b bg-black/90 border-white/10">
       <Link to="/" className="flex items-center gap-2">
         <img src={logo} alt="Logo" className="w-15 h-15" />
-        <h1 className="text-2xl font-extrabold font-pixel-title">Zxaviers</h1>
+        <h1 className="text-2xl font-extrabold font-pixel-title">Zenith</h1>
       </Link>
 
       {/* ✅ BERUBAH: dari lg:hidden menjadi xl:hidden */}
@@ -118,7 +125,7 @@ const Navbar = React.memo(({ logo }) => {
       `}
       >
        {menuItems.map((item) => {
-          const targetId = item.toLowerCase().replace(' ', '-')
+          const targetId = item.toLowerCase().replace(/\s+/g, '-')
 
           return (
             <li key={item} className="relative py-2 group xl:py-0"> {/* ✅ 'lg:py-0' menjadi 'xl:py-0' */}

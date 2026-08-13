@@ -15,7 +15,7 @@ export default function Projects({ projects, id }) {
       transition={{ duration: 0.8 }}
       viewport={{ once: false, amount: 0.3 }}
     >
-      <h3 className="mb-8 text-2xl font-semibold font-pixel-title">Discovered Artifacts</h3>
+      <h3 className="mb-8 text-2xl font-semibold font-pixel-title">Mission Log</h3>
       <div className="grid gap-8 md:grid-cols-3">
         {projects.map((p, i) => {
           const cardClassName = `relative flex flex-col items-center p-6 overflow-hidden text-center transition-all duration-300 transform bg-white/10 pixel-border-box ${

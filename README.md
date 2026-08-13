@@ -1,80 +1,54 @@
-<!-- TITLE -->
-<h1 align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Pixelify+Sans&size=28&duration=3000&pause=800&color=80D4FF&center=true&vCenter=true&width=435&lines=Welcome+to+my+Universe;I'm+Zxaviers" />
-</h1>
+# Zenith
 
----
+Personal portfolio and devlog — Computer Engineering student exploring web
+development, IoT, and AI. Space-themed, pixel-art UI: sections read like a
+mission control star map (Mission Control, Constellation, Flight Path,
+Mission Log, Send a Transmission).
 
-## 🌠 About Me
+🌐 Live: [zxaviers.site](https://zxaviers.site)
 
-- 🚀 Web Developer (React & Tailwind enjoyer)  
-- 🔧 IoT Engineering & Embedded Systems  
-- 🎨 Pixel-art & Space-themed UI lover  
-- 🧠 Passionate about problem solving & coding  
-- 🌌 Constantly building my own digital galaxy
+## Stack
 
----
+Currently mid-migration from Vite to Next.js — both coexist in this repo
+until the rework is complete (see `ZENITH_PLAYBOOK.md` and `PROGRESS.md`
+for the full plan and status).
 
-## ✨ Highlights
+- **Next.js 15** (App Router, TypeScript, Tailwind CSS v4) — the target
+  stack, being built out under `app/` and `components/`.
+- **Vite + React + Tailwind** — the current live site, under `src/`.
+  Being retired once the Next.js migration is validated.
 
-- 🌐 Creator of **zxaviers.site**  
-- 💻 Experience with **ESP32**, **Arduino**, **MPU6050**, **ADS1115**, embedded sensors  
-- 🛠 Builds interactive web apps + IoT prototypes  
-- 🎮 Loves retro pixel art, shaders, and space-themed UI  
+## Highlights
 
----
+- 🔧 IoT Engineering & Embedded Systems experience (ESP32, Arduino,
+  MPU6050, ADS1115)
+- 🎨 Pixel-art & space-themed UI
+- 📓 Devlog covering build notes on both the site itself and hardware
+  projects
 
-## 📊 GitHub Stats
+## Development
 
-<div align="center">
+```bash
+npm install
 
-<img height="160" src="https://github-readme-stats.vercel.app/api?username=Zxaviers&show_icons=true&theme=tokyonight&hide_border=true&border_radius=12" />
+# Current live site (Vite)
+npm run dev
+npm run build
 
-<img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Zxaviers&layout=compact&theme=tokyonight&hide_border=true&border_radius=12" />
+# Next.js rework (in progress)
+npm run dev:next
+npm run build:next
+```
 
-</div>
+## Connect
 
----
-
-## 🐍 Snake Contributions (Animated)
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-dark.svg" />
-</div>
-
----
-
-## 🎖 Achievements & Badges
-
-<div align="center">
-  
-![Metrics](https://github-profile-trophy.vercel.app/?username=Zxaviers&theme=onedark&no-frame=true&row=1&margin-w=15)
-
-</div>
-
----
-
-## 💬 Random Dev Quote
-
-<div align="center">
-
-![Quote](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
-
-</div>
-
----
-
-## 📫 Connect With Me
-
-- 🌐 Website: **https://zxaviers.site**  
 - ✉️ Email: **riskimardhani@gmail.com**
-- 🅾  Instagram **https://instagram.com/sza.vy1st**
+- 🐙 GitHub: **[github.com/Zxaviers](https://github.com/Zxaviers)**
+- 🔗 LinkedIn: **[rizky-mardhani1st](https://linkedin.com/in/rizky-mardhani1st)**
+- 📸 Instagram: **[@sza.vy1st](https://instagram.com/sza.vy1st)**
 
 ---
 
-<br>
-
 <div align="center">
-  <sub>Crafted with ❤️ by Zxaviers — Powered by Pixel Art & Space Vibes 🚀</sub>
+  <sub>Crafted with ❤️ by Rizky Mardhani — Powered by Pixel Art & Space Vibes 🚀</sub>
 </div>
-

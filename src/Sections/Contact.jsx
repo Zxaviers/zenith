@@ -14,7 +14,7 @@ const Contact = React.memo(({ id, icons }) => {
       viewport={{ once: true }}
     >
       <h3 className="mb-6 text-2xl font-semibold font-pixel-title">
-        Get in Touch
+        Send a Transmission
       </h3>
 
       <a

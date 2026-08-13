@@ -7,7 +7,7 @@ import { devlogPosts } from '../data/devlogPosts'
 
 export default function DevlogList() {
   useEffect(() => {
-    document.title = 'Devlog | Zxaviers'
+    document.title = 'Devlog | Zenith'
   }, [])
 
   return (

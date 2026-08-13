@@ -11,7 +11,7 @@ export default function DevlogPost() {
 
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} | Zxaviers Devlog`
+      document.title = `${post.title} | Zenith Devlog`
     }
   }, [post])
 

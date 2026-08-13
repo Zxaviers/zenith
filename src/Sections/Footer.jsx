@@ -18,7 +18,7 @@ const Footer = React.memo(() => (
         Made with ❤️ and stardust ✨
       </p>
       <p className="text-lg opacity-70 font-pixel-body md:text-xl">
-        © {new Date().getFullYear()} Zxaviers | All rights reserved.
+        © {new Date().getFullYear()} Zenith | Crafted by Rizky Mardhani
       </p>
     </div>
   </footer>

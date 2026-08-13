@@ -82,9 +82,84 @@ reference, never pushed to during this rework).
   all compiling/prerendering cleanly) ✅, `npm run build` (Vite, still
   unaffected) ✅, `npm run lint` (0 errors, same 1 pre-existing warning) ✅.
 
+### Fase 3 — Rebranding Konten ✅
+- **`app/layout.tsx`** (Next.js): metadata title/description finalized to
+  the real Zenith wording (matches `index.html`/`manifest.json` below).
+- **`package.json`**: `name` → `"zenith"`.
+- **`README.md`**: fully rewritten — was a GitHub-profile-card-style
+  README (stats badges, snake contribution graph, quote widget) that
+  didn't describe this project at all; now describes the actual Zenith
+  site/stack/dev commands, credits Rizky Mardhani explicitly.
+- **`index.html`**: title/meta description/OG/Twitter tags → "Zenith |
+  Computer Engineering Student & Web Developer" wording. JSON-LD Person
+  block: kept `name: "Rizky Mardhani"` and `alternateName: "Zxaviers"` as
+  personal identity (per §0.1), added a `description` mentioning Zenith
+  as the project (there was a duplicate `description` key in the
+  original JSON-LD from a first pass — caught and fixed before commit).
+- **`public/manifest.json`**: `name`/`short_name`/`description` → Zenith.
+- Favicon/app icons: left the existing PNGs as-is after checking — the
+  mark is an abstract pixel planet/ring glyph with no literal "Zxaviers"
+  text baked in, so it already works as a generic Zenith mark. A proper
+  redesigned wordmark OG image is explicitly a Fase 6 task
+  (`app/opengraph-image.tsx`, generated in code via `next/og` rather than
+  a manually-edited binary asset) — deferred there rather than duplicating
+  effort now.
+- **Section copy + nav remap** (the biggest part of this phase): the
+  existing code already used space/mission themed headings, but assigned
+  differently than §0.1's canonical mapping (e.g. "Mission Log" was
+  Experience's heading, not Projects'). Remapped throughout:
+  - `About.jsx`: heading "Agent Info" → "Mission Control"; now accepts an
+    `id` prop (defaults `'mission-control'`) instead of a hardcoded
+    `id="agents"` that a passed-in prop silently couldn't override before.
+  - `Skills.jsx`: heading "Skill Tree" → "Constellation".
+  - `Projects.jsx`: heading "Discovered Artifacts" → "Mission Log".
+  - `Experience.jsx`: heading "Mission Log" → "Flight Path".
+  - `Contact.jsx`: heading "Get in Touch" → "Send a Transmission".
+  - `views/Home.jsx`: updated the `id` props passed to each section to
+    match (`mission-control`, `constellation`, `flight-path`,
+    `mission-log`, `send-a-transmission`), and `document.title` → Zenith.
+  - `Navbar.jsx`: `menuItems` updated to the new label set, **added "Send
+    a Transmission"** (Contact previously had no nav entry at all despite
+    being a real section — added it now for star-map completeness since
+    Fase 3 explicitly specs all 5 non-Home labels). Wordmark text
+    "Zxaviers" → "Zenith". Also fixed `.replace(' ', '-')` →
+    `.replace(/\s+/g, '-')` when deriving the scroll-target id from a
+    label, since "Send a Transmission" has more than one space (the old
+    single-replace would have produced the wrong id).
+  - `views/NotFound.jsx`, `ProjectDetail.jsx`, `DevlogList.jsx`,
+    `DevlogPost.jsx`: `document.title` → Zenith wording.
+  - `Footer.jsx`: "© {year} Zxaviers | All rights reserved." → "© {year}
+    Zenith | Crafted by Rizky Mardhani" — makes the personal credit
+    explicit rather than ambiguous, per §0.1.
+  - `components/Preloader.jsx`: boot-sequence wordmark "Zxaviers" →
+    "Zenith".
+  - `About.jsx` dialogue: kept the Headquarters↔Zxaviers format exactly as
+    instructed, reframed content so Zxaviers = operator/pilot callsign,
+    Zenith = the mission name ("Mission designation: Zenith" / "Zenith is
+    my ongoing mission: …"). `speakerIcons` key `"Zxaviers"` and the two
+    `speaker: "Zxaviers"` dialogue entries are unchanged — that's the
+    personal operator identity, not brand text.
+  - Left unchanged (personal identity / accurate historical fact, not
+    brand text, per §0.1): `Contact.jsx`'s `github.com/zxaviers` link,
+    `Experience.jsx`'s "zxaviers.site" domain mention in a description
+    bullet, `data/projects.js`'s `zxaviers.github.io/Personal/` link.
+- Updated `Navbar.test.jsx` for the new label set (was asserting the old
+  labels, 1 test failing after the rename) and softened the "no Contact
+  link" test's comment now that "Send a Transmission" *is* in the nav
+  (the assertion itself — no link literally named "Contact" — still holds).
+- Verified with a full-repo case-insensitive grep for "zxaviers": every
+  remaining hit is either (a) intentional personal identity (GitHub
+  link/handle, domain mention, dialogue speaker name) or (b) inside
+  `REBRAND_AUDIT.md`/`ZENITH_PLAYBOOK.md`, which are historical/reference
+  docs, not site content (and `REBRAND_AUDIT.md` gets deleted in Fase 6
+  per the plan anyway).
+- Validated: `npm run build:next` ✅, `npm run build` (Vite) ✅,
+  `npm run test` (24/24 after fixing the one Navbar test) ✅, `npm run
+  lint` (0 errors) ✅.
+
 ## In progress
 
-Nothing — Fase 2 complete, moving to Fase 3 next.
+Nothing — Fase 3 complete, moving to Fase 4 next.
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 
@@ -158,6 +233,9 @@ Nothing — Fase 2 complete, moving to Fase 3 next.
 - Node v24.9.0 / npm 11.8.0 available.
 
 ## Next up
-Fase 3 — Rebranding Konten (metadata, package.json name, README,
-favicon/manifest/OG image, section copy rewrite to "Zenith" per
-ZENITH_PLAYBOOK.md §0.1's personal-vs-brand line).
+Fase 4 — Bangun Section & Signature Component: rebuild Hero, Mission
+Control, Constellation (signature component — most careful work),
+Mission Log, Flight Path, Send a Transmission, Secret Level, and Devlog
+using the Fase 2 primitives, inside the Next.js `app/` structure. Content
+/ copy is already final from Fase 3 — this phase is about porting it into
+Next.js components + building the Constellation signature UI properly.

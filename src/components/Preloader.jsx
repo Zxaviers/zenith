@@ -48,7 +48,7 @@ export default function Preloader() {
               }}
             />
 
-            {/* 2. ✅ NEW: Teks Zxaviers di bawah planet */}
+            {/* 2. ✅ NEW: Wordmark di bawah planet */}
             <motion.h1
               // Menggunakan font-pixel-title dari index.css
               className="mt-6 text-3xl text-white font-pixel-title" 
@@ -61,7 +61,7 @@ export default function Preloader() {
                 ease: "easeInOut"
               }}
             >
-              Zxaviers
+              Zenith
             </motion.h1>
 
           </div>

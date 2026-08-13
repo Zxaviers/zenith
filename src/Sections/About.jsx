@@ -13,7 +13,7 @@ import iconZx from '../assets/icon_zx.png'
 const dialogueLines = [
   {
     speaker: "Headquarters",
-    text: "Analyzing agent profile... Zxaviers. Status: Online.",
+    text: "Analyzing operator profile... Zxaviers. Mission designation: Zenith. Status: Online.",
   },
   {
     speaker: "Zxaviers",
@@ -21,7 +21,7 @@ const dialogueLines = [
   },
   {
     speaker: "Zxaviers",
-    text: "My quest is to build efficient, responsive, and visually engaging digital experiences that merge technology and creativity.",
+    text: "Zenith is my ongoing mission: building efficient, responsive, and visually engaging digital experiences that merge technology and creativity.",
   },
   {
     speaker: "Headquarters",
@@ -36,7 +36,7 @@ const speakerIcons = {
 };
 
 
-export default function About({ rocketGif }) {
+export default function About({ id = 'mission-control', rocketGif }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   // Fungsi untuk berpindah ke dialog berikutnya
@@ -54,7 +54,7 @@ export default function About({ rocketGif }) {
   
   return (
     <motion.section
-      id="agents" // ID baru untuk 'gamifikasi'
+      id={id}
       className="relative px-6 py-20 scroll-mt-24"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function About({ rocketGif }) {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            Agent Info
+            Mission Control
           </motion.h2>
           
           {/* ✅ KOTAK DIALOG INTERAKTIF */}
