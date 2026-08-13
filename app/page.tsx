@@ -1,11 +1,33 @@
-// Fase 1 scaffold placeholder. The real Home page (Hero, Mission Control,
-// Constellation, Mission Log, Flight Path, Secret Level, Send a
-// Transmission) gets migrated from src/pages/Home.jsx in Fase 3/4.
+import { Preloader } from '@/components/layout/Preloader'
+import { ScrollProgress } from '@/components/layout/ScrollProgress'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
+import { Hero } from '@/components/sections/Hero'
+import { MissionControl } from '@/components/sections/MissionControl'
+import { Constellation } from '@/components/sections/Constellation'
+import { FlightPath } from '@/components/sections/FlightPath'
+import { MissionLog } from '@/components/sections/MissionLog'
+import { SecretLevel } from '@/components/sections/SecretLevel'
+import { Transmission } from '@/components/sections/Transmission'
+
 export default function Home() {
   return (
-    <main style={{ padding: '4rem', textAlign: 'center' }}>
-      <h1>Zenith — Next.js scaffold running</h1>
-      <p>Content migration from the Vite app is in progress.</p>
-    </main>
+    <>
+      <Preloader />
+      <ScrollProgress />
+      <Navbar />
+
+      <main className="scroll-smooth">
+        <Hero />
+        <MissionControl />
+        <Constellation />
+        <FlightPath />
+        <MissionLog />
+        <SecretLevel />
+        <Transmission />
+      </main>
+
+      <Footer />
+    </>
   )
 }

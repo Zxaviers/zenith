@@ -157,9 +157,85 @@ reference, never pushed to during this rework).
   `npm run test` (24/24 after fixing the one Navbar test) ✅, `npm run
   lint` (0 errors) ✅.
 
+### Fase 4 — Bangun Section & Signature Component ✅
+Ported the entire Vite/React site into the Next.js `app/` structure on the
+Fase 2 design system. All content/copy carried over from Fase 3 unchanged
+unless noted.
+
+- **Assets**: copied `src/assets/*.png`/`*.gif` → `public/sprites/` (kept
+  original filenames). Next components reference them as plain
+  `/sprites/...` paths via `<img>` for now, not `next/image` —
+  `next/image` adoption is explicitly a Fase 5 task, so deferred there
+  rather than doing it twice.
+- **`lib/data/projects.ts`, `lib/data/devlogPosts.ts`**: ported from the
+  `.js` originals verbatim (content unchanged), typed, image references
+  updated to `/sprites/...` paths.
+- **`components/layout/`**: `Navbar.tsx` (react-router →
+  `next/navigation`'s `usePathname`/`useRouter`, same smooth-scroll +
+  hash-navigation-from-other-routes behavior), `Footer.tsx`,
+  `ScrollProgress.tsx`, `Preloader.tsx` — all straightforward ports onto
+  design-system tokens.
+- **`components/sections/`** (one file per star-map section):
+  - `Hero.tsx` — now uses `StarfieldBackground` (intensity `high`)
+    instead of the old canvas starfield; added a `PixelButton` "Launch
+    into Mission Log" CTA (the original had no CTA at all — new, per
+    Fase 4 §1).
+  - `MissionControl.tsx` (About) — dialogue system ported as-is.
+  - `Constellation.tsx` (Skills, **signature component**) — rebuilt from
+    scratch rather than 1:1 ported: replaced the old CSS-grid +
+    div-based connector lines with `StarNode`s positioned by percentage
+    coordinates inside a relative container, connected by an SVG overlay
+    (gradient dashed lines from a center point, so it reads as an actual
+    small constellation/star cluster instead of a grid). Node **size and
+    opacity now encode skill level** (Proficient/Familiar/Basic — bigger,
+    brighter stars for stronger skills), which doubles as a nice
+    "brighter = more proficient" astronomy metaphor the old grid version
+    didn't have. Category tabs (Web/IoT/Tools) and the side detail panel
+    are kept from the original. All node buttons are keyboard-operable
+    (native `<button>` via `StarNode`) with visible focus rings.
+  - `MissionLog.tsx` (Projects) — ported onto `PixelPanel` + `next/link`.
+  - `FlightPath.tsx` (Experience) — ported the animated stat counters
+    (`useSpring`/`useInView`), achievement badges, and log entries as-is.
+  - `Transmission.tsx` (Contact) — **added a real contact form** (name/
+    email/message, basic validation, `idle`/`submitting`/`success`/
+    `error` states) since the original only had social links + a CV
+    download, but Fase 4 §6 explicitly asked for a form with these
+    states. There's no email-sending backend/API key available, so
+    "submitting" hands off to the visitor's own mail client via a
+    pre-filled `mailto:` link rather than faking an async server call —
+    documented inline in the component. Kept the social links + CV
+    download below the form.
+  - `SecretLevel.tsx` — Kaboom.js mini-game ported 1:1 (same dynamic
+    import so mobile never downloads it), still not linked from the nav
+    (intentional "secret" bonus section per §0.1).
+- **`app/page.tsx`**: composes all of the above in the same order as the
+  old `src/views/Home.jsx` (Hero → Mission Control → Constellation →
+  Flight Path → Mission Log → Secret Level → Transmission).
+- **`app/devlog/page.tsx`, `app/devlog/[slug]/page.tsx`**: real content
+  now (were Fase 1 placeholders), server components, `generateStaticParams`
+  for SSG, `notFound()` for unknown slugs (replacing react-router's
+  `<Navigate>` redirect-to-list behavior with a proper 404 instead — a
+  small, deliberate UX improvement: a bad devlog link should 404, not
+  silently bounce to the list).
+- **`app/projects/[slug]/page.tsx`** (new route, mirrors the Vite app's
+  `/projects/:slug`): same treatment — SSG + `notFound()`.
+- **`app/not-found.tsx`**: ported from `src/views/NotFound.jsx`.
+- Fixed a real TS/Kaboom typing gap: `spawnLoop.time = ...` doesn't exist
+  on Kaboom's declared `EventController` type even though it's a real,
+  working mutable field at runtime — cast through `unknown` to assign it
+  rather than suppressing the whole file's type-checking.
+- Validated: `npm run build:next` ✅ (10 routes: `/`, `/devlog`,
+  2 SSG devlog posts, 2 SSG project pages, `/style-guide`, `/_not-found`),
+  `npm run build` (Vite, still untouched and working) ✅, `npm run lint`
+  (0 errors) ✅, `npm run test` (24/24) ✅. Also smoke-tested
+  `next start` directly: homepage HTML contains all 5 section headings +
+  brand name, `/devlog`, a devlog post, and a project page all return
+  200, an unknown route returns 404 — confirmed by curl against a
+  temporary local server (stopped after the check).
+
 ## In progress
 
-Nothing — Fase 3 complete, moving to Fase 4 next.
+Nothing — Fase 4 complete, moving to Fase 5 next.
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 
@@ -233,9 +309,8 @@ Nothing — Fase 3 complete, moving to Fase 4 next.
 - Node v24.9.0 / npm 11.8.0 available.
 
 ## Next up
-Fase 4 — Bangun Section & Signature Component: rebuild Hero, Mission
-Control, Constellation (signature component — most careful work),
-Mission Log, Flight Path, Send a Transmission, Secret Level, and Devlog
-using the Fase 2 primitives, inside the Next.js `app/` structure. Content
-/ copy is already final from Fase 3 — this phase is about porting it into
-Next.js components + building the Constellation signature UI properly.
+Fase 5 — Aksesibilitas & Performa: WCAG AA contrast audit on the Warm
+Nebula palette, keyboard/focus-visible audit on the new interactive
+components (StarNode/PixelButton/Constellation/form), alt text audit on
+sprite `<img>`s, `next/image` adoption for visual assets (deferred here
+from Fase 4 on purpose), and reporting production bundle size per route.
