@@ -242,7 +242,11 @@ unless noted.
 
 ## In progress
 
-Nothing — Fase 5 complete, moving to Fase 6 next.
+### Fase 6 — SEO, Metadata, Deployment (Netlify) (Partial)
+- **Metadata API**: Implemented title template, dynamic OG image (`app/opengraph-image.tsx`), `sitemap.ts`, `robots.ts`, and JSON-LD schema (Person + WebSite) in `app/layout.tsx`.
+- **Netlify Setup**: Created `netlify.toml` with `@netlify/plugin-nextjs`. Cleared Vite-era `public/_redirects` to avoid routing conflicts with Next.js App Router.
+- **CI/CD**: Updated `.github/workflows/ci.yml` to run `npm run build:next`.
+- **Blocker**: Netlify CLI is not installed/authenticated in this environment. Stopping here for user intervention as instructed in Mode Otonom condition #1.
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 

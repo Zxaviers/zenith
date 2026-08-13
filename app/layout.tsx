@@ -29,9 +29,57 @@ const stat = VT323({
 // used by index.html and public/manifest.json, so both apps agree while
 // they coexist.
 export const metadata: Metadata = {
-  title: 'Zenith | Computer Engineering Student & Web Developer',
+  metadataBase: new URL('https://zxaviers.site'),
+  title: {
+    default: 'Zenith | Computer Engineering Student & Web Developer',
+    template: '%s | Zenith',
+  },
   description:
     'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
+  openGraph: {
+    title: 'Zenith | Computer Engineering Student & Web Developer',
+    description:
+      'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
+    url: 'https://zxaviers.site',
+    siteName: 'Zenith',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Zenith | Computer Engineering Student & Web Developer',
+    description:
+      'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': 'https://zxaviers.site/#person',
+      name: 'Rizky Mardhani',
+      alternateName: 'Zxaviers',
+      url: 'https://zxaviers.site',
+      description: 'Computer Engineering student exploring web development, IoT, and AI.',
+      sameAs: [
+        'https://github.com/zxaviers',
+        'https://linkedin.com/in/rizky-mardhani1st',
+        'https://instagram.com/sza.vy1st',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://zxaviers.site/#website',
+      url: 'https://zxaviers.site',
+      name: 'Zenith',
+      description: 'Portfolio Zenith (Rizky Mardhani)',
+      publisher: {
+        '@id': 'https://zxaviers.site/#person',
+      },
+    },
+  ],
 }
 
 export default function RootLayout({
@@ -41,7 +89,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable}`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </body>
     </html>
   )
 }
