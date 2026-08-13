@@ -242,11 +242,22 @@ unless noted.
 
 ## In progress
 
-### Fase 6 — SEO, Metadata, Deployment (Netlify) (Partial)
+### Fase 6 — SEO, Metadata, Deployment (Netlify) ✅
 - **Metadata API**: Implemented title template, dynamic OG image (`app/opengraph-image.tsx`), `sitemap.ts`, `robots.ts`, and JSON-LD schema (Person + WebSite) in `app/layout.tsx`.
 - **Netlify Setup**: Created `netlify.toml` with `@netlify/plugin-nextjs`. Cleared Vite-era `public/_redirects` to avoid routing conflicts with Next.js App Router.
 - **CI/CD**: Updated `.github/workflows/ci.yml` to run `npm run build:next`.
-- **Blocker**: Netlify CLI is not installed/authenticated in this environment. Stopping here for user intervention as instructed in Mode Otonom condition #1.
+- **Deployment**: User successfully linked the existing Netlify site (`zxaviers-web`). Deployed preview and production successfully.
+- **Cleanup**: Deleted old Vite source code (`src/` folder), `vite.config.js`, `index.html`, and `REBRAND_AUDIT.md`.
+
+## In progress
+
+### Fase 7 — QA Checklist
+- [x] Grep sisa "zxaviers"/"Zxaviers" yang tidak sengaja tertinggal: checked, only valid references (GitHub, domain, dialogue) remain.
+- [ ] Lighthouse mobile (Performance/Accessibility/Best Practices/SEO target >=90)
+- [ ] Test prefers-reduced-motion
+- [ ] Test responsive (360px/tablet/desktop)
+- [ ] Validasi semua link
+- [ ] Validasi route /devlog dan SecretGame easter egg masih berfungsi
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 
