@@ -72,7 +72,7 @@ function StatItem({
 
   return (
     <li ref={ref} className="flex items-center justify-between font-body text-lg text-starchart/80 md:text-xl">
-      <span className="text-starchart/60">{label}:</span>
+      <span className="text-starchart/80">{label}:</span>
       <span className={`font-display text-xs ${valueClassName}`}>
         {isAnimated && typeof value === 'number' ? <AnimatedNumber motionValue={motionValue} /> : value}
       </span>
@@ -100,7 +100,7 @@ export function FlightPath() {
                 viewport={{ once: true, amount: 0.3 }}
               >
                 <h3 className="mb-1 font-display text-sm text-comet">{exp.role}</h3>
-                <p className="mb-4 font-body text-base text-starchart/60 md:text-lg">
+                <p className="mb-4 font-body text-base text-starchart/80 md:text-lg">
                   {exp.company} | {exp.duration}
                 </p>
                 <ul className="space-y-2 font-body text-lg text-starchart/80 md:text-xl">

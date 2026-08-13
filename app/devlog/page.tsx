@@ -14,7 +14,7 @@ export default function DevlogListPage() {
         <h1 className="mb-2 text-center font-display text-2xl text-starchart md:text-3xl">
           Devlog
         </h1>
-        <p className="mb-12 text-center font-body text-lg text-starchart/70">
+        <p className="mb-12 text-center font-body text-lg text-starchart/80">
           Mission logs from the build — notes on what I&apos;m learning and building.
         </p>
 
@@ -25,7 +25,7 @@ export default function DevlogListPage() {
                 variant="nebula"
                 className="text-left transition-transform hover:scale-[1.01]"
               >
-                <p className="mb-1 font-stat text-xs text-starchart/60">{post.date}</p>
+                <p className="mb-1 font-stat text-xs text-starchart/80">{post.date}</p>
                 <h2 className="mb-2 font-display text-sm text-comet">{post.title}</h2>
                 <p className="font-body text-lg text-starchart/80 md:text-xl">{post.excerpt}</p>
                 {post.tags && (

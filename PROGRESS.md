@@ -233,9 +233,16 @@ unless noted.
   200, an unknown route returns 404 — confirmed by curl against a
   temporary local server (stopped after the check).
 
+### Fase 5 — Aksesibilitas & Performa ✅
+- **Contrast Audit**: Checked opacity-based text color tokens. Upgraded `text-starchart/60` and `/70` to `text-starchart/80` (and `text-comet/80`) for all text smaller than 24px across multiple files to ensure WCAG AA compliance.
+- **Keyboard Navigation**: Verified focus-visible styles exist and are properly configured with custom outline (`focus-visible:outline-aurora`) on interactive components (`StarNode`, `PixelButton`, form inputs).
+- **Images & Alt Text**: Replaced all `<img>` tags with `next/image` (`<Image>`) components to enable automatic lazy loading. Verified that all sprites have descriptive `alt` text or `aria-hidden="true"` for decorative elements.
+- **Font Subsetting**: Verified that `next/font/google` configurations for `Press_Start_2P`, `Nunito`, and `VT323` specify `subsets: ['latin']`.
+- **Bundle Size**: Ran Next.js production build (`npm run build:next`). All 10 routes compiled successfully. `/` route First Load JS is 173 kB, others around 106-111 kB. Shared JS is 103 kB.
+
 ## In progress
 
-Nothing — Fase 4 complete, moving to Fase 5 next.
+Nothing — Fase 5 complete, moving to Fase 6 next.
 
 ## Small decisions made along the way (not pre-specified in §0.1)
 

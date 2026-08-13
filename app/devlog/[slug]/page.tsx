@@ -36,7 +36,7 @@ export default async function DevlogPostPage({
           {'< Back to Devlog'}
         </Link>
 
-        <p className="mb-1 font-stat text-xs text-starchart/60">{post.date}</p>
+        <p className="mb-1 font-stat text-xs text-starchart/80">{post.date}</p>
         <h1 className="mb-6 font-display text-xl text-starchart md:text-2xl">{post.title}</h1>
 
         {post.tags && (

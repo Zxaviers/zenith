@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
@@ -63,9 +64,11 @@ export function MissionControl() {
 
         <PixelPanel variant="nebula">
           <div className="mb-4 flex items-center gap-4">
-            <img
+            <Image
               src={speakerIcons[currentDialogue.speaker]}
               alt={currentDialogue.speaker}
+              width={48}
+              height={48}
               className="h-12 w-12 pixel-asset"
             />
             <h3 className="font-display text-sm text-comet">{`> ${currentDialogue.speaker}`}</h3>

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { projects } from '@/lib/data/projects'
@@ -24,13 +25,13 @@ export function MissionLog() {
           const cardBody = (
             <>
               {project.preview && (
-                <div className="mb-4 flex w-full items-center justify-center overflow-hidden rounded-lg bg-void/40">
-                  <img
+                <div className="relative mb-4 flex w-full aspect-video items-center justify-center overflow-hidden rounded-lg bg-void/40">
+                  <Image
                     src={project.preview}
                     alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-auto max-w-full rounded-lg transition-transform duration-500 hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
               )}
@@ -50,7 +51,7 @@ export function MissionLog() {
               )}
 
               <h3 className="mb-2 font-display text-sm text-starchart">{project.title}</h3>
-              <p className="font-body text-base text-starchart/70">{project.desc}</p>
+              <p className="font-body text-base text-starchart/80">{project.desc}</p>
 
               {project.techStack && (
                 <div className="mt-4 flex flex-wrap justify-center gap-2">

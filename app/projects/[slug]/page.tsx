@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
 import { projects } from '@/lib/data/projects'
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return projects.filter((p) => p.slug && !p.comingSoon).map((p) => ({ slug: p.slug! }))
 }
 
@@ -41,13 +42,13 @@ export default async function ProjectDetailPage({
         </Link>
 
         {project.preview && (
-          <div className="mb-8 w-full overflow-hidden rounded-lg bg-void/40">
-            <img src={project.preview} alt={project.title} loading="lazy" decoding="async" className="h-auto w-full" />
+          <div className="relative mb-8 w-full max-w-4xl mx-auto aspect-video overflow-hidden rounded-lg bg-void/40 pixel-frame">
+            <Image src={project.preview} alt={project.title} fill sizes="100vw" className="object-cover" />
           </div>
         )}
 
         <h1 className="mb-2 font-display text-xl text-starchart md:text-2xl">{project.desc}</h1>
-        <p className="mb-8 font-stat text-sm text-starchart/60">{project.title}</p>
+        <p className="mb-8 font-stat text-sm text-starchart/80">{project.title}</p>
 
         {project.techStack && (
           <div className="mb-8 flex flex-wrap gap-2">

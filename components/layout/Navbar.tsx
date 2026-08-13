@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -96,7 +97,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/10 bg-void/90 px-8 py-4">
       <Link href="/" className="flex items-center gap-2">
-        <img src="/sprites/black.png" alt="Logo" className="h-12 w-12 pixel-asset" />
+        <Image src="/sprites/black.png" alt="Logo" width={48} height={48} className="h-12 w-12 pixel-asset" />
         <h1 className="font-display text-lg text-starchart">Zenith</h1>
       </Link>
 

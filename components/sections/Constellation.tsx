@@ -98,7 +98,7 @@ export function Constellation() {
                 'rounded-sm px-4 py-2 font-display text-[10px] transition-colors',
                 activeTab === key
                   ? 'bg-void text-comet'
-                  : 'text-starchart/60 hover:text-starchart'
+                  : 'text-starchart/80 hover:text-starchart'
               )}
               aria-pressed={activeTab === key}
             >
@@ -172,8 +172,8 @@ function SkillDescription({ skill }: { skill: Skill | null }) {
   if (!skill) {
     return (
       <PixelPanel variant="nebula" className="h-full">
-        <h4 className="mb-2 font-display text-sm text-starchart/60">Select a star</h4>
-        <p className="font-body text-base text-starchart/50">
+        <h4 className="mb-2 font-display text-sm text-starchart/80">Select a star</h4>
+        <p className="font-body text-base text-starchart/80">
           Click a node on the constellation to view its details.
         </p>
       </PixelPanel>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import Image from 'next/image'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
 
@@ -143,7 +144,7 @@ export function Transmission() {
           rel="noopener noreferrer"
           aria-label="GitHub Profile"
         >
-          <img src="/sprites/github.png" alt="GitHub" loading="lazy" className="h-10 w-10" />
+          <Image src="/sprites/github.png" alt="GitHub" width={40} height={40} className="h-10 w-10 pixel-asset" />
         </a>
         <a
           href="https://linkedin.com/in/rizky-mardhani1st"
@@ -152,7 +153,7 @@ export function Transmission() {
           rel="noopener noreferrer"
           aria-label="LinkedIn Profile"
         >
-          <img src="/sprites/linkedin.png" alt="LinkedIn" loading="lazy" className="h-10 w-10" />
+          <Image src="/sprites/linkedin.png" alt="LinkedIn" width={40} height={40} className="h-10 w-10 pixel-asset" />
         </a>
         <a
           href="https://instagram.com/sza.vy1st"
@@ -161,7 +162,7 @@ export function Transmission() {
           rel="noopener noreferrer"
           aria-label="Instagram Profile"
         >
-          <img src="/sprites/Instagram.png" alt="Instagram" loading="lazy" className="h-10 w-10" />
+          <Image src="/sprites/Instagram.png" alt="Instagram" width={40} height={40} className="h-10 w-10 pixel-asset" />
         </a>
       </div>
     </section>

@@ -33,7 +33,7 @@ export default function StyleGuidePage() {
             <div key={color.name} className="space-y-2">
               <div className={`h-20 w-full rounded-sm border border-white/10 ${color.className}`} />
               <p className="font-stat text-sm text-starchart">{color.name}</p>
-              <p className="font-stat text-xs text-starchart/60">{color.varName}</p>
+              <p className="font-stat text-xs text-starchart/80">{color.varName}</p>
             </div>
           ))}
         </div>
@@ -92,15 +92,15 @@ export default function StyleGuidePage() {
         <div className="flex flex-wrap items-center gap-8">
           <div className="flex flex-col items-center gap-2">
             <StarNode label="Locked skill" state="locked" size={28} />
-            <span className="font-stat text-sm text-starchart/70">locked</span>
+            <span className="font-stat text-sm text-starchart/80">locked</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <StarNode label="Unlocked skill" state="unlocked" size={28} />
-            <span className="font-stat text-sm text-starchart/70">unlocked</span>
+            <span className="font-stat text-sm text-starchart/80">unlocked</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <StarNode label="Active skill" state="active" size={28} />
-            <span className="font-stat text-sm text-starchart/70">active</span>
+            <span className="font-stat text-sm text-starchart/80">active</span>
           </div>
         </div>
       </section>
