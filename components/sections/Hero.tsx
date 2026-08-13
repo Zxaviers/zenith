@@ -48,7 +48,7 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          Hello, I&apos;m Zxa
+          Hello, I&apos;m Zxaviers
         </motion.h1>
 
         <h2 className="mb-10 font-body text-2xl font-medium text-starchart/80 md:text-3xl">
