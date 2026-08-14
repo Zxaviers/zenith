@@ -295,13 +295,36 @@ function SkillDescription({ skill }: { skill: Skill }) {
             </span>
           </div>
 
-          {/* Proficiency Power Gauge */}
-          <div className="mb-5 space-y-1.5">
-            <div className="flex justify-between font-stat text-xs text-starchart/80">
-              <span>MASTERY FREQUENCY</span>
-              <span className="text-star">{skill.levelScore}%</span>
+          {/* Proficiency Power Gauge with Stitch 10-segment LED Bar */}
+          <div className="mb-5 space-y-2">
+            <div className="flex justify-between items-center font-stat text-xs text-starchart/80">
+              <span className="text-star/90">MASTERY // INTEGRITY</span>
+              <span className="text-aurora font-bold">{skill.levelScore}%</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-sm bg-nebula/60 border border-white/10">
+
+            {/* Segmented LED Bar */}
+            <div className="segment-bar py-1">
+              {Array.from({ length: 10 }).map((_, idx) => {
+                const isFilled = (idx + 1) * 10 <= skill.levelScore
+                return (
+                  <div
+                    key={idx}
+                    className={cn(
+                      'segment flex-1 h-3 rounded-[1px]',
+                      isFilled
+                        ? idx >= 8
+                          ? 'bg-aurora shadow-[0_0_6px_#6fcf97]'
+                          : idx >= 5
+                            ? 'bg-star shadow-[0_0_6px_#ffc857]'
+                            : 'bg-comet shadow-[0_0_6px_#ff8b4c]'
+                        : 'segment-empty'
+                    )}
+                  />
+                )
+              })}
+            </div>
+
+            <div className="h-1.5 w-full overflow-hidden rounded-sm bg-nebula/60 border border-white/10">
               <motion.div
                 className="h-full bg-gradient-to-r from-comet via-star to-aurora"
                 initial={{ width: 0 }}
@@ -315,7 +338,12 @@ function SkillDescription({ skill }: { skill: Skill }) {
             {skill.description}
           </p>
 
-          <div className="mt-6 pt-3 border-t border-white/10 text-right">
+          <div className="mt-4 pt-3 border-t border-white/5 flex justify-between items-center font-stat text-[11px] text-starchart/60">
+            <span>NODE_ID: {skill.id.toUpperCase()}</span>
+            <span className="text-star/80">STATUS: CALIBRATED</span>
+          </div>
+
+          <div className="mt-4 pt-2 border-t border-white/10 text-right">
             <span className="font-stat text-xs text-starchart/60">
               [TELEMETRY NODE // SYNCHRONIZED]
             </span>

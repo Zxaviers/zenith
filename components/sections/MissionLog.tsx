@@ -65,7 +65,7 @@ export function MissionLog() {
             >
               <PixelPanel
                 variant="nebula"
-                className="flex flex-col justify-between h-full text-left border border-star/30 shadow-lg group transition-all duration-300 hover:border-star"
+                className="flex flex-col justify-between h-full text-left border border-star/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] group transition-all duration-300 hover:border-star glint-top"
               >
                 <div>
                   {/* Artifact Preview Image */}
@@ -78,11 +78,20 @@ export function MissionLog() {
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute top-2 left-2 rounded bg-void/85 px-2 py-0.5 font-stat text-[11px] text-star border border-star/40">
+                      <div className="absolute top-2 left-2 rounded bg-void/90 px-2 py-0.5 font-stat text-[11px] text-star border border-star/40">
                         {project.title.split(' ')[0].toUpperCase()}
+                      </div>
+                      <div className="absolute top-2 right-2 flex items-center gap-1.5 rounded bg-void/90 px-2 py-0.5 font-stat text-[10px] text-aurora border border-aurora/40">
+                        <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />
+                        <span>LIVE</span>
                       </div>
                     </div>
                   )}
+
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-stat text-[11px] text-comet">ARTIFACT // SEC-0{idx + 1}</span>
+                    <span className="font-stat text-[11px] text-starchart/60">VERIFIED</span>
+                  </div>
 
                   <h3 className="mb-2 font-display text-base text-starchart group-hover:text-star transition-colors">
                     {project.title}

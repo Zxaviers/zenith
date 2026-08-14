@@ -180,12 +180,34 @@
     pointer-events: none;
   }
 
-  .hud-glow-star {
-    box-shadow: 0 0 15px 2px rgba(255, 200, 87, 0.25);
-  }
-
   .hud-glow-comet {
     box-shadow: 0 0 15px 2px rgba(255, 139, 76, 0.25);
+  }
+
+  .glint-top {
+    border-top: 1px solid rgba(255, 200, 87, 0.25);
+  }
+
+  .segment-bar {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .segment {
+    width: 6px;
+    height: 14px;
+    border-radius: 1px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .segment-filled {
+    background-color: var(--color-star);
+    box-shadow: 0 0 6px var(--color-star);
+  }
+
+  .segment-empty {
+    background-color: rgba(245, 233, 214, 0.12);
   }
 }
 
