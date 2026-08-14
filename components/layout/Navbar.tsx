@@ -68,18 +68,18 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-3 py-3 md:px-6 md:py-4 pointer-events-none">
       <div className="mx-auto max-w-6xl pointer-events-auto">
-        {/* Game HUD Console Bar */}
+        {/* Cozy Rounded Adventure Navbar */}
         <nav
-          aria-label="Zenith Flight Navigation HUD"
-          className="flex items-center justify-between px-4 py-2.5 rounded-lg border-2 border-star bg-nebula/95 shadow-[4px_4px_0_0_#000] backdrop-blur-md glint-top"
+          aria-label="Zenith Navigation Bar"
+          className="flex items-center justify-between px-4 py-2.5 rounded-2xl border border-star/40 bg-nebula/90 shadow-[0_4px_20px_rgba(0,0,0,0.35)] backdrop-blur-md"
         >
-          {/* Logo & Call Sign */}
+          {/* Brand / Logo */}
           <Link
             href="/"
             className="flex items-center gap-2.5 group focus:outline-none"
             aria-label="Zenith Homepage"
           >
-            <div className="relative rounded bg-void p-1 border border-star/60 group-hover:border-star transition-colors shadow-[2px_2px_0_0_#000]">
+            <div className="relative rounded-xl bg-void p-1.5 border border-star/60 group-hover:border-star transition-colors shadow-sm">
               <Image
                 src="/sprites/black.png"
                 alt=""
@@ -89,18 +89,13 @@ export function Navbar() {
                 priority
               />
             </div>
-            <div className="flex flex-col text-left">
-              <span className="font-display text-xs md:text-sm text-star tracking-wider group-hover:text-comet transition-colors">
-                ZENITH
-              </span>
-              <span className="font-stat text-[10px] text-starchart/70 leading-none">
-                ZXAVIERS // PILOT
-              </span>
-            </div>
+            <span className="font-display text-sm md:text-base text-star tracking-wider group-hover:text-comet transition-colors">
+              Zenith
+            </span>
           </Link>
 
-          {/* Desktop HUD Nav Links */}
-          <div className="hidden lg:flex items-center gap-1 bg-void/90 p-1 rounded-md border border-white/10 shadow-inner">
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex items-center gap-1.5 bg-void/80 px-2 py-1.5 rounded-xl border border-white/10 shadow-inner">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === '/' && activeSection === link.id
               return (
@@ -109,9 +104,9 @@ export function Navbar() {
                   href={`#${link.id}`}
                   onClick={(e) => handleNavClick(e, link.id)}
                   className={cn(
-                    'px-3 py-1.5 rounded text-xs font-display transition-all duration-200 cursor-pointer whitespace-nowrap',
+                    'px-3.5 py-1.5 rounded-lg text-xs font-display transition-all duration-200 cursor-pointer whitespace-nowrap',
                     isActive
-                      ? 'bg-comet text-void font-bold shadow-[2px_2px_0_0_#000]'
+                      ? 'bg-comet text-void font-bold shadow-sm'
                       : 'text-starchart/80 hover:text-star hover:bg-white/5'
                   )}
                 >
@@ -124,9 +119,9 @@ export function Navbar() {
             <Link
               href="/devlog"
               className={cn(
-                'px-3 py-1.5 rounded text-xs font-display transition-all duration-200 whitespace-nowrap',
+                'px-3.5 py-1.5 rounded-lg text-xs font-display transition-all duration-200 whitespace-nowrap',
                 pathname?.startsWith('/devlog')
-                  ? 'bg-comet text-void font-bold shadow-[2px_2px_0_0_#000]'
+                  ? 'bg-comet text-void font-bold shadow-sm'
                   : 'text-starchart/80 hover:text-star hover:bg-white/5'
               )}
             >
@@ -134,44 +129,37 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Right Status Badge & Mobile Hamburger */}
-          <div className="flex items-center gap-2">
-            {/* Live System Status Pill */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-void border border-aurora/40 font-stat text-xs text-aurora shadow-[2px_2px_0_0_#000]">
-              <span className="h-2 w-2 rounded-full bg-aurora animate-pulse" />
-              <span>SYS_OK // LIVE</span>
-            </div>
-
-            {/* Mobile Toggle Button */}
+          {/* Mobile Menu Button */}
+          <div className="flex items-center lg:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden px-3 py-1.5 rounded bg-void border-2 border-star text-star font-display text-xs shadow-[2px_2px_0_0_#000]"
+              className="px-3.5 py-1.5 rounded-xl bg-void border border-star/60 text-star font-display text-xs hover:border-star hover:text-comet transition-colors shadow-sm"
               aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             >
-              {mobileMenuOpen ? '✕ CLOSE' : '☰ MENU'}
+              {mobileMenuOpen ? '✕ Close' : '☰ Menu'}
             </button>
           </div>
         </nav>
 
         {/* Mobile Dropdown Panel */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-2 p-4 rounded-lg border-2 border-star bg-void/98 shadow-[6px_6px_0_0_#000] backdrop-blur-xl flex flex-col gap-2 pointer-events-auto">
+          <div className="lg:hidden mt-2 p-4 rounded-2xl border border-star/40 bg-void/95 shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl flex flex-col gap-2 pointer-events-auto">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={(e) => handleNavClick(e, link.id)}
-                className="px-4 py-2.5 rounded border border-white/10 bg-nebula/60 font-display text-xs text-starchart hover:text-star hover:bg-nebula transition-colors"
+                className="px-4 py-2.5 rounded-xl border border-white/5 bg-nebula/70 font-display text-xs text-starchart hover:text-star hover:bg-nebula transition-colors"
               >
-                ▸ {link.label}
+                ✦ {link.label}
               </a>
             ))}
             <Link
               href="/devlog"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 rounded border border-white/10 bg-nebula/60 font-display text-xs text-starchart hover:text-star hover:bg-nebula transition-colors"
+              className="px-4 py-2.5 rounded-xl border border-white/5 bg-nebula/70 font-display text-xs text-starchart hover:text-star hover:bg-nebula transition-colors"
             >
-              ▸ Devlog &amp; Intel
+              ✦ Devlog
             </Link>
           </div>
         )}
