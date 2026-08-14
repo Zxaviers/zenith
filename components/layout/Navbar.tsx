@@ -12,7 +12,7 @@ const MENU_ITEMS = [
   { label: 'Constellation', id: 'constellation' },
   { label: 'Flight Path', id: 'flight-path' },
   { label: 'Mission Log', id: 'mission-log' },
-  { label: 'Transmission', id: 'send-a-transmission' },
+  { label: 'Send a Transmission', id: 'send-a-transmission' },
 ]
 
 export function Navbar() {
@@ -84,67 +84,72 @@ export function Navbar() {
   const isDevlogActive = pathname?.startsWith('/devlog')
 
   return (
-    <header className="fixed top-3 left-0 right-0 z-50 px-4 md:px-6 pointer-events-none">
+    <header className="fixed top-3 left-0 right-0 z-50 px-3 md:px-6 pointer-events-none">
       <nav
-        aria-label="Main Mission Navigation"
-        className="mx-auto max-w-5xl pointer-events-auto flex items-center justify-between px-5 py-2.5 rounded-lg border border-star/40 bg-void/90 shadow-2xl backdrop-blur-md"
-        style={{
-          boxShadow: '0 8px 32px 0 rgba(27, 18, 53, 0.8), 0 0 12px 1px rgba(255, 200, 87, 0.15)',
-        }}
+        aria-label="Main Mission HUD Navigation"
+        className="mx-auto max-w-6xl pointer-events-auto flex items-center justify-between px-4 md:px-5 py-2.5 rounded-md border-2 border-star/40 bg-void/95 shadow-[0_6px_0_0_#0f0a20,0_0_16px_rgba(255,200,87,0.2)] backdrop-blur-md glint-top"
       >
-        {/* Brand Wordmark & Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora rounded"
-          aria-label="Zenith Homepage"
-        >
-          <div className="relative rounded bg-void/90 p-1 border border-star/30 group-hover:border-star transition-colors">
-            <Image
-              src="/sprites/black.png"
-              alt=""
-              width={28}
-              height={28}
-              className="h-7 w-7 pixel-asset"
-              priority
-            />
+        {/* HUD Brand Wordmark & Telemetry Status */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora rounded"
+            aria-label="Zenith Homepage"
+          >
+            <div className="relative rounded bg-nebula p-1 border border-star/40 group-hover:border-star transition-colors shadow-[2px_2px_0_0_#000]">
+              <Image
+                src="/sprites/black.png"
+                alt=""
+                width={26}
+                height={26}
+                className="h-6 w-6 pixel-asset"
+                priority
+              />
+            </div>
+            <span className="font-display text-sm md:text-base tracking-wider text-star group-hover:text-comet transition-colors">
+              ZENITH
+            </span>
+          </Link>
+
+          {/* Console Telemetry Badge */}
+          <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded bg-nebula/60 border border-white/10 font-stat text-[10px] text-aurora">
+            <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />
+            <span>SYS_OK // LIVE</span>
           </div>
-          <span className="font-display text-base tracking-wider text-starchart group-hover:text-star transition-colors">
-            ZENITH
-          </span>
-        </Link>
+        </div>
 
         {/* Mobile Menu Toggle */}
         <button
-          className="text-2xl leading-none text-star xl:hidden p-1 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora"
+          className="font-display text-lg leading-none text-star xl:hidden px-2 py-1 rounded bg-nebula/80 border border-star/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? 'Close mission navigation menu' : 'Open mission navigation menu'}
           aria-expanded={isOpen}
         >
-          {isOpen ? '✕' : '☰'}
+          {isOpen ? '✕' : '☰ HUD'}
         </button>
 
-        {/* Navigation Items List */}
+        {/* HUD Navigation Items List */}
         <ul
           className={cn(
-            'absolute left-4 right-4 top-[120%] z-40 flex-col rounded-lg border border-star/30 bg-void/95 p-4 shadow-2xl transition-all duration-300 ease-in-out backdrop-blur-lg',
-            'xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-1.5 xl:bg-transparent xl:p-0 xl:border-none xl:shadow-none',
+            'absolute left-3 right-3 top-[125%] z-40 flex-col rounded-md border-2 border-star/40 bg-void/95 p-4 shadow-[0_8px_0_0_#0f0a20] transition-all duration-300 ease-in-out backdrop-blur-xl',
+            'xl:static xl:flex xl:w-auto xl:flex-row xl:items-center xl:gap-1 xl:bg-transparent xl:p-0 xl:border-none xl:shadow-none',
             isOpen ? 'flex' : 'hidden xl:flex'
           )}
         >
           {MENU_ITEMS.map((item) => {
             const isActive = pathname === '/' && active === item.id
             return (
-              <li key={item.id} className="relative py-1.5 xl:py-0">
+              <li key={item.id} className="relative py-1 xl:py-0">
                 <a
                   href={`/#${item.id}`}
                   onClick={(e) => handleNavClick(e, item.id)}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    'flex items-center gap-1.5 rounded px-3 py-1.5 font-display text-[11px] transition-all duration-200',
+                    'flex items-center gap-1.5 rounded px-2.5 py-1.5 font-display text-[10px] md:text-[11px] tracking-wide transition-all duration-150 active:translate-y-0.5',
                     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora',
                     isActive
-                      ? 'bg-nebula/80 text-star shadow-inner border border-star/30'
-                      : 'text-starchart/80 hover:text-starchart hover:bg-white/5'
+                      ? 'bg-nebula text-star border border-star/50 shadow-[2px_2px_0_0_#000]'
+                      : 'text-starchart/80 hover:text-star hover:bg-nebula/40'
                   )}
                 >
                   {isActive && <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />}
@@ -155,20 +160,20 @@ export function Navbar() {
           })}
 
           {/* Devlog Nav Link */}
-          <li className="relative py-1.5 xl:py-0 xl:ml-2 xl:pl-2 xl:border-l xl:border-white/10">
+          <li className="relative py-1 xl:py-0 xl:ml-1.5 xl:pl-2 xl:border-l xl:border-white/15">
             <Link
               href="/devlog"
               onClick={() => setIsOpen(false)}
               aria-current={isDevlogActive ? 'page' : undefined}
               className={cn(
-                'flex items-center gap-1.5 rounded px-3 py-1.5 font-display text-[11px] transition-all duration-200',
+                'flex items-center gap-1.5 rounded px-2.5 py-1.5 font-display text-[10px] md:text-[11px] tracking-wide transition-all duration-150 active:translate-y-0.5',
                 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-aurora',
                 isDevlogActive
-                  ? 'bg-nebula/80 text-comet shadow-inner border border-comet/30'
-                  : 'text-starchart/80 hover:text-starchart hover:bg-white/5'
+                  ? 'bg-nebula text-comet border border-comet/50 shadow-[2px_2px_0_0_#000]'
+                  : 'text-starchart/80 hover:text-comet hover:bg-nebula/40'
               )}
             >
-              {isDevlogActive && <span className="h-1.5 w-1.5 rounded-full bg-comet" />}
+              {isDevlogActive && <span className="h-1.5 w-1.5 rounded-full bg-comet animate-pulse" />}
               Devlog
             </Link>
           </li>
