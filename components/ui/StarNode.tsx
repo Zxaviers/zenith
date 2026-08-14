@@ -3,13 +3,22 @@ import { cn } from '@/lib/utils'
 
 export type StarNodeState = 'locked' | 'unlocked' | 'active'
 
+export type SkillLevel = 'Proficient' | 'Familiar' | 'Basic'
+
 export interface StarNodeProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'> {
   /** Accessible label — also used as the native tooltip via `title`. */
   label: string
   state?: StarNodeState
+  level?: SkillLevel
   /** Diameter in pixels. */
   size?: number
+}
+
+const levelGlow: Record<SkillLevel, string> = {
+  Proficient: '0 0 16px 4px rgba(255, 200, 87, 0.95), 0 0 28px 8px rgba(255, 139, 76, 0.5)',
+  Familiar: '0 0 10px 2px rgba(255, 200, 87, 0.75), 0 0 18px 4px rgba(255, 200, 87, 0.35)',
+  Basic: '0 0 6px 1px rgba(245, 233, 214, 0.5), 0 0 12px 2px rgba(245, 233, 214, 0.2)',
 }
 
 const stateColor: Record<StarNodeState, string> = {
@@ -18,20 +27,14 @@ const stateColor: Record<StarNodeState, string> = {
   active: 'var(--color-comet)',
 }
 
-const stateGlow: Record<StarNodeState, string> = {
-  locked: 'none',
-  unlocked: '0 0 8px 2px var(--color-star)',
-  active: '0 0 14px 4px var(--color-comet)',
-}
-
 /**
- * A single node on the star map / constellation skill tree. Purely a
- * visual + interaction primitive here (Fase 2) — grouping, connector
- * lines, and rich tooltips are composed around it in Fase 4.
+ * A single glowing node on the star map / constellation skill tree.
+ * Size and glow intensity scale proportionally with technical mastery.
  */
 export function StarNode({
   label,
   state = 'unlocked',
+  level = 'Familiar',
   size = 20,
   className,
   style,
@@ -40,6 +43,12 @@ export function StarNode({
 }: StarNodeProps) {
   const isLocked = state === 'locked'
   const isActive = state === 'active'
+
+  const glowShadow = isLocked
+    ? 'none'
+    : isActive
+      ? '0 0 20px 6px rgba(255, 139, 76, 1), 0 0 36px 10px rgba(255, 200, 87, 0.7)'
+      : levelGlow[level]
 
   return (
     <button
@@ -50,8 +59,8 @@ export function StarNode({
       className={cn(
         'relative inline-flex shrink-0 items-center justify-center rounded-full transition-all duration-300',
         'focus-visible:outline focus-visible:outline-3 focus-visible:outline-aurora focus-visible:outline-offset-2',
-        isActive && 'scale-125 ring-2 ring-star/60 ring-offset-2 ring-offset-void animate-pulse',
-        !isLocked && !isActive && 'cursor-pointer hover:scale-125 hover:ring-2 hover:ring-comet/40',
+        isActive && 'scale-125 ring-2 ring-star ring-offset-2 ring-offset-void animate-pulse',
+        !isLocked && !isActive && 'cursor-pointer hover:scale-125 hover:ring-2 hover:ring-star/70',
         isLocked && 'cursor-not-allowed opacity-40',
         className
       )}
@@ -59,7 +68,7 @@ export function StarNode({
         width: size,
         height: size,
         backgroundColor: stateColor[state],
-        boxShadow: stateGlow[state],
+        boxShadow: glowShadow,
         imageRendering: 'pixelated',
         ...style,
       }}

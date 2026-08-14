@@ -80,9 +80,9 @@ const SKILL_DATA: Record<string, ConstellationCategory> = {
 const CATEGORY_KEYS = Object.keys(SKILL_DATA)
 
 const LEVEL_SIZE: Record<Skill['level'], number> = {
-  Proficient: 26,
+  Proficient: 28,
   Familiar: 20,
-  Basic: 16,
+  Basic: 14,
 }
 
 export function Constellation() {
@@ -212,7 +212,7 @@ export function Constellation() {
                       x2={`${target.x}%`}
                       y2={`${target.y}%`}
                       stroke={isLinkActive ? 'var(--color-star)' : `url(#${gradientId})`}
-                      strokeWidth={isLinkActive ? 1.4 : 0.8}
+                      strokeWidth={isLinkActive ? 1.5 : 0.9}
                       strokeDasharray={isLinkActive ? 'none' : '3 3'}
                       filter={isLinkActive ? 'url(#glow)' : undefined}
                       className="transition-all duration-300"
@@ -221,7 +221,7 @@ export function Constellation() {
                 })}
               </svg>
 
-              {/* Star Nodes */}
+              {/* Star Nodes with Scaled Glow and Dual Labels Underneath */}
               {currentSkills.map((skill) => {
                 const isSelected = selectedSkill?.id === skill.id
                 const isHovered = hoveredSkillId === skill.id
@@ -229,7 +229,7 @@ export function Constellation() {
                 return (
                   <div
                     key={skill.id}
-                    className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5 z-20"
+                    className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center z-20"
                     style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
                     onMouseEnter={() => setHoveredSkillId(skill.id)}
                     onMouseLeave={() => setHoveredSkillId(null)}
@@ -237,20 +237,35 @@ export function Constellation() {
                     <StarNode
                       label={`${skill.name} — ${skill.level}`}
                       size={LEVEL_SIZE[skill.level]}
+                      level={skill.level}
                       state={isSelected ? 'active' : isHovered ? 'active' : 'unlocked'}
                       onClick={() => setSelectedSkill(skill)}
                     />
-                    <span
-                      className={cn(
-                        'font-stat text-xs md:text-sm px-1.5 py-0.5 rounded transition-colors',
-                        isSelected || isHovered
-                          ? 'bg-void text-star font-bold shadow'
-                          : 'text-starchart/85 bg-void/40'
-                      )}
-                      aria-hidden="true"
-                    >
-                      {skill.icon} {skill.name}
-                    </span>
+                    
+                    {/* Star Label: Name and Level Underneath */}
+                    <div className="flex flex-col items-center mt-1.5 pointer-events-none">
+                      <span
+                        className={cn(
+                          'font-display text-[10px] md:text-[11px] px-1.5 py-0.5 rounded transition-all whitespace-nowrap',
+                          isSelected || isHovered
+                            ? 'bg-void text-star font-bold shadow-[2px_2px_0_0_#000] border border-star/50'
+                            : 'text-starchart bg-void/80'
+                        )}
+                        aria-hidden="true"
+                      >
+                        {skill.icon} {skill.name}
+                      </span>
+                      <span
+                        className={cn(
+                          'font-stat text-[8px] md:text-[9px] mt-0.5 px-1 py-0.2 rounded uppercase tracking-wider font-semibold',
+                          skill.level === 'Proficient' && 'text-aurora bg-aurora/15 border border-aurora/40',
+                          skill.level === 'Familiar' && 'text-star bg-star/15 border border-star/40',
+                          skill.level === 'Basic' && 'text-starchart/80 bg-starchart/15 border border-starchart/30'
+                        )}
+                      >
+                        {skill.level}
+                      </span>
+                    </div>
                   </div>
                 )
               })}
