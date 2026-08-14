@@ -209,6 +209,41 @@
   .segment-empty {
     background-color: rgba(245, 233, 214, 0.12);
   }
+
+  /* Holographic Shimmer & Retro UI Borders */
+  .pixel-border-gold {
+    border: 2px solid var(--color-star);
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .pixel-border-comet {
+    border: 2px solid var(--color-comet);
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .pixel-badge {
+    position: relative;
+    border: 1px solid var(--color-star);
+    background: var(--color-void);
+    box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.8);
+  }
+
+  .equalizer-bar {
+    width: 3px;
+    background: var(--color-aurora);
+    border-radius: 1px;
+    animation: eq-bounce 1.2s ease-in-out infinite alternate;
+  }
+
+  .equalizer-bar:nth-child(2) { animation-delay: 0.2s; }
+  .equalizer-bar:nth-child(3) { animation-delay: 0.4s; }
+  .equalizer-bar:nth-child(4) { animation-delay: 0.1s; }
+  .equalizer-bar:nth-child(5) { animation-delay: 0.5s; }
+}
+
+@keyframes eq-bounce {
+  0% { height: 4px; }
+  100% { height: 18px; }
 }
 
 @keyframes float-slow {

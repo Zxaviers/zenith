@@ -13,25 +13,29 @@ const dialogueLines = [
   {
     speaker: 'Headquarters',
     callsign: 'HQ-COMMAND',
-    channel: 'CH-01',
+    channel: 'FREQ 142.85 MHz // CH-01',
+    signal: '98.4%',
     text: 'Analyzing operator profile... Zxaviers. Mission designation: Zenith. Status: Online and operational.',
   },
   {
     speaker: 'Zxaviers',
     callsign: 'PILOT-ZX',
-    channel: 'CH-02',
+    channel: 'FREQ 142.85 MHz // CH-02',
+    signal: '99.9%',
     text: 'I’m a Computer Engineering student, passionate about the intersection of IoT embedded systems and modern web development.',
   },
   {
     speaker: 'Zxaviers',
     callsign: 'PILOT-ZX',
-    channel: 'CH-02',
+    channel: 'FREQ 142.85 MHz // CH-02',
+    signal: '99.9%',
     text: 'Zenith is my ongoing mission: building efficient, responsive, and visually engaging digital experiences that merge technology and creativity.',
   },
   {
     speaker: 'Headquarters',
     callsign: 'HQ-COMMAND',
-    channel: 'CH-01',
+    channel: 'FREQ 142.85 MHz // CH-01',
+    signal: '98.4%',
     text: 'Objective confirmed: Turn complex data streams into intuitive, human-centered interfaces. Godspeed, agent.',
   },
 ]
@@ -44,21 +48,24 @@ const speakerIcons: Record<string, string> = {
 export function MissionControl() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const handleNext = () => setCurrentIndex((prev) => (prev + 1) % dialogueLines.length)
+  const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + dialogueLines.length) % dialogueLines.length)
   const currentDialogue = dialogueLines[currentIndex]
 
   return (
     <section id="mission-control" className="relative px-6 py-20 scroll-mt-24">
-      {/* Decorative planet */}
+      {/* Decorative floating planet */}
       <div
         aria-hidden="true"
-        className="absolute right-[8%] top-[10%] z-0 hidden h-24 w-24 animate-float-slow pixel-asset opacity-40 md:block"
-        style={{
-          backgroundImage: "url('/sprites/planet_pixel.png')",
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          transform: 'rotate(10deg)',
-        }}
-      />
+        className="absolute right-[8%] top-[10%] z-0 hidden h-28 w-28 animate-float-slow pixel-asset opacity-40 md:block"
+      >
+        <Image
+          src="/sprites/planetUnik.png"
+          alt=""
+          width={112}
+          height={112}
+          className="pixel-asset drop-shadow-[0_0_20px_rgba(255,200,87,0.3)] transform rotate-12"
+        />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-3xl">
         <motion.div
@@ -72,59 +79,58 @@ export function MissionControl() {
             Mission Control
           </h2>
           <p className="mt-2 font-body text-base text-starchart/80 md:text-lg">
-            Operator profile transmission & primary mission logs
+            Operator profile transmission &amp; primary mission logs
           </p>
         </motion.div>
 
-        <PixelPanel variant="nebula" className="relative shadow-2xl">
+        <PixelPanel variant="nebula" className="relative shadow-2xl border-2 border-star/40 glint-top">
           {/* Terminal HUD Header Bar */}
-          <div className="mb-6 flex flex-wrap items-center justify-between border-b border-white/10 pb-4 gap-2">
+          <div className="mb-6 flex flex-wrap items-center justify-between border-b border-white/10 pb-4 gap-3">
             <div className="flex items-center gap-3">
-              <div className="relative rounded-sm border border-star/40 bg-void/80 p-1">
+              {/* Speaker Portrait Frame */}
+              <div className="relative rounded-sm border-2 border-star bg-void/90 p-1.5 shadow-[2px_2px_0_0_#000]">
                 <Image
                   src={speakerIcons[currentDialogue.speaker]}
                   alt={currentDialogue.speaker}
-                  width={44}
-                  height={44}
-                  className="h-11 w-11 pixel-asset"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 pixel-asset"
                 />
-                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-aurora ring-2 ring-void animate-pulse" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-aurora ring-2 ring-void animate-pulse" />
               </div>
+
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-display text-sm text-comet">{currentDialogue.speaker}</h3>
-                  <span className="font-stat text-xs px-1.5 py-0.5 rounded bg-void/80 text-star border border-star/20">
+                  <h3 className="font-display text-sm md:text-base text-star">
+                    {currentDialogue.speaker}
+                  </h3>
+                  <span className="font-stat text-xs px-2 py-0.5 rounded bg-void/90 text-comet border border-comet/30 font-bold">
                     {currentDialogue.callsign}
                   </span>
                 </div>
-                <span className="font-stat text-xs text-starchart/70">
-                  FREQ 142.85 MHz // {currentDialogue.channel}
-                </span>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="font-stat text-xs text-starchart/70">
+                    {currentDialogue.channel}
+                  </span>
+                  <span className="font-stat text-xs text-aurora">
+                    SIGNAL // {currentDialogue.signal}
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Audio wave frequency & signal visualizer */}
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex flex-col text-right font-stat text-[11px] text-starchart/70">
-                <span>SIGNAL // 98.4%</span>
-                <span className="text-aurora">ENCRYPTION: AES-256</span>
+            {/* Audio Waveform Equalizer Visualizer */}
+            <div className="flex items-center gap-2 bg-void/80 px-3 py-1.5 rounded border border-white/10">
+              <div className="flex items-end gap-1 h-4">
+                <span className="equalizer-bar" />
+                <span className="equalizer-bar" />
+                <span className="equalizer-bar" />
+                <span className="equalizer-bar" />
+                <span className="equalizer-bar" />
               </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-void/80 border border-star/20" aria-hidden="true">
-                {[40, 75, 100, 60, 90, 45, 80].map((height, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-1 rounded-full bg-star"
-                    animate={{ height: [`${height * 0.2}%`, `${height}%`, `${height * 0.3}%`] }}
-                    transition={{
-                      duration: 0.8 + i * 0.1,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                    style={{ height: `${height}%`, maxHeight: '18px', minHeight: '4px' }}
-                  />
-                ))}
-                <span className="ml-2 font-stat text-[11px] text-aurora font-bold">LIVE COM</span>
-              </div>
+              <span className="font-stat text-xs text-aurora font-bold tracking-wider">
+                LIVE COM
+              </span>
             </div>
           </div>
 
