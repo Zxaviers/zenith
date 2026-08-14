@@ -103,11 +103,11 @@ export function MissionLog() {
 
                 <div className="mt-6 pt-4 border-t border-white/10">
                   {project.techStack && (
-                    <div className="mb-4 flex flex-wrap gap-1.5">
+                    <div className="mb-5 flex flex-wrap gap-1.5">
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="rounded-sm bg-void/90 px-2 py-0.5 font-stat text-xs text-star border border-white/10"
+                          className="rounded-sm bg-void/90 px-2 py-0.5 font-stat text-xs text-star border border-star/30 shadow-[1px_1px_0_0_#000]"
                         >
                           {tech}
                         </span>
@@ -115,13 +115,56 @@ export function MissionLog() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between gap-3 pt-1">
-                    <Link href={`/projects/${project.slug}`} className="w-full">
-                      <PixelButton variant="ghost" className="w-full text-xs py-2">
-                        Inspect Case Study →
-                      </PixelButton>
-                    </Link>
+                  {/* Two Small Link Action Buttons (Live Demo / Repo) */}
+                  <div className="grid grid-cols-2 gap-2 pt-1 mb-2">
+                    {project.link ? (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                        aria-label={`Open live demo for ${project.title}`}
+                      >
+                        <PixelButton variant="comet" className="w-full text-[11px] py-2 font-bold justify-center">
+                          🚀 Live Demo
+                        </PixelButton>
+                      </a>
+                    ) : (
+                      <button disabled className="w-full opacity-50 cursor-not-allowed">
+                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                          Offline
+                        </PixelButton>
+                      </button>
+                    )}
+
+                    {project.repo ? (
+                      <a
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                        aria-label={`Open repository for ${project.title}`}
+                      >
+                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                          ⚡ Repo
+                        </PixelButton>
+                      </a>
+                    ) : (
+                      <Link href={`/projects/${project.slug}`} className="w-full">
+                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                          📄 Intel
+                        </PixelButton>
+                      </Link>
+                    )}
                   </div>
+
+                  {/* Case Study Full Intel Link */}
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="block text-center font-stat text-[11px] text-starchart/70 hover:text-star transition-colors pt-1 border-t border-white/5"
+                  >
+                    [ Inspect Full Case Study → ]
+                  </Link>
                 </div>
               </PixelPanel>
             </motion.div>

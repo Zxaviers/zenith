@@ -8,6 +8,7 @@ export interface Project {
   desc: string
   preview?: string
   link?: string
+  repo?: string
   techStack?: string[]
   problem?: string
   solution?: string
@@ -18,10 +19,11 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'pcb-custom-malang',
-    title: 'Artifact 1',
-    desc: 'PCB Custom Malang',
+    title: 'PCB Custom Malang',
+    desc: 'Advanced circuitry showcase and custom fabrication platform for localized sensor arrays.',
     preview: '/sprites/Preview1.png',
     link: 'https://pcb-custom-malang.web.app/',
+    repo: 'https://github.com/Zxaviers',
     techStack: ['React', 'Tailwind CSS', 'Netlify', 'Vercel'],
     problem:
       'PCB Custom Malang butuh kehadiran online untuk menampilkan layanan pembuatan PCB custom mereka ke calon klien, tanpa harus bergantung pada komunikasi manual satu-per-satu.',
@@ -32,11 +34,12 @@ export const projects: Project[] = [
   },
   {
     slug: 'bootstrap-portfolio',
-    title: 'Artifact 2',
-    desc: 'Bootstrap  Portfolio',
+    title: 'Bootstrap Portfolio',
+    desc: 'Fundamental responsive web portfolio showcasing initial development explorations and core styling.',
     preview: '/sprites/Preview2.png',
     link: 'https://zxaviers.github.io/Personal/',
-    techStack: ['HTML', 'CSS', 'Bootstrap'],
+    repo: 'https://github.com/Zxaviers/Personal',
+    techStack: ['HTML5', 'CSS3', 'Bootstrap'],
     problem:
       'Sebelum situs React/Tailwind ini ada, saya butuh portofolio online sederhana untuk mulai menampilkan diri dan proyek-proyek awal saat masih belajar web development.',
     solution:
@@ -45,8 +48,8 @@ export const projects: Project[] = [
       'Titik awal untuk memahami dasar-dasar pengembangan web sebelum pindah ke framework modern seperti React — jadi pengingat seberapa jauh sudah berkembang sejak proyek ini dibuat.',
   },
   {
-    title: 'Artifact 3',
-    desc: 'Coming Soon...',
+    title: 'Encrypted Artifact #03',
+    desc: 'Deep-space neural telemetry & hardware automation project currently undergoing orbital calibration.',
     comingSoon: true,
   },
 ]
