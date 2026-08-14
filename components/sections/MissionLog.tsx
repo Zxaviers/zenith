@@ -9,7 +9,7 @@ import { projects } from '@/lib/data/projects'
 
 export function MissionLog() {
   return (
-    <section id="mission-log" className="relative px-6 py-20 text-center overflow-hidden scroll-mt-24">
+    <section id="mission-log" className="relative px-4 sm:px-6 py-24 text-center scroll-mt-24">
       <motion.div
         className="mb-12"
         initial={{ opacity: 0, y: 30 }}
@@ -17,36 +17,32 @@ export function MissionLog() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="font-display text-2xl text-starchart md:text-3xl">Mission Log</h2>
+        <h2 className="font-display text-2xl text-starchart md:text-3xl">
+          Mission Log
+        </h2>
         <p className="mt-2 font-body text-base text-starchart/80 md:text-lg">
-          Discovered artifacts, production deployments & experimental systems
+          Discovered artifacts, production deployments &amp; hardware prototypes
         </p>
       </motion.div>
 
-      <div className="mx-auto max-w-6xl grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto max-w-6xl grid gap-8 md:grid-cols-2 lg:grid-cols-3 text-left">
         {projects.map((project, idx) => {
           if (project.comingSoon) {
             return (
               <PixelPanel
                 key={project.title}
                 variant="void"
-                className="opacity-60 border-dashed border-white/20 flex flex-col justify-between"
+                className="opacity-60 border-2 border-dashed border-white/20 flex flex-col justify-between p-5 md:p-6"
               >
-                <div className="mb-4 flex w-full aspect-video items-center justify-center rounded-lg bg-void/60 border border-white/5 py-6">
-                  <svg viewBox="0 0 64 72" className="h-16 w-16 opacity-40 animate-pulse" aria-hidden="true">
-                    <rect x="16" y="0" width="32" height="8" fill="var(--color-star)" />
-                    <rect x="16" y="0" width="8" height="24" fill="var(--color-star)" />
-                    <rect x="40" y="0" width="8" height="24" fill="var(--color-star)" />
-                    <rect x="8" y="24" width="48" height="40" fill="var(--color-star)" />
-                    <rect x="12" y="28" width="40" height="32" fill="var(--color-void)" />
-                    <rect x="28" y="38" width="8" height="8" fill="var(--color-star)" />
-                    <rect x="30" y="46" width="4" height="8" fill="var(--color-star)" />
-                  </svg>
+                <div>
+                  <div className="mb-4 flex w-full aspect-video items-center justify-center rounded bg-void border border-white/10">
+                    <span className="font-display text-2xl text-star animate-pulse">?</span>
+                  </div>
+                  <span className="font-stat text-xs text-star block mb-1">ARTIFACT #03 // ENCRYPTED</span>
+                  <h3 className="mb-2 font-display text-sm text-starchart">{project.title}</h3>
+                  <p className="font-body text-sm text-starchart/70 leading-relaxed">{project.desc}</p>
                 </div>
-                <span className="font-stat text-xs text-star block mb-1">ARTIFACT #03 // ENCRYPTED</span>
-                <h3 className="mb-2 font-display text-sm text-starchart">{project.title}</h3>
-                <p className="font-body text-sm text-starchart/70 leading-relaxed">{project.desc}</p>
-                <div className="mt-6 pt-3 border-t border-white/5">
+                <div className="mt-6 pt-3 border-t border-white/10 text-right">
                   <span className="font-stat text-xs text-starchart/50">[SCANNING DEEP SPACE...]</span>
                 </div>
               </PixelPanel>
@@ -65,12 +61,12 @@ export function MissionLog() {
             >
               <PixelPanel
                 variant="nebula"
-                className="flex flex-col justify-between h-full text-left border border-star/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] group transition-all duration-300 hover:border-star glint-top"
+                className="flex flex-col justify-between h-full border-2 border-star/40 shadow-[6px_6px_0_0_#000] p-5 md:p-6 glint-top group hover:border-star transition-all duration-300"
               >
                 <div>
-                  {/* Artifact Preview Image */}
+                  {/* Artifact Preview Screenshot */}
                   {project.preview && (
-                    <div className="relative mb-4 flex w-full aspect-video items-center justify-center overflow-hidden rounded-md border border-white/10 bg-void">
+                    <div className="relative mb-4 flex w-full aspect-video items-center justify-center overflow-hidden rounded border-2 border-white/10 bg-void">
                       <Image
                         src={project.preview}
                         alt={project.title}
@@ -78,36 +74,32 @@ export function MissionLog() {
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute top-2 left-2 rounded bg-void/90 px-2 py-0.5 font-stat text-[11px] text-star border border-star/40">
-                        {project.title.split(' ')[0].toUpperCase()}
+                      <div className="absolute top-2 left-2 rounded bg-void/95 px-2 py-0.5 font-stat text-[11px] text-star border border-star/40 shadow-[1px_1px_0_0_#000]">
+                        ARTIFACT // 0{idx + 1}
                       </div>
-                      <div className="absolute top-2 right-2 flex items-center gap-1.5 rounded bg-void/90 px-2 py-0.5 font-stat text-[10px] text-aurora border border-aurora/40">
+                      <div className="absolute top-2 right-2 flex items-center gap-1 rounded bg-void/95 px-2 py-0.5 font-stat text-[10px] text-aurora border border-aurora/40">
                         <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />
                         <span>LIVE</span>
                       </div>
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-stat text-[11px] text-comet">ARTIFACT // SEC-0{idx + 1}</span>
-                    <span className="font-stat text-[11px] text-starchart/60">VERIFIED</span>
-                  </div>
-
-                  <h3 className="mb-2 font-display text-base text-starchart group-hover:text-star transition-colors">
+                  <h3 className="mb-2 font-display text-sm md:text-base text-star group-hover:text-comet transition-colors">
                     {project.title}
                   </h3>
-                  <p className="font-body text-sm text-starchart/85 leading-relaxed">
+                  <p className="font-body text-sm md:text-base text-starchart/90 leading-relaxed mb-4">
                     {project.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/10">
+                <div className="mt-4 pt-4 border-t-2 border-white/10">
+                  {/* Guaranteed Readable Tech Chips */}
                   {project.techStack && (
-                    <div className="mb-5 flex flex-wrap gap-1.5">
+                    <div className="mb-4 flex flex-wrap gap-1.5">
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="rounded-sm bg-void/90 px-2 py-0.5 font-stat text-xs text-star border border-star/30 shadow-[1px_1px_0_0_#000]"
+                          className="rounded bg-void px-2 py-0.5 font-stat text-xs text-star border border-star/30 shadow-[1px_1px_0_0_#000]"
                         >
                           {tech}
                         </span>
@@ -115,23 +107,22 @@ export function MissionLog() {
                     </div>
                   )}
 
-                  {/* Two Small Link Action Buttons (Live Demo / Repo) */}
-                  <div className="grid grid-cols-2 gap-2 pt-1 mb-2">
+                  {/* Dual Action Buttons */}
+                  <div className="grid grid-cols-2 gap-2 mb-3">
                     {project.link ? (
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full"
-                        aria-label={`Open live demo for ${project.title}`}
                       >
-                        <PixelButton variant="comet" className="w-full text-[11px] py-2 font-bold justify-center">
+                        <PixelButton variant="comet" className="w-full text-xs py-2 font-bold justify-center">
                           🚀 Live Demo
                         </PixelButton>
                       </a>
                     ) : (
                       <button disabled className="w-full opacity-50 cursor-not-allowed">
-                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
                           Offline
                         </PixelButton>
                       </button>
@@ -143,27 +134,26 @@ export function MissionLog() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full"
-                        aria-label={`Open repository for ${project.title}`}
                       >
-                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
                           ⚡ Repo
                         </PixelButton>
                       </a>
                     ) : (
                       <Link href={`/projects/${project.slug}`} className="w-full">
-                        <PixelButton variant="ghost" className="w-full text-[11px] py-2 justify-center">
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
                           📄 Intel
                         </PixelButton>
                       </Link>
                     )}
                   </div>
 
-                  {/* Case Study Full Intel Link */}
+                  {/* Inspect Case Study */}
                   <Link
                     href={`/projects/${project.slug}`}
-                    className="block text-center font-stat text-[11px] text-starchart/70 hover:text-star transition-colors pt-1 border-t border-white/5"
+                    className="block text-center font-stat text-xs text-starchart/70 hover:text-star transition-colors pt-2 border-t border-white/5"
                   >
-                    [ Inspect Full Case Study → ]
+                    [ Inspect Full Mission Intel → ]
                   </Link>
                 </div>
               </PixelPanel>
