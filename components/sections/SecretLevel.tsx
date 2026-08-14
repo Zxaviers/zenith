@@ -178,41 +178,65 @@ export function SecretLevel() {
   return (
     <motion.section
       id="secret-level"
-      className="relative px-6 py-20 text-center scroll-mt-24"
+      className="relative px-4 sm:px-6 py-20 text-center scroll-mt-24"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <PixelPanel variant="nebula" className="mx-auto w-fit max-w-full">
-        <h2 className="mb-8 font-display text-2xl text-starchart">Secret Level</h2>
+      <div className="mx-auto max-w-4xl">
+        <PixelPanel variant="nebula" className="border-4 border-comet shadow-[6px_6px_0px_0px_#000] glint-top p-4 md:p-8">
+          {/* Arcade Cabinet Marquee */}
+          <div className="mb-6 flex flex-wrap items-center justify-between border-b-2 border-white/10 pb-4 gap-3">
+            <div className="flex items-center gap-2 text-left">
+              <span className="font-display text-base md:text-lg text-star">
+                ★ SECRET ARCADE LEVEL ★
+              </span>
+            </div>
+            <div className="flex items-center gap-2 font-stat text-xs">
+              <span className="px-2 py-0.5 rounded bg-void text-aurora border border-aurora/40">
+                1 CREDIT // READY
+              </span>
+              <span className="hidden sm:inline text-starchart/60">
+                ENGINE: KABOOM-JS
+              </span>
+            </div>
+          </div>
 
-        {isMobile ? (
-          <div
-            className="flex items-center justify-center bg-void/50 p-4 text-center"
-            style={{ width: '800px', height: '600px', maxWidth: '100%', minHeight: '300px' }}
-          >
-            <p className="font-body text-xl text-comet md:text-2xl">
-              This secret level can only be played on a desktop.
-            </p>
+          {isMobile ? (
+            <div
+              className="flex items-center justify-center bg-void/80 p-6 text-center border-2 border-white/10 rounded"
+              style={{ width: '800px', height: '400px', maxWidth: '100%' }}
+            >
+              <p className="font-body text-lg text-comet md:text-xl">
+                🕹️ This secret flight simulator requires desktop keyboard arrow controls.
+              </p>
+            </div>
+          ) : hasError ? (
+            <div
+              className="flex items-center justify-center bg-void/80 p-6 text-center border-2 border-white/10 rounded"
+              style={{ width: '800px', height: '400px', maxWidth: '100%' }}
+            >
+              <p className="font-body text-lg text-comet md:text-xl">
+                ⚠️ Arcade simulator module could not be initialized in this viewport.
+              </p>
+            </div>
+          ) : (
+            <div className="relative mx-auto rounded overflow-hidden border-4 border-black shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.8)]">
+              <canvas
+                ref={canvasRef}
+                className="mx-auto max-w-full block"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            </div>
+          )}
+
+          <div className="mt-4 flex justify-between items-center font-stat text-xs text-starchart/60 pt-2 border-t border-white/10">
+            <span>[CONTROLS: ARROWS TO MOVE / SPACE TO SHOOT]</span>
+            <span className="text-star">HI-SCORE // 99990</span>
           </div>
-        ) : hasError ? (
-          <div
-            className="flex items-center justify-center bg-void/50 p-4 text-center"
-            style={{ width: '800px', height: '600px', maxWidth: '100%', minHeight: '300px' }}
-          >
-            <p className="font-body text-xl text-comet md:text-2xl">
-              This secret level couldn&apos;t load on your browser. Try a different one!
-            </p>
-          </div>
-        ) : (
-          <canvas
-            ref={canvasRef}
-            className="mx-auto max-w-full border-4 border-comet/50"
-            style={{ imageRendering: 'pixelated' }}
-          />
-        )}
-      </PixelPanel>
+        </PixelPanel>
+      </div>
     </motion.section>
   )
 }
