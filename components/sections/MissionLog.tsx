@@ -17,7 +17,7 @@ function Reticle({ visible }: { visible: boolean }) {
           {(['tl', 'tr', 'bl', 'br'] as const).map((pos) => (
             <motion.div
               key={pos}
-              className="pointer-events-none absolute z-20"
+              className="pointer-events-none absolute"
               style={{
                 top: pos.startsWith('t') ? 6 : undefined,
                 bottom: pos.startsWith('b') ? 6 : undefined,
@@ -42,19 +42,10 @@ function Reticle({ visible }: { visible: boolean }) {
   )
 }
 
-// ── Detail Panel Overlay ────────────────────────────────────────────────────
-function DetailPanel({
-  project,
-  onClose,
-}: {
-  project: Project
-  onClose: () => void
-}) {
-  // Close on Escape key
+// ── Detail Panel Overlay ─────────────────────────────────────────────────────
+function DetailPanel({ project, onClose }: { project: Project; onClose: () => void }) {
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
@@ -78,22 +69,13 @@ function DetailPanel({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header image */}
         {project.preview && (
           <div className="relative w-full" style={{ height: 200 }}>
-            <Image
-              src={project.preview}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
+            <Image src={project.preview} alt={project.title} fill className="object-cover" />
             <div
               className="absolute inset-0"
-              style={{
-                background: 'linear-gradient(180deg, transparent 40%, var(--color-void-surface) 100%)',
-              }}
+              style={{ background: 'linear-gradient(180deg, transparent 40%, var(--color-void-surface) 100%)' }}
             />
-            {/* Live badge */}
             <div
               className="absolute top-3 right-3 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
               style={{ background: 'rgba(13,8,22,0.92)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.4)' }}
@@ -109,7 +91,6 @@ function DetailPanel({
           </div>
         )}
 
-        {/* Content */}
         <div className="p-6">
           <h3 className="font-display text-xl mb-2" style={{ color: 'var(--color-teal)' }}>
             {project.title}
@@ -118,7 +99,6 @@ function DetailPanel({
             {project.desc}
           </p>
 
-          {/* Extended details */}
           {project.problem && (
             <div className="mb-3 p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <p className="font-stat text-[10px] mb-1" style={{ color: 'var(--color-ink-muted)' }}>◉ PROBLEM</p>
@@ -138,7 +118,6 @@ function DetailPanel({
             </div>
           )}
 
-          {/* Tech stack */}
           {project.techStack && (
             <div className="mb-5 flex flex-wrap gap-1.5">
               {project.techStack.map((tech) => (
@@ -155,7 +134,6 @@ function DetailPanel({
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex items-center gap-3">
             {project.link && (
               <a href={project.link} target="_blank" rel="noopener noreferrer">
@@ -187,25 +165,32 @@ function DetailPanel({
   )
 }
 
-// ── Mission Card ─────────────────────────────────────────────────────────────
+// ── Shared Project Card ───────────────────────────────────────────────────────
+// `carouselMode` controls scroll-snap sizing (mobile only)
 function MissionCard({
   project,
   index,
   onExpand,
   reducedMotion,
+  carouselMode = false,
 }: {
   project: Project
   index: number
   onExpand: (p: Project) => void
   reducedMotion: boolean
+  carouselMode?: boolean
 }) {
   const [hovered, setHovered] = useState(false)
+
+  // Scroll-snap sizing only in carousel (mobile)
+  const snapClasses = carouselMode ? 'flex-shrink-0 w-[80vw] max-w-sm' : ''
+  const snapStyle: React.CSSProperties = carouselMode ? { scrollSnapAlign: 'center' } : {}
 
   if (project.comingSoon) {
     return (
       <motion.div
-        className="flex-shrink-0 w-[80vw] max-w-sm md:w-full md:max-w-none md:flex-shrink md:h-full"
-        style={{ scrollSnapAlign: 'center' }}
+        className={`${snapClasses} flex flex-col`}
+        style={snapStyle}
         initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: reducedMotion ? 0 : index * 0.1 }}
@@ -227,9 +212,7 @@ function MissionCard({
               transition={{ duration: 2.5, repeat: Infinity }}
             >?</motion.span>
           </div>
-          <span className="font-stat text-xs block mb-1" style={{ color: 'var(--color-teal)' }}>
-            Coming soon
-          </span>
+          <span className="font-stat text-xs block mb-1" style={{ color: 'var(--color-teal)' }}>Coming soon</span>
           <h3 className="mb-2 font-display text-sm" style={{ color: 'var(--color-ink)' }}>{project.title}</h3>
           <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink-muted)' }}>{project.desc}</p>
           <div className="mt-4 pt-3 border-t border-white/10 text-right">
@@ -242,8 +225,8 @@ function MissionCard({
 
   return (
     <motion.div
-      className="relative flex-shrink-0 w-[80vw] max-w-sm md:w-full md:max-w-none md:flex-shrink md:h-full flex flex-col"
-      style={{ scrollSnapAlign: 'center' }}
+      className={`relative ${snapClasses} flex flex-col h-full`}
+      style={snapStyle}
       layoutId={`card-${project.slug ?? project.title}`}
       initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -253,24 +236,18 @@ function MissionCard({
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
-      {/* Reticle corners */}
       <Reticle visible={hovered && !reducedMotion} />
 
       <PixelPanel
         variant="nebula"
         className="flex flex-col h-full shadow-[6px_6px_0_0_#000] p-5 group cursor-pointer transition-shadow duration-300"
-        style={
-          hovered
-            ? { boxShadow: '0 0 0 2px var(--color-teal), 6px 6px 0 0 #000' }
-            : {}
-        }
+        style={hovered ? { boxShadow: '0 0 0 2px var(--color-teal), 6px 6px 0 0 #000' } : {}}
         onClick={() => onExpand(project)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onExpand(project) }}
         aria-label={`Open details for ${project.title}`}
       >
-        {/* Preview image */}
         {project.preview && (
           <div
             className="relative mb-4 w-full overflow-hidden rounded"
@@ -280,14 +257,13 @@ function MissionCard({
               src={project.preview}
               alt={project.title}
               fill
-              sizes="(max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 768px) 80vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div
               className="absolute inset-0 pointer-events-none"
               style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(19,13,26,0.6) 100%)' }}
             />
-            {/* Live badge with framer pulse */}
             <div
               className="absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
               style={{ background: 'rgba(19,13,26,0.9)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.35)' }}
@@ -311,7 +287,6 @@ function MissionCard({
         </p>
 
         <div className="mt-auto pt-4 border-t border-white/10">
-          {/* Tech chips with spring bounce */}
           {project.techStack && (
             <div className="mb-4 flex flex-wrap gap-1.5">
               {project.techStack.map((tech) => (
@@ -341,7 +316,7 @@ function MissionCard({
   )
 }
 
-// ── Star-map Dot Indicator ───────────────────────────────────────────────────
+// ── Star-map Dot Indicator (mobile only) ─────────────────────────────────────
 function StarMapIndicator({
   count,
   active,
@@ -352,7 +327,8 @@ function StarMapIndicator({
   onDotClick: (i: number) => void
 }) {
   return (
-    <div className="flex items-center justify-center gap-2 mt-6" role="tablist" aria-label="Mission selector position">
+    // md:hidden — only shown on mobile where carousel is active
+    <div className="md:hidden flex items-center justify-center gap-2 mt-6" role="tablist" aria-label="Mission selector position">
       {Array.from({ length: count }).map((_, i) => (
         <button
           key={i}
@@ -363,7 +339,6 @@ function StarMapIndicator({
           className="relative flex items-center justify-center transition-all focus-visible:outline-none"
           style={{ width: 28, height: 12 }}
         >
-          {/* Connecting line before (except first) */}
           {i > 0 && (
             <div
               className="absolute right-full top-1/2 -translate-y-1/2 h-px"
@@ -394,7 +369,7 @@ function StarMapIndicator({
   )
 }
 
-// ── Main MissionLog Section ──────────────────────────────────────────────────
+// ── Main MissionLog Section ───────────────────────────────────────────────────
 export function MissionLog() {
   const carouselRef = useRef<HTMLDivElement>(null)
   const [activeIdx, setActiveIdx] = useState(0)
@@ -403,7 +378,6 @@ export function MissionLog() {
 
   const totalCards = projects.length
 
-  // Scroll to a card by index (mobile carousel)
   const scrollToIdx = useCallback((idx: number) => {
     const container = carouselRef.current
     if (!container) return
@@ -416,13 +390,12 @@ export function MissionLog() {
   const handlePrev = () => scrollToIdx(Math.max(0, activeIdx - 1))
   const handleNext = () => scrollToIdx(Math.min(totalCards - 1, activeIdx + 1))
 
-  // Keyboard nav on carousel
   const handleCarouselKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowLeft') { e.preventDefault(); handlePrev() }
     if (e.key === 'ArrowRight') { e.preventDefault(); handleNext() }
   }
 
-  // Detect active card on scroll via IntersectionObserver (mobile)
+  // Track active card via IntersectionObserver (carousel only)
   useEffect(() => {
     const container = carouselRef.current
     if (!container) return
@@ -444,9 +417,9 @@ export function MissionLog() {
 
   return (
     <section id="mission-log" className="relative py-24 scroll-mt-24 overflow-hidden">
-      {/* Section header */}
+      {/* ── Section header ── */}
       <motion.div
-        className="mb-10 text-center px-4"
+        className="mb-10 text-center px-4 sm:px-6"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -460,14 +433,17 @@ export function MissionLog() {
         </p>
       </motion.div>
 
-      {/* ── Carousel (Mobile) / Grid (Desktop) ── */}
-      <div className="relative flex items-center md:block">
-        {/* Left arrow (Mobile only) */}
+      {/* ════════════════════════════════════════════════════════════════
+          MOBILE — Horizontal scroll-snap carousel (<768px / below md:)
+          Hidden at md: and above.
+          ════════════════════════════════════════════════════════════════ */}
+      <div className="md:hidden relative flex items-center">
+        {/* Left arrow */}
         <button
           onClick={handlePrev}
           disabled={activeIdx === 0}
           aria-label="Previous mission"
-          className="md:hidden absolute left-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+          className="absolute left-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
             border: '2px solid rgba(0,245,196,0.35)',
@@ -478,19 +454,19 @@ export function MissionLog() {
           ◀
         </button>
 
-        {/* Responsive Container: flex carousel on mobile, 2/3 col grid on desktop */}
+        {/* Carousel scroll container */}
         <div
           ref={carouselRef}
-          className="flex gap-6 overflow-x-auto py-4 px-16 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:py-0 md:px-6 md:max-w-6xl md:mx-auto text-left"
+          className="flex gap-6 overflow-x-auto py-4 px-16"
           style={{
             scrollSnapType: 'x mandatory',
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-          }}
+          } as React.CSSProperties}
           onKeyDown={handleCarouselKeyDown}
           tabIndex={0}
           role="region"
-          aria-label="Mission Log projects"
+          aria-label="Mission Log carousel"
         >
           {projects.map((project, idx) => (
             <MissionCard
@@ -499,16 +475,17 @@ export function MissionLog() {
               index={idx}
               onExpand={setExpandedProject}
               reducedMotion={reducedMotion}
+              carouselMode={true}
             />
           ))}
         </div>
 
-        {/* Right arrow (Mobile only) */}
+        {/* Right arrow */}
         <button
           onClick={handleNext}
           disabled={activeIdx === totalCards - 1}
           aria-label="Next mission"
-          className="md:hidden absolute right-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+          className="absolute right-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
             border: '2px solid rgba(0,245,196,0.35)',
@@ -520,16 +497,32 @@ export function MissionLog() {
         </button>
       </div>
 
-      {/* Star-map dot indicator (Mobile only) */}
-      <div className="md:hidden">
-        <StarMapIndicator
-          count={totalCards}
-          active={activeIdx}
-          onDotClick={scrollToIdx}
-        />
+      {/* Star-map dot indicator (mobile only) */}
+      <StarMapIndicator
+        count={totalCards}
+        active={activeIdx}
+        onDotClick={scrollToIdx}
+      />
+
+      {/* ════════════════════════════════════════════════════════════════
+          DESKTOP — Regular grid (md: and above)
+          Hidden below md:, shown as grid-cols-2 / lg:grid-cols-3.
+          No scroll-snap, no arrows, no dot indicator.
+          ════════════════════════════════════════════════════════════════ */}
+      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6 px-6 mx-auto max-w-6xl">
+        {projects.map((project, idx) => (
+          <MissionCard
+            key={project.slug ?? project.title}
+            project={project}
+            index={idx}
+            onExpand={setExpandedProject}
+            reducedMotion={reducedMotion}
+            carouselMode={false}
+          />
+        ))}
       </div>
 
-      {/* Detail panel overlay */}
+      {/* ── Detail panel overlay (both breakpoints) ── */}
       <AnimatePresence>
         {expandedProject && (
           <DetailPanel
