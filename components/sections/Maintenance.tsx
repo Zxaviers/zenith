@@ -164,7 +164,7 @@ export function Maintenance() {
             {[
               { href: 'https://github.com/zxaviers', src: '/sprites/github.png', label: 'GitHub' },
               { href: 'https://linkedin.com/in/rizky-mardhani1st', src: '/sprites/linkedin.png', label: 'LinkedIn' },
-              { href: 'https://instagram.com/sza.vy1st', src: '/sprites/Instagram.png', label: 'Instagram' },
+              { href: 'https://www.instagram.com/ryzennth_/', src: '/sprites/Instagram.png', label: 'Instagram' },
             ].map(({ href, src, label }) => (
               <a
                 key={href}

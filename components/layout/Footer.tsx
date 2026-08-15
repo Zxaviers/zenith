@@ -43,7 +43,7 @@ export function Footer() {
           {[
             { href: 'https://github.com/zxaviers', label: '⚡ GitHub' },
             { href: 'https://linkedin.com/in/rizky-mardhani1st', label: '💼 LinkedIn // Rizky Mardhani' },
-            { href: 'https://instagram.com/sza.vy1st', label: '📸 Instagram // @sza.vy1st' },
+            { href: 'https://www.instagram.com/ryzennth_/', label: '📸 Instagram // @ryzennth_' },
           ].map(({ href, label }) => (
             <a
               key={href}
