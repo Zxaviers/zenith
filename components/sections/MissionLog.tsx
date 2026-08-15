@@ -17,7 +17,7 @@ function Reticle({ visible }: { visible: boolean }) {
           {(['tl', 'tr', 'bl', 'br'] as const).map((pos) => (
             <motion.div
               key={pos}
-              className="pointer-events-none absolute"
+              className="pointer-events-none absolute z-20"
               style={{
                 top: pos.startsWith('t') ? 6 : undefined,
                 bottom: pos.startsWith('b') ? 6 : undefined,
@@ -204,7 +204,7 @@ function MissionCard({
   if (project.comingSoon) {
     return (
       <motion.div
-        className="flex-shrink-0 w-[80vw] max-w-sm"
+        className="flex-shrink-0 w-[80vw] max-w-sm md:w-full md:max-w-none md:flex-shrink md:h-full"
         style={{ scrollSnapAlign: 'center' }}
         initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -242,14 +242,14 @@ function MissionCard({
 
   return (
     <motion.div
-      className="relative flex-shrink-0 w-[80vw] max-w-sm"
+      className="relative flex-shrink-0 w-[80vw] max-w-sm md:w-full md:max-w-none md:flex-shrink md:h-full flex flex-col"
       style={{ scrollSnapAlign: 'center' }}
       layoutId={`card-${project.slug ?? project.title}`}
       initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: reducedMotion ? 0 : index * 0.12 }}
       viewport={{ once: true }}
-      whileHover={reducedMotion ? {} : { y: -6, scale: 1.03 }}
+      whileHover={reducedMotion ? {} : { y: -6, scale: 1.02 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
@@ -280,7 +280,7 @@ function MissionCard({
               src={project.preview}
               alt={project.title}
               fill
-              sizes="(max-width: 768px) 80vw, 33vw"
+              sizes="(max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div
@@ -403,7 +403,7 @@ export function MissionLog() {
 
   const totalCards = projects.length
 
-  // Scroll to a card by index
+  // Scroll to a card by index (mobile carousel)
   const scrollToIdx = useCallback((idx: number) => {
     const container = carouselRef.current
     if (!container) return
@@ -422,7 +422,7 @@ export function MissionLog() {
     if (e.key === 'ArrowRight') { e.preventDefault(); handleNext() }
   }
 
-  // Detect active card on scroll via IntersectionObserver
+  // Detect active card on scroll via IntersectionObserver (mobile)
   useEffect(() => {
     const container = carouselRef.current
     if (!container) return
@@ -460,14 +460,14 @@ export function MissionLog() {
         </p>
       </motion.div>
 
-      {/* Carousel + nav arrows */}
-      <div className="relative flex items-center">
-        {/* Left arrow */}
+      {/* ── Carousel (Mobile) / Grid (Desktop) ── */}
+      <div className="relative flex items-center md:block">
+        {/* Left arrow (Mobile only) */}
         <button
           onClick={handlePrev}
           disabled={activeIdx === 0}
           aria-label="Previous mission"
-          className="absolute left-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+          className="md:hidden absolute left-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
             border: '2px solid rgba(0,245,196,0.35)',
@@ -478,10 +478,10 @@ export function MissionLog() {
           ◀
         </button>
 
-        {/* Scroll container */}
+        {/* Responsive Container: flex carousel on mobile, 2/3 col grid on desktop */}
         <div
           ref={carouselRef}
-          className="flex gap-6 overflow-x-auto py-4 px-16"
+          className="flex gap-6 overflow-x-auto py-4 px-16 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:py-0 md:px-6 md:max-w-6xl md:mx-auto text-left"
           style={{
             scrollSnapType: 'x mandatory',
             scrollbarWidth: 'none',
@@ -490,7 +490,7 @@ export function MissionLog() {
           onKeyDown={handleCarouselKeyDown}
           tabIndex={0}
           role="region"
-          aria-label="Mission Log carousel"
+          aria-label="Mission Log projects"
         >
           {projects.map((project, idx) => (
             <MissionCard
@@ -503,12 +503,12 @@ export function MissionLog() {
           ))}
         </div>
 
-        {/* Right arrow */}
+        {/* Right arrow (Mobile only) */}
         <button
           onClick={handleNext}
           disabled={activeIdx === totalCards - 1}
           aria-label="Next mission"
-          className="absolute right-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+          className="md:hidden absolute right-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
             border: '2px solid rgba(0,245,196,0.35)',
@@ -520,12 +520,14 @@ export function MissionLog() {
         </button>
       </div>
 
-      {/* Star-map dot indicator */}
-      <StarMapIndicator
-        count={totalCards}
-        active={activeIdx}
-        onDotClick={scrollToIdx}
-      />
+      {/* Star-map dot indicator (Mobile only) */}
+      <div className="md:hidden">
+        <StarMapIndicator
+          count={totalCards}
+          active={activeIdx}
+          onDotClick={scrollToIdx}
+        />
+      </div>
 
       {/* Detail panel overlay */}
       <AnimatePresence>
