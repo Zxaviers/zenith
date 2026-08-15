@@ -65,12 +65,13 @@ function VoidShip({ className = '' }: { className?: string }) {
  */
 function VoidPlanet({ className = '' }: { className?: string }) {
   return (
+    // Outer wrapper: STATIC — drop-shadow here avoids per-frame filter recalc
     <div
       className={`relative select-none ${className}`}
       aria-hidden="true"
       style={{ filter: 'drop-shadow(0 0 18px rgba(0,245,196,0.3))' }}
     >
-      {/* Soft outer glow ring */}
+      {/* Soft outer glow ring — on its own element, not affecting spritesheet */}
       <div
         className="absolute inset-0 rounded-full animate-void-pulse"
         style={{
@@ -79,7 +80,10 @@ function VoidPlanet({ className = '' }: { className?: string }) {
         }}
       />
 
-      {/* Planet spritesheet — 154 frames, displayed at 2× */}
+      {/* Planet spritesheet — 154 frames at 2× scale (96×96).
+          NO filter here: filter on a steps()-animated element forces
+          browser to recalculate it every frame → flicker/stutter.
+          Colors kept natural (blue-green Earth) as intentional accent. */}
       <div
         className="pixel-asset animate-planet-spin"
         style={{
@@ -88,11 +92,9 @@ function VoidPlanet({ className = '' }: { className?: string }) {
           backgroundImage: 'url(/sprites/void/planet-earth.png)',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: '0 0',
-          backgroundSize: '14784px 96px',  /* 7392*2 = 14784 at 2× scale */
+          backgroundSize: '14784px 96px',
           imageRendering: 'pixelated',
           animationDuration: '8s',
-          /* Bagian 3: harmonize planet colors towards Void Teal palette */
-          filter: 'hue-rotate(160deg) saturate(1.1) brightness(1.05)',
         }}
       />
     </div>

@@ -192,10 +192,10 @@
   to   { background-position: -192px 0; }
 }
 
-/* Planet Earth sprite — 154 frames @ 48px = 7392px */
+/* Planet Earth sprite — 154 frames @ 48px native = 7392px; rendered at 2× = 14784px */
 @keyframes planet-spin {
   from { background-position: 0 0; }
-  to   { background-position: -7392px 0; }
+  to   { background-position: -14784px 0; }
 }
 
 @keyframes float-slow {
