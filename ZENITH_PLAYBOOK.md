@@ -430,3 +430,30 @@ STOP dan tunggu saya HANYA jika salah satu ini terjadi:
 - Ini bukan "fire and forget" total — tetap cek `PROGRESS.md` dan commit log sesekali, terutama kalau kamu jauh dari komputer lama.
 - Kalau agent berhenti di kondisi stop #1 (kredensial), itu wajar dan bukan kegagalan — tinggal login/link service-nya lalu lanjutkan dengan pesan singkat "lanjutkan dari PROGRESS.md".
 - Kalau butuh audit ulang setelah semua fase selesai, cukup minta agent membaca PROGRESS.md dan Fase 7 checklist lagi, tidak perlu saya buatkan prompt baru untuk itu.
+
+
+---
+
+## 8. Aturan Tambahan (dikumpulkan dari insiden-insiden sepanjang proyek)
+
+1. **Commit lokal ≠ live.** Sebelum menganggap fase selesai atau mendiagnosis
+   bug di situs live, selalu verifikasi `git log` di REMOTE (`git log
+   origin/main`), bukan cuma lokal — dan pastikan branch produksi Netlify
+   memang men-deploy dari commit terbaru itu.
+
+2. **Build/test/lint hijau ≠ visual benar.** Fase yang menyentuh UI wajib
+   diverifikasi lewat screenshot browser sungguhan sebelum ditandai selesai
+   di PROGRESS.md — bukan hanya lewat exit code build/test.
+
+3. **Pindah tool/sesi (Zed ↔ Antigravity, dst) itu aman** selama sumber
+   kebenarannya tetap ZENITH_PLAYBOOK.md + PROGRESS.md + git history, bukan
+   konteks percakapan. Setelah pindah tool, langkah pertama SELALU: baca
+   kedua file itu + `git log`/`git status`, jangan asumsikan state dari
+   laporan sesi sebelumnya tanpa verifikasi ulang.
+
+4. **Klaim "sudah pakai skill X" WAJIB dibuktikan**, bukan diterima
+   begitu saja: sebutkan path file SKILL.md yang dibaca (jejak view_file)
+   dan satu prinsip konkret dari skill itu yang benar-benar diterapkan di
+   laporan akhir. Kalau skill itu tidak tersedia/tidak ditemukan di
+   environment, laporkan apa adanya — jangan diklaim sudah dipakai padahal
+   tidak.
