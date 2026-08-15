@@ -7,7 +7,7 @@ import { PixelButton } from '@/components/ui/PixelButton'
 import { cn } from '@/lib/utils'
 
 interface Dialogue {
-  speaker: 'Rizky' | 'Zxaviers'
+  speaker: 'Rizky' | 'Zenith'
   text: string
 }
 
@@ -17,15 +17,15 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
     dialogue: [
       {
         speaker: 'Rizky',
-        text: 'Hey! I\'m Rizky Mardhani — you can call me Zxaviers online. I build things at the intersection of web and embedded hardware.',
+        text: 'Hey! I\'m Rizky Mardhani — welcome to Zenith. I build things at the intersection of modern web apps and embedded IoT hardware.',
       },
       {
-        speaker: 'Zxaviers',
-        text: 'Zenith is my personal space: full-stack web apps, custom IoT firmware, and the occasional PCB layout. One portfolio, two worlds.',
+        speaker: 'Zenith',
+        text: 'Zenith is the central hub: full-stack applications, custom firmware, and tactile hardware engineering. One platform, two worlds.',
       },
       {
         speaker: 'Rizky',
-        text: 'The goal? Turn raw sensor data and user interfaces into experiences that actually feel good to use.',
+        text: 'The goal? Turn raw sensor telemetry and responsive web interfaces into experiences that feel seamless and delightful.',
       },
     ],
   },
@@ -33,12 +33,12 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
     title: 'What I Study',
     dialogue: [
       {
-        speaker: 'Zxaviers',
-        text: 'I\'m studying Computer Engineering at Politeknik Kota Malang — microcontrollers (ESP32, Arduino) on weekdays, React and Next.js on weekends.',
+        speaker: 'Zenith',
+        text: 'Rizky is studying Computer Engineering at Politeknik Kota Malang — mastering microcontrollers (ESP32, Arduino) alongside modern web tech (React, Next.js, TypeScript).',
       },
       {
         speaker: 'Rizky',
-        text: 'Current GPA: 3.73. Not the number I lead with, but it reflects the effort that goes into both the coursework and the side projects.',
+        text: 'Current GPA: 3.73. Not the number I lead with, but it reflects the dedication that goes into both coursework and real-world engineering.',
       },
     ],
   },
@@ -47,11 +47,11 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
     dialogue: [
       {
         speaker: 'Rizky',
-        text: 'Right now I\'m focused on building responsive web tools, finishing up a custom PCB project, and shipping cleaner, faster interfaces.',
+        text: 'Right now I\'m focused on shipping performant web tools, developing custom PCB architectures, and refining interactive user interfaces.',
       },
       {
-        speaker: 'Zxaviers',
-        text: 'If you want the specifics — check the Constellation map or flip through the Mission Log below.',
+        speaker: 'Zenith',
+        text: 'If you want the specifics — explore the Constellation skill tree or inspect the Mission Log below.',
       },
     ],
   },
@@ -120,7 +120,7 @@ export function MissionControl() {
                   {currentDialogue.speaker}
                 </h3>
                 <p className="font-body text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                  {isRizky ? 'Rizky Mardhani · Malang, ID' : 'Zxaviers · online alias'}
+                  {isRizky ? 'Rizky Mardhani · Engineer' : 'Zenith · System AI'}
                 </p>
               </div>
             </div>

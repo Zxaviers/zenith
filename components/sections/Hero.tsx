@@ -231,7 +231,7 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          Hello, I&apos;m{' '}
+          Welcome to{' '}
           <span
             style={{
               color: 'var(--color-teal)',
@@ -241,7 +241,7 @@ export function Hero() {
               textUnderlineOffset: '8px',
             }}
           >
-            Zxaviers
+            Zenith
           </span>
         </motion.h1>
 

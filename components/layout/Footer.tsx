@@ -38,10 +38,10 @@ export function Footer() {
           </span>
         </div>
 
-        {/* Orbit Links */}
+        {/* Orbit Links — CSS hover only (no JS handlers, Server Component safe) */}
         <div className="flex flex-wrap items-center justify-center gap-3 py-2">
           {[
-            { href: 'https://github.com/zxaviers', label: '⚡ GitHub // @zxaviers' },
+            { href: 'https://github.com/zxaviers', label: '⚡ GitHub' },
             { href: 'https://linkedin.com/in/rizky-mardhani1st', label: '💼 LinkedIn // Rizky Mardhani' },
             { href: 'https://instagram.com/sza.vy1st', label: '📸 Instagram // @sza.vy1st' },
           ].map(({ href, label }) => (

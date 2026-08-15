@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 const BOOT_LOGS = [
   'INITIALIZING ZENITH v3...',
   'LOADING VOID ASSETS...',
-  'AUTHENTICATED: ZXAVIERS',
+  'AUTHENTICATED: ZENITH CORE',
   'PALETTE: VOID TEAL // LOCKED IN',
   'ALL SYSTEMS GO 🚀',
 ]

@@ -147,7 +147,7 @@ export function Maintenance() {
           </div>
           <div className="flex justify-between">
             <span style={{ color: 'var(--color-ink-muted)' }}>Pilot / Engineer:</span>
-            <span style={{ color: 'var(--color-ink)' }}>Rizky Mardhani (Zxaviers)</span>
+            <span style={{ color: 'var(--color-ink)' }}>Rizky Mardhani // Zenith</span>
           </div>
           <div className="flex justify-between">
             <span style={{ color: 'var(--color-ink-muted)' }}>Next Trajectory:</span>
