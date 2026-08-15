@@ -17,11 +17,11 @@ export function MissionLog() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="font-display text-2xl text-starchart md:text-3xl">
+        <h2 className="font-display text-2xl md:text-3xl" style={{ color: 'var(--color-ink)' }}>
           Mission Log
         </h2>
-        <p className="mt-2 font-body text-base text-starchart/80 md:text-lg">
-          Discovered artifacts, production deployments &amp; hardware prototypes
+        <p className="mt-2 font-body text-base md:text-lg" style={{ color: 'var(--color-ink-muted)' }}>
+          Projects I&apos;ve shipped — web apps, hardware prototypes, and more
         </p>
       </motion.div>
 
@@ -32,18 +32,23 @@ export function MissionLog() {
               <PixelPanel
                 key={project.title}
                 variant="void"
-                className="opacity-60 border-2 border-dashed border-white/20 flex flex-col justify-between p-5 md:p-6"
+                className="opacity-60 border-2 border-dashed flex flex-col justify-between p-5 md:p-6"
+                style={{ '--pixel-border-color': 'rgba(255,255,255,0.2)' } as React.CSSProperties}
               >
                 <div>
-                  <div className="mb-4 flex w-full aspect-video items-center justify-center rounded bg-void border border-white/10">
-                    <span className="font-display text-2xl text-star animate-pulse">?</span>
+                  <div
+                    className="mb-4 flex w-full aspect-video items-center justify-center rounded"
+                    style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  >
+                    <span className="font-display text-2xl animate-pulse" style={{ color: 'var(--color-teal)' }}>?</span>
                   </div>
-                  <span className="font-stat text-xs text-star block mb-1">ARTIFACT #03 // ENCRYPTED</span>
-                  <h3 className="mb-2 font-display text-sm text-starchart">{project.title}</h3>
-                  <p className="font-body text-sm text-starchart/70 leading-relaxed">{project.desc}</p>
+                  {/* Removed "ARTIFACT #03 // ENCRYPTED" — kept simple label */}
+                  <span className="font-stat text-xs block mb-1" style={{ color: 'var(--color-teal)' }}>Coming soon</span>
+                  <h3 className="mb-2 font-display text-sm" style={{ color: 'var(--color-ink)' }}>{project.title}</h3>
+                  <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink-muted)' }}>{project.desc}</p>
                 </div>
                 <div className="mt-6 pt-3 border-t border-white/10 text-right">
-                  <span className="font-stat text-xs text-starchart/50">[SCANNING DEEP SPACE...]</span>
+                  <span className="font-stat text-xs" style={{ color: 'var(--color-ink-muted)', opacity: 0.5 }}>In progress...</span>
                 </div>
               </PixelPanel>
             )
@@ -61,12 +66,19 @@ export function MissionLog() {
             >
               <PixelPanel
                 variant="nebula"
-                className="flex flex-col justify-between h-full border-2 border-star/40 shadow-[6px_6px_0_0_#000] p-5 md:p-6 glint-top group hover:border-star transition-all duration-300"
+                className="flex flex-col justify-between h-full shadow-[6px_6px_0_0_#000] p-5 md:p-6 group transition-all duration-300"
               >
                 <div>
-                  {/* Artifact Preview Screenshot */}
+                  {/* Project preview */}
                   {project.preview && (
-                    <div className="relative mb-4 flex w-full aspect-video items-center justify-center overflow-hidden rounded border-2 border-white/10 bg-void">
+                    <div
+                      className="relative mb-4 flex w-full aspect-video items-center justify-center overflow-hidden rounded"
+                      style={{
+                        border: '2px solid rgba(0,245,196,0.2)',
+                        background: 'var(--color-void-deep)',
+                        /* Bagian 4 fix: dark border frame prevents white-thumbnail contrast clash */
+                      }}
+                    >
                       <Image
                         src={project.preview}
                         alt={project.title}
@@ -74,32 +86,42 @@ export function MissionLog() {
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute top-2 left-2 rounded bg-void/95 px-2 py-0.5 font-stat text-[11px] text-star border border-star/40 shadow-[1px_1px_0_0_#000]">
-                        ARTIFACT // 0{idx + 1}
-                      </div>
-                      <div className="absolute top-2 right-2 flex items-center gap-1 rounded bg-void/95 px-2 py-0.5 font-stat text-[10px] text-aurora border border-aurora/40">
-                        <span className="h-1.5 w-1.5 rounded-full bg-aurora animate-pulse" />
-                        <span>LIVE</span>
+                      {/* Overlay gradient on white thumbnails for contrast */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(19,13,26,0.6) 100%)' }}
+                      />
+                      {/* Simple "Live" badge */}
+                      <div
+                        className="absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
+                        style={{ background: 'rgba(19,13,26,0.9)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.35)' }}
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: 'var(--color-teal)' }} />
+                        <span>Live</span>
                       </div>
                     </div>
                   )}
 
-                  <h3 className="mb-2 font-display text-sm md:text-base text-star group-hover:text-comet transition-colors">
+                  <h3
+                    className="mb-2 font-display text-sm md:text-base transition-colors"
+                    style={{ color: 'var(--color-teal)' }}
+                  >
                     {project.title}
                   </h3>
-                  <p className="font-body text-sm md:text-base text-starchart/90 leading-relaxed mb-4">
+                  <p className="font-body text-sm md:text-base leading-relaxed mb-4" style={{ color: 'var(--color-ink)', opacity: 0.9 }}>
                     {project.desc}
                   </p>
                 </div>
 
-                <div className="mt-4 pt-4 border-t-2 border-white/10">
-                  {/* Guaranteed Readable Tech Chips */}
+                <div className="mt-4 pt-4 border-t border-white/10">
+                  {/* Tech stack chips */}
                   {project.techStack && (
                     <div className="mb-4 flex flex-wrap gap-1.5">
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="rounded bg-void px-2 py-0.5 font-stat text-xs text-star border border-star/30 shadow-[1px_1px_0_0_#000]"
+                          className="rounded px-2 py-0.5 font-stat text-xs shadow-[1px_1px_0_0_#000]"
+                          style={{ background: 'var(--color-void-deep)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.25)' }}
                         >
                           {tech}
                         </span>
@@ -107,53 +129,37 @@ export function MissionLog() {
                     </div>
                   )}
 
-                  {/* Dual Action Buttons */}
+                  {/* Action buttons */}
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     {project.link ? (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full"
-                      >
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-full">
                         <PixelButton variant="comet" className="w-full text-xs py-2 font-bold justify-center">
                           🚀 Live Demo
                         </PixelButton>
                       </a>
                     ) : (
                       <button disabled className="w-full opacity-50 cursor-not-allowed">
-                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
-                          Offline
-                        </PixelButton>
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">Offline</PixelButton>
                       </button>
                     )}
 
                     {project.repo ? (
-                      <a
-                        href={project.repo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full"
-                      >
-                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
-                          ⚡ Repo
-                        </PixelButton>
+                      <a href={project.repo} target="_blank" rel="noopener noreferrer" className="w-full">
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">⚡ Repo</PixelButton>
                       </a>
                     ) : (
                       <Link href={`/projects/${project.slug}`} className="w-full">
-                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">
-                          📄 Intel
-                        </PixelButton>
+                        <PixelButton variant="ghost" className="w-full text-xs py-2 justify-center">📄 Details</PixelButton>
                       </Link>
                     )}
                   </div>
 
-                  {/* Inspect Case Study */}
                   <Link
                     href={`/projects/${project.slug}`}
-                    className="block text-center font-stat text-xs text-starchart/70 hover:text-star transition-colors pt-2 border-t border-white/5"
+                    className="block text-center font-stat text-xs pt-2 border-t border-white/5 transition-colors hover:opacity-80"
+                    style={{ color: 'var(--color-ink-muted)' }}
                   >
-                    [ Inspect Full Mission Intel → ]
+                    [ Read full case study → ]
                   </Link>
                 </div>
               </PixelPanel>

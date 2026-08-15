@@ -15,16 +15,17 @@ export interface StarNodeProps
   size?: number
 }
 
+/* Glow intensities keyed to mastery level — now teal/cyan palette */
 const levelGlow: Record<SkillLevel, string> = {
-  Proficient: '0 0 16px 4px rgba(255, 200, 87, 0.95), 0 0 28px 8px rgba(255, 139, 76, 0.5)',
-  Familiar: '0 0 10px 2px rgba(255, 200, 87, 0.75), 0 0 18px 4px rgba(255, 200, 87, 0.35)',
-  Basic: '0 0 6px 1px rgba(245, 233, 214, 0.5), 0 0 12px 2px rgba(245, 233, 214, 0.2)',
+  Proficient: '0 0 16px 4px rgba(0, 245, 196, 0.95), 0 0 28px 8px rgba(0, 191, 160, 0.5)',
+  Familiar:   '0 0 10px 2px rgba(0, 245, 196, 0.75), 0 0 18px 4px rgba(0, 245, 196, 0.35)',
+  Basic:      '0 0 6px 1px rgba(240, 238, 255, 0.5),  0 0 12px 2px rgba(240, 238, 255, 0.2)',
 }
 
 const stateColor: Record<StarNodeState, string> = {
-  locked: '#475569',
-  unlocked: 'var(--color-star)',
-  active: 'var(--color-comet)',
+  locked:   '#475569',
+  unlocked: 'var(--color-teal-dim)',
+  active:   'var(--color-teal)',
 }
 
 /**
@@ -47,7 +48,7 @@ export function StarNode({
   const glowShadow = isLocked
     ? 'none'
     : isActive
-      ? '0 0 20px 6px rgba(255, 139, 76, 1), 0 0 36px 10px rgba(255, 200, 87, 0.7)'
+      ? '0 0 20px 6px rgba(0, 245, 196, 1), 0 0 36px 10px rgba(0, 191, 160, 0.7)'
       : levelGlow[level]
 
   return (
@@ -58,9 +59,9 @@ export function StarNode({
       disabled={disabled ?? isLocked}
       className={cn(
         'relative inline-flex shrink-0 items-center justify-center rounded-full transition-all duration-300',
-        'focus-visible:outline focus-visible:outline-3 focus-visible:outline-aurora focus-visible:outline-offset-2',
-        isActive && 'scale-125 ring-2 ring-star ring-offset-2 ring-offset-void animate-pulse',
-        !isLocked && !isActive && 'cursor-pointer hover:scale-125 hover:ring-2 hover:ring-star/70',
+        'focus-visible:outline focus-visible:outline-3 focus-visible:outline-teal focus-visible:outline-offset-2',
+        isActive && 'scale-125 ring-2 ring-teal ring-offset-2 ring-offset-void-deep animate-pulse',
+        !isLocked && !isActive && 'cursor-pointer hover:scale-125 hover:ring-2 hover:ring-teal/70',
         isLocked && 'cursor-not-allowed opacity-40',
         className
       )}

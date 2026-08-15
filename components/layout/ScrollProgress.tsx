@@ -43,8 +43,8 @@ export function ScrollProgress() {
       aria-valuemax={100}
     >
       <div
-        className="h-full bg-comet"
-        style={{ width: `${progress}%`, boxShadow: '0 0 8px 1px var(--color-comet)' }}
+        className="h-full"
+        style={{ width: `${progress}%`, background: 'var(--color-teal)', boxShadow: '0 0 8px 1px var(--color-teal)' }}
       />
     </div>
   )

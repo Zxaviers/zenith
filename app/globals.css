@@ -34,6 +34,11 @@
 }
 
 @layer base {
+  html {
+    /* Bagian 4 fix: prevent black overscroll area — html must match body bg */
+    background-color: var(--color-void-deep);
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-void-deep);
     color: var(--color-ink);

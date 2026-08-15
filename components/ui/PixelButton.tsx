@@ -3,9 +3,8 @@ import { cn } from '@/lib/utils'
 
 export interface PixelButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * `comet` — the primary "launch" CTA look: comet-orange fill, star-gold
-   * border. `ghost` — quieter secondary action: nebula fill, starchart
-   * border, for things like a project's secondary "View repo" link.
+   * `comet` → primary CTA: teal fill, deep bg text.
+   * `ghost` → secondary action: void-surface fill, ink text.
    */
   variant?: 'comet' | 'ghost'
   children: ReactNode
@@ -17,17 +16,17 @@ const variantStyles: Record<
 > = {
   comet: {
     style: {
-      '--pixel-fill-color': 'var(--color-comet)',
-      '--pixel-border-color': 'var(--color-star)',
+      '--pixel-fill-color': 'var(--color-teal)',
+      '--pixel-border-color': 'var(--color-teal-dim)',
     },
-    text: 'text-void',
+    text: 'text-void-deep',
   },
   ghost: {
     style: {
-      '--pixel-fill-color': 'var(--color-nebula)',
-      '--pixel-border-color': 'var(--color-starchart)',
+      '--pixel-fill-color': 'var(--color-void-surface)',
+      '--pixel-border-color': 'rgba(240, 238, 255, 0.4)',
     },
-    text: 'text-starchart',
+    text: 'text-ink',
   },
 }
 

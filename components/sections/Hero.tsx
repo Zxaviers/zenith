@@ -91,6 +91,8 @@ function VoidPlanet({ className = '' }: { className?: string }) {
           backgroundSize: '14784px 96px',  /* 7392*2 = 14784 at 2× scale */
           imageRendering: 'pixelated',
           animationDuration: '8s',
+          /* Bagian 3: harmonize planet colors towards Void Teal palette */
+          filter: 'hue-rotate(160deg) saturate(1.1) brightness(1.05)',
         }}
       />
     </div>

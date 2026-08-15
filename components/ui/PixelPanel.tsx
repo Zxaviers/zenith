@@ -3,9 +3,9 @@ import { cn } from '@/lib/utils'
 
 export interface PixelPanelProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * `nebula` — light text on a dark nebula-violet fill with a star-gold border.
-   * `starchart` — dark text on a cream star chart fill with a nebula border.
-   * `void` — deep space dark fill with a subtle comet/star border for nested telemetry.
+   * `nebula` — Void surface fill with teal border (primary panel).
+   * `starchart` — light text panel (unused in v3 but kept for compat).
+   * `void` — deepest dark fill for nested/inner panels.
    */
   variant?: 'nebula' | 'starchart' | 'void'
   children: ReactNode
@@ -17,24 +17,24 @@ const variantStyles: Record<
 > = {
   nebula: {
     style: {
-      '--pixel-fill-color': 'var(--color-nebula)',
-      '--pixel-border-color': 'var(--color-star)',
+      '--pixel-fill-color': 'var(--color-void-surface)',
+      '--pixel-border-color': 'var(--color-teal)',
     },
-    text: 'text-starchart',
+    text: 'text-ink',
   },
   starchart: {
     style: {
-      '--pixel-fill-color': 'var(--color-starchart)',
-      '--pixel-border-color': 'var(--color-nebula)',
+      '--pixel-fill-color': 'var(--color-void-mid)',
+      '--pixel-border-color': 'var(--color-teal-dim)',
     },
-    text: 'text-void',
+    text: 'text-ink',
   },
   void: {
     style: {
-      '--pixel-fill-color': 'var(--color-void)',
-      '--pixel-border-color': 'rgba(255, 139, 76, 0.4)',
+      '--pixel-fill-color': 'var(--color-void-mid)',
+      '--pixel-border-color': 'rgba(0, 245, 196, 0.3)',
     },
-    text: 'text-starchart',
+    text: 'text-ink',
   },
 }
 

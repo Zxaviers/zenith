@@ -41,7 +41,7 @@ export function SecretLevel() {
           canvas: canvasRef.current,
           width: 800,
           height: 600,
-          background: [27, 18, 53],
+          background: [19, 13, 26],
           focus: false,
         })
 
@@ -185,19 +185,19 @@ export function SecretLevel() {
       viewport={{ once: true }}
     >
       <div className="mx-auto max-w-4xl">
-        <PixelPanel variant="nebula" className="border-4 border-comet shadow-[6px_6px_0px_0px_#000] glint-top p-4 md:p-8">
+        <PixelPanel variant="nebula" className="shadow-[6px_6px_0px_0px_#000] p-4 md:p-8" style={{ '--pixel-border-color': 'var(--color-teal)' } as React.CSSProperties}>
           {/* Arcade Cabinet Marquee */}
           <div className="mb-6 flex flex-wrap items-center justify-between border-b-2 border-white/10 pb-4 gap-3">
             <div className="flex items-center gap-2 text-left">
-              <span className="font-display text-base md:text-lg text-star">
+              <span className="font-display text-base md:text-lg" style={{ color: 'var(--color-teal)' }}>
                 ★ SECRET ARCADE LEVEL ★
               </span>
             </div>
             <div className="flex items-center gap-2 font-stat text-xs">
-              <span className="px-2 py-0.5 rounded bg-void text-aurora border border-aurora/40">
+              <span className="px-2 py-0.5 rounded font-stat text-xs" style={{ background: 'var(--color-void-deep)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.35)' }}>
                 1 CREDIT // READY
               </span>
-              <span className="hidden sm:inline text-starchart/60">
+              <span className="hidden sm:inline font-stat text-xs" style={{ color: 'var(--color-ink-muted)' }}>
                 ENGINE: KABOOM-JS
               </span>
             </div>
@@ -205,19 +205,19 @@ export function SecretLevel() {
 
           {isMobile ? (
             <div
-              className="flex items-center justify-center bg-void/80 p-6 text-center border-2 border-white/10 rounded"
-              style={{ width: '800px', height: '400px', maxWidth: '100%' }}
+              className="flex items-center justify-center p-6 text-center rounded"
+              style={{ width: '800px', height: '400px', maxWidth: '100%', background: 'rgba(19,13,26,0.8)', border: '2px solid rgba(255,255,255,0.1)' }}
             >
-              <p className="font-body text-lg text-comet md:text-xl">
+              <p className="font-body text-lg md:text-xl" style={{ color: 'var(--color-teal)' }}>
                 🕹️ This secret flight simulator requires desktop keyboard arrow controls.
               </p>
             </div>
           ) : hasError ? (
             <div
-              className="flex items-center justify-center bg-void/80 p-6 text-center border-2 border-white/10 rounded"
-              style={{ width: '800px', height: '400px', maxWidth: '100%' }}
+              className="flex items-center justify-center p-6 text-center rounded"
+              style={{ width: '800px', height: '400px', maxWidth: '100%', background: 'rgba(19,13,26,0.8)', border: '2px solid rgba(255,255,255,0.1)' }}
             >
-              <p className="font-body text-lg text-comet md:text-xl">
+              <p className="font-body text-lg md:text-xl" style={{ color: 'var(--color-pink)' }}>
                 ⚠️ Arcade simulator module could not be initialized in this viewport.
               </p>
             </div>
@@ -231,9 +231,9 @@ export function SecretLevel() {
             </div>
           )}
 
-          <div className="mt-4 flex justify-between items-center font-stat text-xs text-starchart/60 pt-2 border-t border-white/10">
+          <div className="mt-4 flex justify-between items-center font-stat text-xs pt-2 border-t border-white/10" style={{ color: 'var(--color-ink-muted)' }}>
             <span>[CONTROLS: ARROWS TO MOVE / SPACE TO SHOOT]</span>
-            <span className="text-star">HI-SCORE // 99990</span>
+            <span style={{ color: 'var(--color-teal)' }}>HI-SCORE // 99990</span>
           </div>
         </PixelPanel>
       </div>

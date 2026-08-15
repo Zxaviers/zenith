@@ -1,15 +1,14 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 const BOOT_LOGS = [
-  'INITIALIZING ZENITH OS v1.0...',
-  'CALIBRATING ASTRONOMICAL SENSORS...',
-  'OPERATOR CALLSIGN: ZXAVIERS // AUTHENTICATED',
-  'WARM NEBULA STAR CHART: SYNCHRONIZED',
-  'ALL SYSTEMS NOMINAL // LAUNCH READY',
+  'INITIALIZING ZENITH v3...',
+  'LOADING VOID ASSETS...',
+  'AUTHENTICATED: ZXAVIERS',
+  'PALETTE: VOID TEAL // LOCKED IN',
+  'ALL SYSTEMS GO 🚀',
 ]
 
 export function Preloader() {
@@ -18,7 +17,6 @@ export function Preloader() {
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
-    // If user prefers reduced motion, skip boot sequence immediately
     if (shouldReduceMotion) {
       setLoading(false)
       return
@@ -47,35 +45,49 @@ export function Preloader() {
     <AnimatePresence>
       {loading && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-void px-6 text-center select-none"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center px-6 text-center select-none"
+          style={{ background: 'var(--color-void-deep)' }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.45, ease: 'easeInOut' }}
         >
-          {/* Central Spinning Celestial Core */}
+          {/* Ship sprite with teal glow */}
           <div className="relative mb-6">
-            <div className="absolute inset-0 rounded-full bg-comet/20 blur-xl animate-pulse" />
+            <div
+              className="absolute inset-0 rounded-full blur-xl animate-pulse"
+              style={{ background: 'rgba(0,245,196,0.15)' }}
+            />
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <Image
-                src="/sprites/planetUnik.png"
-                alt=""
-                width={80}
-                height={80}
-                className="h-20 w-20 pixel-asset drop-shadow-[0_0_15px_rgba(255,200,87,0.4)]"
-                priority
+              {/* Void ship sprite at 2× */}
+              <div
+                className="pixel-asset animate-engine-burst"
+                style={{
+                  width: 80,
+                  height: 80,
+                  backgroundImage: 'url(/sprites/void/ship-base.png)',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: '0 0',
+                  backgroundSize: '100% 100%',
+                  imageRendering: 'pixelated',
+                  filter: 'drop-shadow(0 0 16px rgba(0,245,196,0.7)) hue-rotate(160deg) saturate(1.2)',
+                }}
+                aria-hidden="true"
               />
             </motion.div>
           </div>
 
-          <h1 className="font-display text-2xl tracking-wider text-starchart md:text-3xl">
+          <h1
+            className="font-display text-2xl tracking-wider md:text-3xl"
+            style={{ color: 'var(--color-ink)' }}
+          >
             ZENITH
           </h1>
 
-          {/* Telemetry Terminal Boot Stream */}
-          <div className="mt-4 h-6 font-stat text-sm md:text-base text-star">
+          {/* Boot stream — teal color */}
+          <div className="mt-4 h-6 font-stat text-sm md:text-base" style={{ color: 'var(--color-teal)' }}>
             <motion.span
               key={logIndex}
               initial={{ opacity: 0, y: 4 }}
@@ -86,10 +98,14 @@ export function Preloader() {
             </motion.span>
           </div>
 
-          {/* Progress Loading Bar */}
-          <div className="mt-6 w-48 overflow-hidden rounded-full bg-nebula/80 p-0.5 border border-star/30">
+          {/* Progress bar — teal */}
+          <div
+            className="mt-6 w-48 overflow-hidden rounded-full p-0.5"
+            style={{ background: 'var(--color-void-surface)', border: '1px solid rgba(0,245,196,0.2)' }}
+          >
             <motion.div
-              className="h-1.5 rounded-full bg-gradient-to-r from-comet via-star to-aurora"
+              className="h-1.5 rounded-full"
+              style={{ background: 'linear-gradient(to right, var(--color-teal-dim), var(--color-teal))' }}
               initial={{ width: '5%' }}
               animate={{ width: '100%' }}
               transition={{ duration: 1.4, ease: 'easeInOut' }}
