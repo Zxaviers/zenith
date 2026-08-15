@@ -22,7 +22,7 @@ function VoidShip({ className = '' }: { className?: string }) {
       aria-hidden="true"
     >
       {/* Drop-shadow teal glow around the whole assembly */}
-      <div className="relative" style={{ filter: 'drop-shadow(0 0 14px rgba(0,245,196,0.55))' }}>
+      <div className="relative" style={{ filter: 'hue-rotate(180deg) saturate(1.4) drop-shadow(0 0 14px rgba(0,245,196,0.55))' }}>
         {/* Ship hull — static 48×48 sprite */}
         <div
           className="pixel-asset"
