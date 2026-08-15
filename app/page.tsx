@@ -1,3 +1,4 @@
+import { Maintenance } from '@/components/sections/Maintenance'
 import { Preloader } from '@/components/layout/Preloader'
 import { ScrollProgress } from '@/components/layout/ScrollProgress'
 import { Navbar } from '@/components/layout/Navbar'
@@ -10,7 +11,14 @@ import { MissionLog } from '@/components/sections/MissionLog'
 import { SecretLevel } from '@/components/sections/SecretLevel'
 import { Transmission } from '@/components/sections/Transmission'
 
+// Set to false when ready to launch the full portfolio
+const IS_MAINTENANCE = true
+
 export default function Home() {
+  if (IS_MAINTENANCE) {
+    return <Maintenance />
+  }
+
   return (
     <>
       <Preloader />
