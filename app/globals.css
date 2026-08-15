@@ -1,48 +1,56 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   Zenith — "Warm Nebula" design tokens (Fase 2)
-   Tailwind v4 CSS-first theme: --color-* / --font-* vars below
-   auto-generate matching utilities (bg-comet, text-star, etc).
+   Zenith v3 — "Void Teal" design tokens
+   Palet diturunkan dari Foozle Void asset pixel (CC0):
+     - bg-deep   → Layer 01 Void background  (#130D1A)
+     - bg-mid    → Nebula shadow layer       (#1E1030)
+     - bg-surface→ Panel surface             (#2D1A4A)
+     - teal      → Burst Engine glow         (#00F5C4)
+     - teal-dim  → Engine dim / hover        (#00BFA0)
+     - pink      → Big Star layer            (#FF6B9D)
+     - ink       → Text: white-lavender      (#F0EEFF)
+     - ink-muted → Text: dim purple          (#9890C4)
    ============================================================ */
 @theme {
-  --color-comet: #ff8b4c;
-  --color-star: #ffc857;
-  --color-void: #1b1235;
-  --color-nebula: #3e2a63;
-  --color-starchart: #f5e9d6;
-  --color-aurora: #6fcf97;
+  /* ── Backgrounds ── */
+  --color-void-deep:    #130d1a;
+  --color-void-mid:     #1e1030;
+  --color-void-surface: #2d1a4a;
 
-  /* Populated at runtime by the next/font variables set on <html> in
-     app/layout.tsx — kept as indirection so components can reference a
-     stable --font-display/--font-body/--font-stat name regardless of
-     which underlying font family backs it. */
+  /* ── Accents ── */
+  --color-teal:         #00f5c4;
+  --color-teal-dim:     #00bfa0;
+  --color-pink:         #ff6b9d;
+
+  /* ── Text ── */
+  --color-ink:          #f0eeff;
+  --color-ink-muted:    #9890c4;
+
+  /* ── Fonts (tetap sama, tidak berubah) ── */
   --font-display: var(--font-press-start-2p), cursive;
-  --font-body: var(--font-nunito), sans-serif;
-  --font-stat: var(--font-vt323), monospace;
+  --font-body:    var(--font-nunito), sans-serif;
+  --font-stat:    var(--font-vt323), monospace;
 }
 
 @layer base {
   body {
-    background-color: var(--color-void);
-    color: var(--color-starchart);
+    background-color: var(--color-void-deep);
+    color: var(--color-ink);
     font-family: var(--font-body);
   }
 }
 
 /* ============================================================
-   Pixel frame — shared 9-slice-style notched border + hard offset
-   shadow used by PixelPanel and PixelButton. Two stacked pseudo
-   layers (border color, then inset fill) clipped to the same
-   notched-corner polygon, so the "border" reads as a solid pixel
-   outline rather than a blurred CSS border-radius.
+   Pixel frame — shared notched border + hard offset shadow.
+   Token warna diupdate ke Void Teal palette.
    ============================================================ */
 @layer components {
   .pixel-frame {
     --pixel-notch: 8px;
     --pixel-border-width: 3px;
-    --pixel-border-color: var(--color-star);
-    --pixel-fill-color: var(--color-nebula);
+    --pixel-border-color: var(--color-teal);
+    --pixel-fill-color: var(--color-void-surface);
     --pixel-shadow-color: rgba(0, 0, 0, 0.55);
     --pixel-shadow-offset: 4px;
 
@@ -86,9 +94,6 @@
     z-index: 2;
   }
 
-  /* "Launch console" press effect used by PixelButton: on press, the
-     button travels into its own shadow instead of the shadow blurring,
-     matching the brief's "turun 2px + shadow snap" cue. */
   .pixel-frame-pressable {
     cursor: pointer;
     transition: transform 60ms ease-out;
@@ -108,22 +113,29 @@
   }
 
   .pixel-frame-pressable:focus-visible {
-    outline: 3px solid var(--color-aurora);
+    outline: 3px solid var(--color-teal);
     outline-offset: 3px;
   }
 
-  /* Starfield background layers — self-contained CSS dot fields (no
-     external image requests), drifting slowly. Density/opacity are set
-     per-layer via inline style from the `intensity` prop. */
+  /* ── Void background tile scroll (parallax layer) ── */
+  .void-bg-layer {
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    will-change: background-position;
+  }
+
+  /* ── Starfield CSS dots — kept as fallback/overlay ── */
   .starfield-layer {
     position: absolute;
     inset: -20% 0;
     background-repeat: repeat;
     background-image:
-      radial-gradient(circle at 20% 30%, var(--color-starchart) 1px, transparent 1.6px),
-      radial-gradient(circle at 75% 15%, var(--color-starchart) 1.5px, transparent 2px),
-      radial-gradient(circle at 45% 80%, var(--color-starchart) 1px, transparent 1.6px),
-      radial-gradient(circle at 85% 65%, var(--color-starchart) 0.8px, transparent 1.2px);
+      radial-gradient(circle at 20% 30%, var(--color-ink) 1px, transparent 1.6px),
+      radial-gradient(circle at 75% 15%, var(--color-ink) 1.5px, transparent 2px),
+      radial-gradient(circle at 45% 80%, var(--color-ink) 1px, transparent 1.6px),
+      radial-gradient(circle at 85% 65%, var(--color-ink) 0.8px, transparent 1.2px);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -132,30 +144,80 @@
     }
   }
 
-  .starfield-nebula-haze {
+  /* ── Teal nebula ambient haze ── */
+  .void-nebula-haze {
     position: absolute;
     inset: 0;
     background-image: radial-gradient(
         circle at 20% 30%,
-        color-mix(in srgb, var(--color-nebula) 70%, transparent) 0%,
+        color-mix(in srgb, var(--color-void-surface) 60%, transparent) 0%,
         transparent 45%
       ),
       radial-gradient(
         circle at 80% 70%,
-        color-mix(in srgb, var(--color-comet) 35%, transparent) 0%,
+        color-mix(in srgb, var(--color-teal) 12%, transparent) 0%,
         transparent 40%
       );
     filter: blur(8px);
   }
 }
 
+/* ── Keyframes ── */
+
 @keyframes starfield-drift {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 -1000px;
-  }
+  from { background-position: 0 0; }
+  to   { background-position: 0 -1000px; }
+}
+
+/* Horizontal sprite scroll for background (bg-void.png = 5760px wide, repeating) */
+@keyframes bg-scroll-slow {
+  from { background-position: 0 0; }
+  to   { background-position: -5760px 0; }
+}
+
+/* Ship engine sprite — 7 frames @ 48px each = 336px total width */
+@keyframes engine-burst {
+  from { background-position: 0 0; }
+  to   { background-position: -336px 0; }
+}
+
+/* Base engine — 4 frames @ 48px = 192px */
+@keyframes engine-base {
+  from { background-position: 0 0; }
+  to   { background-position: -192px 0; }
+}
+
+/* Planet Earth sprite — 154 frames @ 48px = 7392px */
+@keyframes planet-spin {
+  from { background-position: 0 0; }
+  to   { background-position: -7392px 0; }
+}
+
+@keyframes float-slow {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(10px, 8px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes void-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.06); }
+}
+
+@keyframes teal-flicker {
+  0%, 100% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.7; }
+  94%       { opacity: 1; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@keyframes eq-bounce {
+  0%   { height: 4px; }
+  100% { height: 18px; }
 }
 
 @layer utilities {
@@ -175,19 +237,13 @@
     pointer-events: none;
   }
 
-  .rpg-shadow {
-    box-shadow: 4px 4px 0px 0px #000000;
-  }
+  .rpg-shadow { box-shadow: 4px 4px 0px 0px #000000; }
 
-  .rpg-shadow-hover {
-    transition: all 0.15s ease;
-  }
-
+  .rpg-shadow-hover { transition: all 0.15s ease; }
   .rpg-shadow-hover:hover {
     box-shadow: 6px 6px 0px 0px #000000;
     transform: translate(-2px, -2px);
   }
-
   .rpg-shadow-hover:active {
     box-shadow: 2px 2px 0px 0px #000000;
     transform: translate(2px, 2px);
@@ -196,114 +252,101 @@
   .blinking-cursor::after {
     content: '█';
     animation: blink 1s step-end infinite;
-    color: var(--color-comet);
+    color: var(--color-teal);
     margin-left: 4px;
   }
 
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-
-  .hud-glass {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+  /* Glassmorphism panel */
+  .void-glass {
+    background: linear-gradient(135deg, rgba(0, 245, 196, 0.04) 0%, rgba(45, 26, 74, 0.6) 100%);
     backdrop-filter: blur(12px);
   }
 
-  .hud-glow-comet {
-    box-shadow: 0 0 15px 2px rgba(255, 139, 76, 0.25);
+  /* Teal glow effects */
+  .glow-teal {
+    box-shadow: 0 0 15px 2px rgba(0, 245, 196, 0.25);
+  }
+  .glow-teal-lg {
+    box-shadow: 0 0 30px 6px rgba(0, 245, 196, 0.2);
+  }
+  .glow-pink {
+    box-shadow: 0 0 15px 2px rgba(255, 107, 157, 0.25);
   }
 
   .glint-top {
-    border-top: 1px solid rgba(255, 200, 87, 0.35);
+    border-top: 1px solid rgba(0, 245, 196, 0.25);
   }
 
+  /* Pixel badges */
+  .pixel-badge {
+    position: relative;
+    border: 1px solid var(--color-teal);
+    background: var(--color-void-deep);
+    box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.8);
+  }
+
+  .pixel-border-teal {
+    border: 2px solid var(--color-teal);
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  .pixel-border-pink {
+    border: 2px solid var(--color-pink);
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Segment bars */
   .segment-bar {
     display: flex;
     gap: 3px;
     align-items: center;
   }
-
   .segment {
     width: 6px;
     height: 14px;
     border-radius: 1px;
     transition: all 0.2s ease-in-out;
   }
-
   .segment-filled {
-    background-color: var(--color-star);
-    box-shadow: 0 0 6px var(--color-star);
+    background-color: var(--color-teal);
+    box-shadow: 0 0 6px var(--color-teal);
   }
-
   .segment-empty {
-    background-color: rgba(245, 233, 214, 0.12);
+    background-color: rgba(240, 238, 255, 0.08);
   }
 
-  /* Holographic Shimmer & Retro UI Borders */
-  .pixel-border-gold {
-    border: 2px solid var(--color-star);
-    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
-  }
-
-  .pixel-border-comet {
-    border: 2px solid var(--color-comet);
-    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9), inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
-  }
-
-  .pixel-badge {
-    position: relative;
-    border: 1px solid var(--color-star);
-    background: var(--color-void);
-    box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.8);
-  }
-
+  /* Equalizer */
   .equalizer-bar {
     width: 3px;
-    background: var(--color-aurora);
+    background: var(--color-teal);
     border-radius: 1px;
     animation: eq-bounce 1.2s ease-in-out infinite alternate;
   }
-
   .equalizer-bar:nth-child(2) { animation-delay: 0.2s; }
   .equalizer-bar:nth-child(3) { animation-delay: 0.4s; }
   .equalizer-bar:nth-child(4) { animation-delay: 0.1s; }
   .equalizer-bar:nth-child(5) { animation-delay: 0.5s; }
-}
 
-@keyframes eq-bounce {
-  0% { height: 4px; }
-  100% { height: 18px; }
-}
-
-@keyframes float-slow {
-  0% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(10px, 8px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-@keyframes nebula-pulse {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.45;
-    transform: scale(1.08);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .animate-float-slow {
-    animation: float-slow 15s ease-in-out infinite;
+  /* Animation utility classes */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-float-slow      { animation: float-slow 15s ease-in-out infinite; }
+    .animate-void-pulse      { animation: void-pulse 8s ease-in-out infinite; }
+    .animate-teal-flicker    { animation: teal-flicker 4s ease-in-out infinite; }
+    .animate-bg-scroll-slow  { animation: bg-scroll-slow 80s linear infinite; }
+    .animate-engine-burst    { animation: engine-burst 0.7s steps(7) infinite; }
+    .animate-engine-base     { animation: engine-base 0.6s steps(4) infinite; }
+    .animate-planet-spin     { animation: planet-spin 6s steps(154) infinite; }
   }
 
-  .animate-nebula-pulse {
-    animation: nebula-pulse 8s ease-in-out infinite;
+  /* Footer orbit link — CSS-only hover, Server Component safe (no JS handlers) */
+  .footer-orbit-link {
+    background: rgba(45, 26, 74, 0.6);
+    border: 1px solid rgba(0, 245, 196, 0.15);
+    color: var(--color-ink);
+    box-shadow: 2px 2px 0 0 #000;
+    text-decoration: none;
   }
-}
+  .footer-orbit-link:hover {
+    border-color: rgba(0, 245, 196, 0.5);
+    color: var(--color-teal);
+  }
+}
