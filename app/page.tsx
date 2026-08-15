@@ -12,7 +12,7 @@ import { SecretLevel } from '@/components/sections/SecretLevel'
 import { Transmission } from '@/components/sections/Transmission'
 
 // Set to false when ready to launch the full portfolio
-const IS_MAINTENANCE = true
+const IS_MAINTENANCE = false
 
 export default function Home() {
   if (IS_MAINTENANCE) {
