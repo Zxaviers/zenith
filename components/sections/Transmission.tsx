@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
 
@@ -13,6 +13,8 @@ const CONTACT_EMAIL = 'riskimardhani@gmail.com'
 export function Transmission() {
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
+  const [focusedField, setFocusedField] = useState<string | null>(null)
+  const reducedMotion = useReducedMotion() ?? false
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,7 +31,7 @@ export function Transmission() {
     }
     if (!emailPattern.test(email)) {
       setStatus('error')
-      setError('That email doesn\'t look right — please double-check it.')
+      setError("That email doesn't look right — please double-check it.")
       return
     }
 
@@ -38,13 +40,31 @@ export function Transmission() {
 
     const subject = encodeURIComponent(`[Zenith] Message from ${name}`)
     const body    = encodeURIComponent(`${message}\n\n— ${name}\n— ${email}`)
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
-
+    
+    // Simulate ~800ms transmission animation before opening mail client
     setTimeout(() => {
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
       setStatus('success')
       form.reset()
-    }, 600)
+      
+      // Reset success message after some time
+      setTimeout(() => setStatus('idle'), 5000)
+    }, 800)
   }
+
+  const inputStyle = (isFocused: boolean) => ({
+    background: 'var(--color-void-deep)',
+    color: 'var(--color-ink)',
+    border: `2px solid ${isFocused ? 'var(--color-teal)' : 'rgba(255,255,255,0.15)'}`,
+    boxShadow: isFocused && !reducedMotion ? '0 0 12px rgba(0,245,196,0.3)' : 'none',
+    outline: 'none',
+  })
+
+  const labelStyle = (isFocused: boolean) => ({
+    color: isFocused ? 'var(--color-teal)' : 'var(--color-ink-muted)',
+    fontWeight: isFocused ? 'bold' : 'normal',
+    textShadow: isFocused && !reducedMotion ? '0 0 8px rgba(0,245,196,0.5)' : 'none',
+  })
 
   return (
     <section id="send-a-transmission" className="relative px-4 sm:px-6 py-24 text-center scroll-mt-24">
@@ -65,7 +85,6 @@ export function Transmission() {
 
       <div className="mx-auto max-w-2xl">
         <PixelPanel variant="nebula" className="text-left shadow-[6px_6px_0_0_#000] p-6 md:p-8">
-          {/* Status indicator — simple, no fake freq/uplink jargon */}
           <div className="mb-6 flex flex-wrap items-center justify-between border-b border-white/10 pb-4 gap-2">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full animate-pulse" style={{ background: 'var(--color-teal)' }} />
@@ -81,7 +100,11 @@ export function Transmission() {
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             {/* Name */}
             <div>
-              <label htmlFor="name" className="mb-1.5 block font-display text-xs" style={{ color: 'var(--color-teal)' }}>
+              <label 
+                htmlFor="name" 
+                className="mb-1.5 block font-display text-xs transition-all" 
+                style={labelStyle(focusedField === 'name')}
+              >
                 Your Name
               </label>
               <input
@@ -91,20 +114,21 @@ export function Transmission() {
                 required
                 autoComplete="name"
                 placeholder="e.g. Ada Lovelace"
-                className="w-full rounded px-4 py-3 font-body transition-all focus-visible:outline focus-visible:outline-2"
-                style={{
-                  background: 'var(--color-void-deep)',
-                  color: 'var(--color-ink)',
-                  border: '2px solid rgba(255,255,255,0.15)',
-                  outlineColor: 'var(--color-teal)',
-                }}
+                className="w-full rounded px-4 py-3 font-body transition-all"
+                style={inputStyle(focusedField === 'name')}
+                onFocus={() => setFocusedField('name')}
+                onBlur={() => setFocusedField(null)}
                 onChange={() => status === 'error' && setStatus('idle')}
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="mb-1.5 block font-display text-xs" style={{ color: 'var(--color-teal)' }}>
+              <label 
+                htmlFor="email" 
+                className="mb-1.5 block font-display text-xs transition-all" 
+                style={labelStyle(focusedField === 'email')}
+              >
                 Your Email
               </label>
               <input
@@ -114,20 +138,21 @@ export function Transmission() {
                 required
                 autoComplete="email"
                 placeholder="you@example.com"
-                className="w-full rounded px-4 py-3 font-body transition-all focus-visible:outline focus-visible:outline-2"
-                style={{
-                  background: 'var(--color-void-deep)',
-                  color: 'var(--color-ink)',
-                  border: '2px solid rgba(255,255,255,0.15)',
-                  outlineColor: 'var(--color-teal)',
-                }}
+                className="w-full rounded px-4 py-3 font-body transition-all"
+                style={inputStyle(focusedField === 'email')}
+                onFocus={() => setFocusedField('email')}
+                onBlur={() => setFocusedField(null)}
                 onChange={() => status === 'error' && setStatus('idle')}
               />
             </div>
 
             {/* Message */}
             <div>
-              <label htmlFor="message" className="mb-1.5 block font-display text-xs" style={{ color: 'var(--color-teal)' }}>
+              <label 
+                htmlFor="message" 
+                className="mb-1.5 block font-display text-xs transition-all" 
+                style={labelStyle(focusedField === 'message')}
+              >
                 Message
               </label>
               <textarea
@@ -136,13 +161,10 @@ export function Transmission() {
                 rows={4}
                 required
                 placeholder="What's on your mind?"
-                className="w-full rounded px-4 py-3 font-body transition-all focus-visible:outline focus-visible:outline-2"
-                style={{
-                  background: 'var(--color-void-deep)',
-                  color: 'var(--color-ink)',
-                  border: '2px solid rgba(255,255,255,0.15)',
-                  outlineColor: 'var(--color-teal)',
-                }}
+                className="w-full rounded px-4 py-3 font-body transition-all"
+                style={inputStyle(focusedField === 'message')}
+                onFocus={() => setFocusedField('message')}
+                onBlur={() => setFocusedField(null)}
                 onChange={() => status === 'error' && setStatus('idle')}
               />
             </div>
@@ -173,18 +195,42 @@ export function Transmission() {
               </motion.div>
             )}
 
-            <PixelButton
-              type="submit"
-              variant="comet"
-              disabled={status === 'submitting'}
-              className="w-full py-4 text-xs font-bold font-display uppercase tracking-wider"
-            >
-              {status === 'submitting' ? 'Opening email client...' : '📡 Send Message'}
-            </PixelButton>
+            <div className="relative overflow-hidden rounded">
+              <PixelButton
+                type="submit"
+                variant="comet"
+                disabled={status === 'submitting'}
+                className="w-full py-4 text-xs font-bold font-display uppercase tracking-wider relative z-10"
+              >
+                {status === 'submitting' ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <motion.span
+                      className="h-2 w-2 rounded-full"
+                      style={{ background: 'var(--color-void-deep)' }}
+                      animate={reducedMotion ? {} : { opacity: [1, 0.2, 1] }}
+                      transition={{ duration: 0.8, repeat: Infinity }}
+                    />
+                    Dispatching Transmission...
+                  </span>
+                ) : (
+                  '📡 Send Message'
+                )}
+              </PixelButton>
+              
+              {/* Sending Animation Bar */}
+              {status === 'submitting' && !reducedMotion && (
+                <motion.div 
+                  className="absolute bottom-0 left-0 h-1 bg-white z-20"
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                />
+              )}
+            </div>
           </form>
         </PixelPanel>
 
-        {/* Social links — Bagian 4: consistent pixel-border badges for all icons */}
+        {/* Social links */}
         <div className="mt-10 flex flex-col items-center gap-6">
           <a href="/CV-Rizky-Mardhani.pdf" download="CV-Rizky-Mardhani.pdf">
             <PixelButton variant="ghost" className="px-6 py-3 text-xs font-display">
@@ -206,7 +252,6 @@ export function Transmission() {
                 aria-label={`${label} Profile`}
                 className="flex flex-col items-center gap-1 group"
               >
-                {/* Consistent pixel-border badge — same style for all 3 icons (Bagian 4 fix) */}
                 <div
                   className="rounded-xl p-2.5 transition-all group-hover:scale-110"
                   style={{
