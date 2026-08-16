@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 
 const useIsMobile = (breakpoint = 768) => {
@@ -26,6 +26,7 @@ export function SecretLevel() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isMobile = useIsMobile()
   const [hasError, setHasError] = useState(false)
+  const reducedMotion = useReducedMotion() ?? false
 
   useEffect(() => {
     if (isMobile) return
@@ -63,7 +64,22 @@ export function SecretLevel() {
 
         k.scene('start', () => {
           k.add([k.text('SECRET LEVEL', { size: 64, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center'), k.color(245, 233, 214)])
-          k.add([k.text('Press SPACE to Start', { size: 24, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 20), k.anchor('center'), k.color(245, 233, 214)])
+          
+          const startText = k.add([
+            k.text('Press SPACE to Start', { size: 24, font: 'pixel' }), 
+            k.pos(k.width() / 2, k.height() / 2 + 20), 
+            k.anchor('center'), 
+            k.color(245, 233, 214),
+            k.opacity(1)
+          ])
+          
+          // Bagian 6: Blink pulse animation for arcade feel
+          if (!reducedMotion) {
+            startText.onUpdate(() => {
+              startText.opacity = (Math.sin(k.time() * 6) + 1) / 2
+            })
+          }
+
           k.add([k.text('Use Arrows to Move, SPACE to Shoot', { size: 16, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center'), k.color(255, 200, 87)])
           k.onKeyPress('space', () => k.go('main'))
         })
@@ -134,19 +150,17 @@ export function SecretLevel() {
             score += 10
             scoreLabel.text = 'Score: ' + score
             if (score > 0 && score % 100 === 0) {
-              k.shake(8)
+              if (!reducedMotion) k.shake(8)
               difficulty.speed += 20
               if (difficulty.spawnRate > 3) {
                 difficulty.spawnRate -= 1.5
-                // Kaboom's TS types don't declare `.time` on the loop
-                // controller, but it's a real, documented mutable field.
                 ;(spawnLoop as unknown as { time: number }).time = difficulty.spawnRate
               }
             }
           })
 
           k.onCollide('player', 'enemy', () => {
-            k.shake(12)
+            if (!reducedMotion) k.shake(12)
             k.destroy(player)
             spawnLoop.cancel()
             k.go('gameover', { finalScore: score })
@@ -156,7 +170,21 @@ export function SecretLevel() {
         k.scene('gameover', ({ finalScore }: { finalScore: number }) => {
           k.add([k.text('GAME OVER', { size: 64, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 - 80), k.anchor('center'), k.color(255, 139, 76)])
           k.add([k.text('Score: ' + finalScore, { size: 40, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2), k.anchor('center'), k.color(255, 139, 76)])
-          k.add([k.text('Press SPACE to Replay', { size: 24, font: 'pixel' }), k.pos(k.width() / 2, k.height() / 2 + 80), k.anchor('center'), k.color(255, 200, 87)])
+          
+          const replayText = k.add([
+            k.text('Press SPACE to Replay', { size: 24, font: 'pixel' }), 
+            k.pos(k.width() / 2, k.height() / 2 + 80), 
+            k.anchor('center'), 
+            k.color(255, 200, 87),
+            k.opacity(1)
+          ])
+          
+          if (!reducedMotion) {
+            replayText.onUpdate(() => {
+              replayText.opacity = (Math.sin(k.time() * 6) + 1) / 2
+            })
+          }
+          
           k.onKeyPress('space', () => k.go('start'))
         })
 
@@ -173,7 +201,7 @@ export function SecretLevel() {
     return () => {
       cancelled = true
     }
-  }, [isMobile])
+  }, [isMobile, reducedMotion])
 
   return (
     <motion.section
@@ -182,7 +210,7 @@ export function SecretLevel() {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: '-100px' }}
     >
       <div className="mx-auto max-w-4xl">
         <PixelPanel variant="nebula" className="shadow-[6px_6px_0px_0px_#000] p-4 md:p-8" style={{ '--pixel-border-color': 'var(--color-teal)' } as React.CSSProperties}>
@@ -222,13 +250,33 @@ export function SecretLevel() {
               </p>
             </div>
           ) : (
-            <div className="relative mx-auto rounded overflow-hidden border-4 border-black shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.8)]">
+            <motion.div 
+              className="relative mx-auto rounded overflow-hidden border-4 border-black"
+              initial={reducedMotion ? {} : { borderColor: '#000', boxShadow: '0 0 0 rgba(0,245,196,0), inset 4px 4px 0 0 rgba(0,0,0,0.8)' }}
+              whileInView={reducedMotion ? {} : { 
+                borderColor: ['#000', '#00f5c4', '#000', '#00f5c4', '#059e81'],
+                boxShadow: ['0 0 0 rgba(0,245,196,0), inset 4px 4px 0 0 rgba(0,0,0,0.8)', '0 0 30px rgba(0,245,196,0.5), inset 4px 4px 0 0 rgba(0,0,0,0.8)', '0 0 10px rgba(0,245,196,0.2), inset 4px 4px 0 0 rgba(0,0,0,0.8)'] 
+              }}
+              transition={{ duration: 1.5, delay: 0.2, times: [0, 0.2, 0.4, 0.6, 1] }}
+              viewport={{ once: true, margin: '-50px' }}
+            >
               <canvas
                 ref={canvasRef}
                 className="mx-auto max-w-full block"
                 style={{ imageRendering: 'pixelated' }}
               />
-            </div>
+              
+              {/* Scanline + Vignette Overlay */}
+              <div 
+                className="pointer-events-none absolute inset-0 z-10 opacity-40 mix-blend-overlay"
+                style={{
+                  background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
+                  backgroundSize: '100% 4px, 3px 100%',
+                  boxShadow: 'inset 0 0 80px rgba(0,0,0,1)'
+                }}
+                aria-hidden="true"
+              />
+            </motion.div>
           )}
 
           <div className="mt-4 flex justify-between items-center font-stat text-xs pt-2 border-t border-white/10" style={{ color: 'var(--color-ink-muted)' }}>
