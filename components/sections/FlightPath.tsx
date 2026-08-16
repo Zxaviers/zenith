@@ -1,9 +1,11 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { StarNode } from '@/components/ui/StarNode'
 
+// ── Data (unchanged) ──────────────────────────────────────────────────────────
 interface Milestone {
   period: string
   title: string
@@ -54,7 +56,82 @@ const BADGES = [
   { icon: '👾', title: 'Retro Gamer', detail: 'Secret Level' },
 ]
 
+// ── Animated rail that fills based on scroll ─────────────────────────────────
+function AnimatedRail({ reducedMotion }: { reducedMotion: boolean }) {
+  const railRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: railRef,
+    offset: ['start 0.9', 'end 0.1'],
+  })
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  if (reducedMotion) {
+    return (
+      <div
+        className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full"
+        style={{
+          background: 'linear-gradient(to bottom, var(--color-teal), var(--color-teal-dim), var(--color-pink))',
+          boxShadow: '0 0 8px var(--color-teal)',
+        }}
+        aria-hidden="true"
+      />
+    )
+  }
+
+  return (
+    <>
+      {/* Dim base rail (always visible) */}
+      <div
+        className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full"
+        style={{ background: 'rgba(0,245,196,0.1)' }}
+        aria-hidden="true"
+      />
+      {/* Bright fill rail — grows with scroll progress */}
+      <motion.div
+        ref={railRef}
+        className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full origin-top"
+        style={{
+          scaleY,
+          background: 'linear-gradient(to bottom, var(--color-teal), var(--color-teal-dim), var(--color-pink))',
+          boxShadow: '0 0 10px var(--color-teal)',
+        }}
+        aria-hidden="true"
+      />
+    </>
+  )
+}
+
+// ── Timeline dot that "pops" when entry enters viewport ───────────────────────
+function AnimatedDot({
+  period,
+  isFirst,
+  reducedMotion,
+}: {
+  period: string
+  isFirst: boolean
+  reducedMotion: boolean
+}) {
+  return (
+    <motion.div
+      className="absolute -left-[30px] md:-left-[34px] top-6 z-10"
+      initial={reducedMotion ? {} : { scale: 0.4, opacity: 0 }}
+      whileInView={reducedMotion ? {} : { scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 18, delay: 0.1 }}
+      viewport={{ once: true }}
+    >
+      <StarNode
+        label={period}
+        size={20}
+        state={isFirst ? 'active' : 'unlocked'}
+      />
+    </motion.div>
+  )
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 export function FlightPath() {
+  const reducedMotion = useReducedMotion() ?? false
+
   return (
     <section id="flight-path" className="relative px-4 sm:px-6 py-24 scroll-mt-24">
       <div className="mx-auto max-w-6xl">
@@ -74,17 +151,10 @@ export function FlightPath() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          {/* Timeline */}
+          {/* ── Timeline ── */}
           <div className="lg:col-span-2 relative pl-8 md:pl-10">
-            {/* Rail line — teal gradient */}
-            <div
-              className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full"
-              style={{
-                background: 'linear-gradient(to bottom, var(--color-teal), var(--color-teal-dim), var(--color-pink))',
-                boxShadow: '0 0 8px var(--color-teal)',
-              }}
-              aria-hidden="true"
-            />
+            {/* Animated scroll-progress rail */}
+            <AnimatedRail reducedMotion={reducedMotion} />
 
             <div className="space-y-8">
               {MILESTONES.map((mile, idx) => (
@@ -96,13 +166,12 @@ export function FlightPath() {
                   transition={{ duration: 0.5, delay: idx * 0.15 }}
                   viewport={{ once: true }}
                 >
-                  <div className="absolute -left-[30px] md:-left-[34px] top-6 z-10">
-                    <StarNode
-                      label={mile.period}
-                      size={20}
-                      state={idx === 0 ? 'active' : 'unlocked'}
-                    />
-                  </div>
+                  {/* Dot: pops/glows before card fades in */}
+                  <AnimatedDot
+                    period={mile.period}
+                    isFirst={idx === 0}
+                    reducedMotion={reducedMotion}
+                  />
 
                   <PixelPanel
                     variant="nebula"
@@ -144,22 +213,27 @@ export function FlightPath() {
             </div>
           </div>
 
-          {/* Right column */}
+          {/* ── Right column ── */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Operator profile — clean labels, no military jargon */}
+            {/* Operator profile */}
             <PixelPanel variant="void" className="shadow-[4px_4px_0_0_#000] p-4 md:p-5">
               <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
                 <h3 className="font-display text-xs" style={{ color: 'var(--color-teal)' }}>
                   About Me
                 </h3>
-                <span className="h-2.5 w-2.5 rounded-full animate-pulse" style={{ background: 'var(--color-teal)' }} />
+                <motion.span
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ background: 'var(--color-teal)' }}
+                  animate={reducedMotion ? {} : { opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               </div>
               <ul className="space-y-2.5 font-stat text-xs md:text-sm">
                 {[
-                  { label: 'Level',         value: 'Lv. 20 · 94% XP', highlight: true },
-                  { label: 'Focus',         value: 'System Engineer',  highlight: false },
-                  { label: 'Based in',      value: 'Indonesia 🇮🇩',     highlight: false },
-                  { label: 'Availability',  value: 'Open to work ✓',   highlight: true },
+                  { label: 'Level',        value: 'Lv. 20 · 94% XP', highlight: true },
+                  { label: 'Focus',        value: 'System Engineer',  highlight: false },
+                  { label: 'Based in',     value: 'Indonesia 🇮🇩',    highlight: false },
+                  { label: 'Availability', value: 'Open to work ✓',  highlight: true },
                 ].map(({ label, value, highlight }) => (
                   <li key={label} className="flex justify-between border-b border-white/5 pb-1.5 last:border-0">
                     <span style={{ color: 'var(--color-ink-muted)' }}>{label}:</span>
@@ -171,31 +245,36 @@ export function FlightPath() {
               </ul>
             </PixelPanel>
 
-            {/* Badges */}
+            {/* Badges — hover tilt + scale */}
             <PixelPanel variant="void" className="shadow-[4px_4px_0_0_#000] p-4 md:p-5">
               <h3 className="font-display text-xs mb-3" style={{ color: 'var(--color-teal)' }}>
                 Badges Unlocked
               </h3>
               <div className="grid grid-cols-3 gap-2">
-                {BADGES.map((b) => (
-                  <div
+                {BADGES.map((b, idx) => (
+                  <motion.div
                     key={b.title}
-                    className="flex flex-col items-center justify-center gap-1 rounded p-2 text-center transition-all"
+                    className="flex flex-col items-center justify-center gap-1 rounded p-2 text-center cursor-default"
                     style={{
                       background: 'rgba(45,26,74,0.5)',
                       border: '1px solid rgba(0,245,196,0.1)',
                     }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.4)'
+                    initial={reducedMotion ? {} : { opacity: 0, scale: 0.7 }}
+                    whileInView={reducedMotion ? {} : { opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: idx * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
+                    viewport={{ once: true }}
+                    whileHover={reducedMotion ? {} : {
+                      scale: 1.08,
+                      rotate: [0, -2, 2, 0],
+                      borderColor: 'rgba(0,245,196,0.45)',
+                      boxShadow: '0 0 10px rgba(0,245,196,0.2)',
                     }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.1)'
-                    }}
+                    whileTap={reducedMotion ? {} : { scale: 0.95 }}
                   >
                     <span className="text-2xl" aria-hidden="true">{b.icon}</span>
                     <span className="font-display text-[8px] leading-tight" style={{ color: 'var(--color-teal)' }}>{b.title}</span>
                     <span className="font-stat text-[9px]" style={{ color: 'var(--color-ink-muted)' }}>{b.detail}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </PixelPanel>
