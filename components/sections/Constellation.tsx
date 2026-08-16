@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { StarNode } from '@/components/ui/StarNode'
 import { cn } from '@/lib/utils'
@@ -77,6 +77,7 @@ export function Constellation() {
   const currentSystem = SKILL_SYSTEMS[activeCategory]
   const [selectedSkill, setSelectedSkill] = useState<Skill>(currentSystem.skills[0])
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null)
+  const reducedMotion = useReducedMotion() ?? false
 
   const handleCategoryChange = (cat: SkillCategory) => {
     setActiveCategory(cat)
@@ -108,115 +109,139 @@ export function Constellation() {
             {(['web', 'iot', 'tools'] as SkillCategory[]).map((cat) => {
               const isActive = activeCategory === cat
               return (
-                <button
+                <motion.button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
                   className={cn('px-4 py-2.5 rounded-md font-display text-xs transition-all cursor-pointer')}
                   style={
                     isActive
-                      ? { background: 'var(--color-teal)', color: 'var(--color-void-deep)', fontWeight: 'bold', boxShadow: '3px 3px 0 0 #000', border: '2px solid var(--color-teal)' }
+                      ? { background: 'var(--color-teal)', color: 'var(--color-void-deep)', fontWeight: 'bold', boxShadow: '3px 3px 0 0 #000, 0 0 14px rgba(0,245,196,0.4)', border: '2px solid var(--color-teal)' }
                       : { background: 'var(--color-void-deep)', color: 'var(--color-ink)', border: '1px solid rgba(255,255,255,0.1)' }
                   }
+                  whileHover={reducedMotion ? {} : { scale: isActive ? 1 : 1.04 }}
+                  whileTap={reducedMotion ? {} : { scale: 0.96 }}
                 >
                   {SKILL_SYSTEMS[cat].title}
-                </button>
+                </motion.button>
               )
             })}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            {/* Star map */}
+            {/* Star map — wrapped in AnimatePresence for tab fade+scale transition */}
             <div className="lg:col-span-2">
               <div className="flex justify-between items-center mb-2 px-2 text-[11px] font-stat" style={{ color: 'var(--color-ink-muted)' }}>
                 <span style={{ color: 'var(--color-teal)', fontWeight: 'bold' }}>{currentSystem.title.toUpperCase()}</span>
                 <span>{currentSystem.subtitle}</span>
               </div>
 
-              <div
-                className="relative mx-auto aspect-square w-full max-w-lg rounded-lg p-4 overflow-hidden"
-                style={{
-                  background: 'var(--color-void-deep)',
-                  border: '2px solid rgba(0,245,196,0.2)',
-                  boxShadow: 'inset 4px 4px 0 0 rgba(0,0,0,0.8)',
-                }}
-              >
-                {/* Radar sweep — teal tint */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
-                  <div className="h-full w-full rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(0,245,196,0.08)_360deg)] animate-[spin_8s_linear_infinite]" />
-                </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
+                  animate={reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+                  exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
+                  className="relative mx-auto aspect-square w-full max-w-lg rounded-lg p-4 overflow-hidden"
+                  style={{
+                    background: 'var(--color-void-deep)',
+                    border: '2px solid rgba(0,245,196,0.2)',
+                    boxShadow: 'inset 4px 4px 0 0 rgba(0,0,0,0.8)',
+                  }}
+                >
+                  {/* Radar sweep */}
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                    <div className="h-full w-full rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(0,245,196,0.08)_360deg)] animate-[spin_8s_linear_infinite]" />
+                  </div>
 
-                {/* Grid rings */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-15" aria-hidden="true">
-                  <div className="h-3/4 w-3/4 rounded-full border border-dashed" style={{ borderColor: 'var(--color-ink-muted)' }} />
-                  <div className="absolute h-1/2 w-1/2 rounded-full border border-dashed" style={{ borderColor: 'var(--color-ink-muted)' }} />
-                  <div className="absolute h-1/4 w-1/4 rounded-full border" style={{ borderColor: 'var(--color-ink-muted)' }} />
-                  <div className="absolute h-full w-0.5" style={{ background: 'rgba(152,144,196,0.2)' }} />
-                  <div className="absolute w-full h-0.5" style={{ background: 'rgba(152,144,196,0.2)' }} />
-                </div>
+                  {/* Grid rings */}
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-15" aria-hidden="true">
+                    <div className="h-3/4 w-3/4 rounded-full border border-dashed" style={{ borderColor: 'var(--color-ink-muted)' }} />
+                    <div className="absolute h-1/2 w-1/2 rounded-full border border-dashed" style={{ borderColor: 'var(--color-ink-muted)' }} />
+                    <div className="absolute h-1/4 w-1/4 rounded-full border" style={{ borderColor: 'var(--color-ink-muted)' }} />
+                    <div className="absolute h-full w-0.5" style={{ background: 'rgba(152,144,196,0.2)' }} />
+                    <div className="absolute w-full h-0.5" style={{ background: 'rgba(152,144,196,0.2)' }} />
+                  </div>
 
-                {/* Connection lines */}
-                <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  {currentSystem.links.map(([sourceId, targetId]) => {
-                    const src = currentSystem.skills.find((s) => s.id === sourceId)
-                    const tgt = currentSystem.skills.find((s) => s.id === targetId)
-                    if (!src || !tgt) return null
-                    const isActive = selectedSkill?.id === sourceId || selectedSkill?.id === targetId || hoveredSkillId === sourceId || hoveredSkillId === targetId
+                  {/* Connection lines — brighter when node hovered */}
+                  <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    {currentSystem.links.map(([sourceId, targetId]) => {
+                      const src = currentSystem.skills.find((s) => s.id === sourceId)
+                      const tgt = currentSystem.skills.find((s) => s.id === targetId)
+                      if (!src || !tgt) return null
+                      const isHighlit =
+                        selectedSkill?.id === sourceId || selectedSkill?.id === targetId ||
+                        hoveredSkillId === sourceId || hoveredSkillId === targetId
+                      return (
+                        <line
+                          key={`${sourceId}-${targetId}`}
+                          x1={`${src.x}%`} y1={`${src.y}%`}
+                          x2={`${tgt.x}%`} y2={`${tgt.y}%`}
+                          stroke={isHighlit ? 'var(--color-teal)' : 'var(--color-teal-dim)'}
+                          strokeWidth={isHighlit ? 2.5 : 1}
+                          strokeDasharray={isHighlit ? 'none' : '3 3'}
+                          strokeOpacity={isHighlit ? 0.9 : 0.4}
+                          style={{ transition: 'all 0.25s ease' }}
+                        />
+                      )
+                    })}
+                  </svg>
+
+                  {/* Star nodes — motion.div for scale + glow on hover */}
+                  {currentSystem.skills.map((skill, skillIdx) => {
+                    const isSelected = selectedSkill?.id === skill.id
+                    const isHovered = hoveredSkillId === skill.id
+                    const badge = LEVEL_BADGE[skill.level]
                     return (
-                      <line
-                        key={`${sourceId}-${targetId}`}
-                        x1={`${src.x}%`} y1={`${src.y}%`}
-                        x2={`${tgt.x}%`} y2={`${tgt.y}%`}
-                        stroke={isActive ? 'var(--color-teal)' : 'var(--color-teal-dim)'}
-                        strokeWidth={isActive ? 2 : 1}
-                        strokeDasharray={isActive ? 'none' : '3 3'}
-                        className="transition-all duration-300 opacity-50"
-                      />
+                      <motion.div
+                        key={skill.id}
+                        className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center z-20"
+                        style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
+                        onHoverStart={() => setHoveredSkillId(skill.id)}
+                        onHoverEnd={() => setHoveredSkillId(null)}
+                        whileHover={reducedMotion ? {} : { scale: 1.15 }}
+                        transition={{ type: 'spring', stiffness: 350, damping: 18 }}
+                      >
+                        <StarNode
+                          label={`${skill.name} — ${skill.level}`}
+                          size={LEVEL_SIZE[skill.level]}
+                          level={skill.level}
+                          state={isSelected ? 'active' : isHovered ? 'active' : 'unlocked'}
+                          onClick={() => setSelectedSkill(skill)}
+                        />
+                        <div className="flex flex-col items-center mt-1 pointer-events-none">
+                          {/* Skill name label */}
+                          <motion.span
+                            className="font-display text-[9px] md:text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap"
+                            style={
+                              isSelected || isHovered
+                                ? { background: 'var(--color-void-deep)', color: 'var(--color-teal)', fontWeight: 'bold', border: '1px solid var(--color-teal)', boxShadow: '2px 2px 0 0 #000' }
+                                : { color: 'var(--color-ink)', background: 'rgba(19,13,26,0.85)', border: '1px solid rgba(255,255,255,0.1)' }
+                            }
+                            initial={reducedMotion ? {} : { opacity: 0, scale: 0.7 }}
+                            whileInView={reducedMotion ? {} : { opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: skillIdx * 0.06, type: 'spring', stiffness: 300, damping: 20 }}
+                            viewport={{ once: true }}
+                          >
+                            {skill.icon} {skill.name}
+                          </motion.span>
+                          {/* Level badge pop-in */}
+                          <motion.span
+                            className="font-stat text-[8px] md:text-[9px] mt-0.5 px-1 rounded uppercase tracking-wider font-bold"
+                            style={{ background: badge.bg, color: badge.text, border: `1px solid ${badge.border}` }}
+                            initial={reducedMotion ? {} : { opacity: 0, scale: 0.5 }}
+                            whileInView={reducedMotion ? {} : { opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: skillIdx * 0.06 + 0.08, type: 'spring', stiffness: 350, damping: 18 }}
+                            viewport={{ once: true }}
+                          >
+                            {skill.level}
+                          </motion.span>
+                        </div>
+                      </motion.div>
                     )
                   })}
-                </svg>
-
-                {/* Star nodes */}
-                {currentSystem.skills.map((skill) => {
-                  const isSelected = selectedSkill?.id === skill.id
-                  const isHovered = hoveredSkillId === skill.id
-                  const badge = LEVEL_BADGE[skill.level]
-                  return (
-                    <div
-                      key={skill.id}
-                      className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center z-20"
-                      style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
-                      onMouseEnter={() => setHoveredSkillId(skill.id)}
-                      onMouseLeave={() => setHoveredSkillId(null)}
-                    >
-                      <StarNode
-                        label={`${skill.name} — ${skill.level}`}
-                        size={LEVEL_SIZE[skill.level]}
-                        level={skill.level}
-                        state={isSelected ? 'active' : isHovered ? 'active' : 'unlocked'}
-                        onClick={() => setSelectedSkill(skill)}
-                      />
-                      <div className="flex flex-col items-center mt-1 pointer-events-none">
-                        <span
-                          className="font-display text-[9px] md:text-[10px] px-1.5 py-0.5 rounded transition-all whitespace-nowrap"
-                          style={
-                            isSelected || isHovered
-                              ? { background: 'var(--color-void-deep)', color: 'var(--color-teal)', fontWeight: 'bold', border: '1px solid var(--color-teal)', boxShadow: '2px 2px 0 0 #000' }
-                              : { color: 'var(--color-ink)', background: 'rgba(19,13,26,0.85)', border: '1px solid rgba(255,255,255,0.1)' }
-                          }
-                        >
-                          {skill.icon} {skill.name}
-                        </span>
-                        <span
-                          className="font-stat text-[8px] md:text-[9px] mt-0.5 px-1 rounded uppercase tracking-wider font-bold"
-                          style={{ background: badge.bg, color: badge.text, border: `1px solid ${badge.border}` }}
-                        >
-                          {skill.level}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Skill detail panel */}
