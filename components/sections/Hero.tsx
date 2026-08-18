@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
@@ -16,38 +15,8 @@ const PHRASES = [
   'ESP32 · Arduino · Custom PCB design',
 ]
 
-interface Star {
-  id: number
-  left: string
-  top: string
-  size: number
-  opacity: number
-  dur: string
-  delay: string
-}
-
-/** Organic starfield, generated client-side (no SSR/hydration mismatch). */
-function useStars(count: number): Star[] {
-  const [stars, setStars] = useState<Star[]>([])
-  useEffect(() => {
-    setStars(
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        size: Math.random() * 2.5 + 1,
-        opacity: Math.random() * 0.5 + 0.3,
-        dur: `${Math.random() * 3 + 2}s`,
-        delay: `${Math.random() * 4}s`,
-      }))
-    )
-  }, [count])
-  return stars
-}
-
 export function Hero() {
   const reduce = useReducedMotion() ?? false
-  const stars = useStars(70)
   const { displayed: subtitle, isTyping } = useTypewriter(PHRASES, {
     reducedMotion: reduce,
     typeSpeed: 45,
@@ -67,42 +36,9 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-[92vh] items-center overflow-hidden px-6 pb-20 pt-32 scroll-mt-24"
-      style={{ background: 'var(--color-void)', color: 'var(--color-starchart)' }}
+      className="relative flex min-h-[92vh] items-center px-6 pb-20 pt-32 scroll-mt-24"
+      style={{ color: 'var(--color-starchart)' }}
     >
-      {/* ── Atmospheric nebula glows ── */}
-      <div
-        className="pointer-events-none absolute -left-48 -top-48 h-[800px] w-[800px] rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(62,42,99,0.35) 0%, rgba(27,18,53,0) 70%)' }}
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -right-40 top-1/4 h-[600px] w-[600px] rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(255,139,76,0.12) 0%, rgba(27,18,53,0) 65%)' }}
-        aria-hidden="true"
-      />
-
-      {/* ── Twinkling starfield ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {stars.map((s) => (
-          <span
-            key={s.id}
-            className="absolute rounded-full"
-            style={{
-              left: s.left,
-              top: s.top,
-              width: s.size,
-              height: s.size,
-              opacity: s.opacity,
-              backgroundColor: 'var(--color-star)',
-              boxShadow: '0 0 5px rgba(255,200,87,0.8)',
-              animation: reduce ? undefined : `twinkle ${s.dur} ease-in-out infinite`,
-              animationDelay: s.delay,
-            }}
-          />
-        ))}
-      </div>
-
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
         {/* ── Left: content ── */}
         <div className="flex flex-col items-start gap-6">
