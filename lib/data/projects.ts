@@ -46,15 +46,27 @@ export const projects: Project[] = [
   {
     slug: 'jkt48-vault',
     title: 'JKT48 Vault',
-    desc: 'Comprehensive idol media database, member index, and interactive performance tracking archive.',
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+    desc: 'Premium photo gallery & media archive powered by Google Drive storage and Google Sheets database, featuring masonry layout, member filtering, and full-size lightbox viewer.',
+    techStack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Google Drive API', 'Google Sheets API'],
+    problem:
+      'Kebutuhan platform kurasi dan arsip galeri foto JKT48 yang rapi, cepat, dan mudah dikelola tanpa infrastruktur database berbayar yang rumit.',
+    solution:
+      'Memanfaatkan Google Drive sebagai file storage (proxied) dan Google Sheets sebagai database dinamis, dibalut antarmuka masonry grid modern Next.js 15, pencarian member, filter kategori, dan admin panel terproteksi.',
+    learnings:
+      'Implementasi proxy streaming file Google Drive API, integrasi Google Sheets API via Google Cloud Service Account, dan optimasi performa masonry layout di App Router.',
     comingSoon: true,
   },
   {
     slug: 'zenspace',
     title: 'ZenSpace',
-    desc: 'Minimalist ambient productivity station featuring focus timers, generative cosmic audio, and IoT telemetry.',
-    techStack: ['React', 'Web Audio API', 'Tailwind CSS', 'ESP32'],
+    desc: 'SaaS Unified Cloud Drive that aggregates multiple Google Drive accounts into a single virtual workspace with combined storage quota, file indexing, and smart upload routing.',
+    techStack: ['Next.js 15', 'TypeScript', 'PostgreSQL', 'Drizzle ORM', 'Google Drive API', 'Auth.js'],
+    problem:
+      'Pengguna sering memiliki beberapa akun Google Drive terpisah dengan kapasitas 15GB terbatas dan repot berganti akun saat mencari atau mengunggah file.',
+    solution:
+      'Platform SaaS yang menggabungkan multi-akun Google Drive ke satu wadah virtual terpadu dengan agregasi total kuota, virtual file indexing, enkripsi token OAuth2 at-rest (AES-GCM), dan smart upload routing otomatis ke akun dengan sisa kuota terbanyak.',
+    learnings:
+      'Perancangan skema database Drizzle ORM + Neon PostgreSQL di Edge runtime, arsitektur multi-account OAuth2 aman, dan sinkronisasi kuota real-time.',
     comingSoon: true,
   },
 ]
