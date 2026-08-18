@@ -310,6 +310,9 @@ export function VoidMinerGame() {
     warpTimer: 0,
   })
 
+  const fireLaserRef = useRef<() => void>(() => {})
+  const fireIntervalRef = useRef<NodeJS.Timeout | null>(null)
+
   // Start / restart game handler
   const startGame = useCallback(() => {
     const g = gameRef.current
@@ -597,6 +600,8 @@ export function VoidMinerGame() {
         })
       }
     }
+
+    fireLaserRef.current = fireLaser
 
     // Spawn Particles helper
     const addExplosionParticles = (x: number, y: number, color: string, count: number) => {
@@ -1384,6 +1389,10 @@ export function VoidMinerGame() {
 
     return () => {
       cancelAnimationFrame(animId)
+      if (fireIntervalRef.current) {
+        clearInterval(fireIntervalRef.current)
+        fireIntervalRef.current = null
+      }
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
       canvas.removeEventListener('mousemove', handleMouseMove)
@@ -1391,15 +1400,77 @@ export function VoidMinerGame() {
     }
   }, [startGame, triggerHyperjump, highScore])
 
+  // Mobile touch & click control event handlers
+  const handleControlStart = (action: 'thrust' | 'left' | 'right' | 'reverse' | 'fire' | 'warp' | 'magnet') => {
+    if (gameState !== 'playing') {
+      startGame()
+      return
+    }
+
+    if (action === 'thrust') {
+      gameRef.current.keys['KeyW'] = true
+      gameRef.current.keys['ArrowUp'] = true
+    } else if (action === 'left') {
+      gameRef.current.keys['KeyA'] = true
+      gameRef.current.keys['ArrowLeft'] = true
+    } else if (action === 'right') {
+      gameRef.current.keys['KeyD'] = true
+      gameRef.current.keys['ArrowRight'] = true
+    } else if (action === 'reverse') {
+      gameRef.current.keys['KeyS'] = true
+      gameRef.current.keys['ArrowDown'] = true
+    } else if (action === 'fire') {
+      fireLaserRef.current()
+      if (fireIntervalRef.current) clearInterval(fireIntervalRef.current)
+      fireIntervalRef.current = setInterval(() => {
+        fireLaserRef.current()
+      }, 140)
+    } else if (action === 'warp') {
+      triggerHyperjump()
+    } else if (action === 'magnet') {
+      const ship = gameRef.current.ship
+      gameRef.current.minerals.forEach((m) => {
+        const dx = ship.x - m.x
+        const dy = ship.y - m.y
+        const dist = Math.hypot(dx, dy)
+        if (dist < 400) {
+          m.vx += (dx / dist) * 3.5
+          m.vy += (dy / dist) * 3.5
+        }
+      })
+    }
+  }
+
+  const handleControlEnd = (action: 'thrust' | 'left' | 'right' | 'reverse' | 'fire' | 'warp' | 'magnet') => {
+    if (action === 'thrust') {
+      gameRef.current.keys['KeyW'] = false
+      gameRef.current.keys['ArrowUp'] = false
+    } else if (action === 'left') {
+      gameRef.current.keys['KeyA'] = false
+      gameRef.current.keys['ArrowLeft'] = false
+    } else if (action === 'right') {
+      gameRef.current.keys['KeyD'] = false
+      gameRef.current.keys['ArrowRight'] = false
+    } else if (action === 'reverse') {
+      gameRef.current.keys['KeyS'] = false
+      gameRef.current.keys['ArrowDown'] = false
+    } else if (action === 'fire') {
+      if (fireIntervalRef.current) {
+        clearInterval(fireIntervalRef.current)
+        fireIntervalRef.current = null
+      }
+    }
+  }
+
   const isWarpReady = quantumCurrent >= quantumTarget
 
   return (
     <div className="relative mx-auto max-w-4xl">
-      <PixelPanel variant="nebula" className="shadow-[8px_8px_0_0_#000] p-4 md:p-6">
+      <PixelPanel variant="nebula" className="shadow-[8px_8px_0_0_#000] p-3 sm:p-4 md:p-6">
         {/* Arcade Header Bar */}
         <div className="mb-4 flex flex-wrap items-center justify-between border-b-2 border-white/10 pb-3 gap-3">
           <div className="flex items-center gap-3">
-            <span className="font-display text-sm md:text-base text-[var(--color-star)] tracking-wider">
+            <span className="font-display text-xs sm:text-sm md:text-base text-[var(--color-star)] tracking-wider">
               ★ VOID MINER : ASTEROID HARVESTER ★
             </span>
             {activePowerup && (
@@ -1422,10 +1493,16 @@ export function VoidMinerGame() {
         </div>
 
         {/* CRT Arcade Cabinet Screen */}
-        <div className="relative mx-auto overflow-hidden rounded border-4 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.9)] aspect-[4/3] w-full max-w-[800px]">
+        <div className="relative mx-auto overflow-hidden rounded border-4 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.9)] aspect-[4/3] w-full max-w-[800px] touch-manipulation">
           <canvas
             ref={canvasRef}
-            className="block h-full w-full object-contain bg-[#130d1a]"
+            onTouchStart={(e) => {
+              if (gameState !== 'playing') {
+                e.preventDefault()
+                startGame()
+              }
+            }}
+            className="block h-full w-full object-contain bg-[#130d1a] cursor-crosshair"
             style={{ imageRendering: 'pixelated' }}
           />
 
@@ -1442,9 +1519,154 @@ export function VoidMinerGame() {
           />
         </div>
 
+        {/* ── MOBILE TOUCH CONTROLLER DECK ── */}
+        <div className="mt-4 pt-4 border-t border-white/10 select-none touch-none">
+          <div className="flex flex-col gap-4">
+            {/* Top Touch Status Bar */}
+            <div className="flex items-center justify-between text-xs font-stat text-[var(--color-ink-muted)]">
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-star)] animate-pulse" />
+                <span className="text-[var(--color-star)] font-bold">TACTICAL PILOT CONTROLS</span>
+              </div>
+
+              {gameState !== 'playing' ? (
+                <button
+                  type="button"
+                  onClick={startGame}
+                  className="px-3 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] active:scale-95 transition-transform"
+                >
+                  ▶ START MISSION
+                </button>
+              ) : (
+                <span className="text-[var(--color-aurora)] font-bold">
+                  SHIELD: {shieldHealth}% · QUANTUM: {quantumCurrent}/{quantumTarget}
+                </span>
+              )}
+            </div>
+
+            {/* Twin Pod Controller Layout */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 items-center">
+              {/* Left Pod: Flight & Steering D-Pad */}
+              <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-lg bg-[var(--color-void-deep)]/80 border border-white/15 shadow-[inset_0_0_12px_rgba(0,0,0,0.6)]">
+                <span className="text-[10px] font-stat text-[var(--color-ink-muted)] mb-2">STEERING POD</span>
+                
+                {/* Thrust UP */}
+                <button
+                  type="button"
+                  onMouseDown={() => handleControlStart('thrust')}
+                  onMouseUp={() => handleControlEnd('thrust')}
+                  onMouseLeave={() => handleControlEnd('thrust')}
+                  onTouchStart={(e) => { e.preventDefault(); handleControlStart('thrust') }}
+                  onTouchEnd={(e) => { e.preventDefault(); handleControlEnd('thrust') }}
+                  className="w-14 h-12 sm:w-16 sm:h-14 rounded-lg bg-[var(--color-void-surface)] border-2 border-[var(--color-star)]/60 text-[var(--color-star)] flex flex-col items-center justify-center font-display text-xs shadow-[0_0_10px_rgba(255,200,87,0.2)] active:bg-[var(--color-star)] active:text-[var(--color-void)] active:scale-95 transition-all"
+                  aria-label="Thrust Forward"
+                >
+                  <span className="text-base leading-none">▲</span>
+                  <span className="text-[8px] font-stat">THRUST</span>
+                </button>
+
+                {/* Left & Right & Reverse */}
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    type="button"
+                    onMouseDown={() => handleControlStart('left')}
+                    onMouseUp={() => handleControlEnd('left')}
+                    onMouseLeave={() => handleControlEnd('left')}
+                    onTouchStart={(e) => { e.preventDefault(); handleControlStart('left') }}
+                    onTouchEnd={(e) => { e.preventDefault(); handleControlEnd('left') }}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[var(--color-void-surface)] border-2 border-white/20 text-[var(--color-starchart)] flex flex-col items-center justify-center font-display text-xs active:bg-[var(--color-star)]/30 active:border-[var(--color-star)] active:scale-95 transition-all"
+                    aria-label="Turn Left"
+                  >
+                    <span className="text-base leading-none">◀</span>
+                    <span className="text-[8px] font-stat">LEFT</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onMouseDown={() => handleControlStart('reverse')}
+                    onMouseUp={() => handleControlEnd('reverse')}
+                    onMouseLeave={() => handleControlEnd('reverse')}
+                    onTouchStart={(e) => { e.preventDefault(); handleControlStart('reverse') }}
+                    onTouchEnd={(e) => { e.preventDefault(); handleControlEnd('reverse') }}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[var(--color-void-surface)] border-2 border-white/20 text-[var(--color-starchart)] flex flex-col items-center justify-center font-display text-xs active:bg-[var(--color-comet)]/30 active:border-[var(--color-comet)] active:scale-95 transition-all"
+                    aria-label="Brake / Reverse"
+                  >
+                    <span className="text-base leading-none">▼</span>
+                    <span className="text-[8px] font-stat">BRAKE</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onMouseDown={() => handleControlStart('right')}
+                    onMouseUp={() => handleControlEnd('right')}
+                    onMouseLeave={() => handleControlEnd('right')}
+                    onTouchStart={(e) => { e.preventDefault(); handleControlStart('right') }}
+                    onTouchEnd={(e) => { e.preventDefault(); handleControlEnd('right') }}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[var(--color-void-surface)] border-2 border-white/20 text-[var(--color-starchart)] flex flex-col items-center justify-center font-display text-xs active:bg-[var(--color-star)]/30 active:border-[var(--color-star)] active:scale-95 transition-all"
+                    aria-label="Turn Right"
+                  >
+                    <span className="text-base leading-none">▶</span>
+                    <span className="text-[8px] font-stat">RIGHT</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Pod: Tactical Weapons & Warp Pod */}
+              <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-lg bg-[var(--color-void-deep)]/80 border border-white/15 shadow-[inset_0_0_12px_rgba(0,0,0,0.6)]">
+                <span className="text-[10px] font-stat text-[var(--color-ink-muted)] mb-2">WEAPONS & WARP</span>
+
+                {/* Primary Fire Button (Large) */}
+                <button
+                  type="button"
+                  onMouseDown={() => handleControlStart('fire')}
+                  onMouseUp={() => handleControlEnd('fire')}
+                  onMouseLeave={() => handleControlEnd('fire')}
+                  onTouchStart={(e) => { e.preventDefault(); handleControlStart('fire') }}
+                  onTouchEnd={(e) => { e.preventDefault(); handleControlEnd('fire') }}
+                  className="w-full h-14 sm:h-16 rounded-xl bg-gradient-to-r from-[var(--color-comet)] to-[#ff4757] text-[var(--color-void)] font-display text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-[0_0_16px_rgba(255,107,157,0.4),2px_2px_0_0_#000] active:scale-95 transition-all cursor-pointer"
+                  aria-label="Fire Plasma Lasers"
+                >
+                  <span className="text-lg">🔥</span>
+                  <span>FIRE LASERS</span>
+                </button>
+
+                {/* Auxiliary Controls: Magnet & Hyperjump */}
+                <div className="grid grid-cols-2 gap-2 w-full mt-2">
+                  <button
+                    type="button"
+                    onClick={() => handleControlStart('magnet')}
+                    onTouchStart={(e) => { e.preventDefault(); handleControlStart('magnet') }}
+                    className="h-10 sm:h-12 rounded-lg bg-[var(--color-void-surface)] border border-[var(--color-aurora)]/40 text-[var(--color-aurora)] font-display text-[10px] sm:text-xs flex items-center justify-center gap-1 active:bg-[var(--color-aurora)]/20 active:scale-95 transition-all"
+                    aria-label="Activate Tractor Magnet"
+                  >
+                    <span>🧲</span>
+                    <span>MAGNET</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={triggerHyperjump}
+                    onTouchStart={(e) => { e.preventDefault(); triggerHyperjump() }}
+                    disabled={!isWarpReady || gameState !== 'playing'}
+                    className={`h-10 sm:h-12 rounded-lg border font-display text-[10px] sm:text-xs flex items-center justify-center gap-1 transition-all ${
+                      isWarpReady && gameState === 'playing'
+                        ? 'bg-[var(--color-star)] text-[var(--color-void)] border-[var(--color-star)] shadow-[0_0_15px_rgba(255,200,87,0.6)] animate-pulse active:scale-95 cursor-pointer font-bold'
+                        : 'bg-[var(--color-void-surface)]/50 border-white/10 text-white/30 cursor-not-allowed'
+                    }`}
+                    aria-label="Engage Hyperjump Warp"
+                  >
+                    <span>⚡</span>
+                    <span>WARP</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Telemetry Dashboard & Controls Help */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 font-stat text-xs pt-3 border-t border-white/10 text-[var(--color-ink-muted)]">
-          <div className="space-x-2">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-4 font-stat text-xs pt-3 border-t border-white/10 text-[var(--color-ink-muted)]">
+          <div className="hidden sm:flex space-x-2">
             <span>[W/A/S/D / ARROWS] Flight</span>
             <span>•</span>
             <span>[SPACE / CLICK] Laser</span>
@@ -1452,12 +1674,7 @@ export function VoidMinerGame() {
             <span>[SHIFT] Hyperjump</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            {isWarpReady && gameState === 'playing' && (
-              <PixelButton variant="comet" onClick={triggerHyperjump} className="text-xs py-1 px-3 animate-pulse">
-                ⚡ ENGAGE HYPERJUMP ⚡
-              </PixelButton>
-            )}
+          <div className="flex items-center gap-3 ml-auto">
             <span className="text-[var(--color-star)] font-bold">HI-SCORE: {highScore}</span>
           </div>
         </div>
