@@ -51,6 +51,16 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.handle}`,
   },
   description: `Portfolio ${siteConfig.handle} (${siteConfig.name}) — ${siteConfig.role} at ${siteConfig.university}.`,
+  icons: {
+    icon: [
+      { url: '/sprites/cozy/planet.jpg', type: 'image/jpeg' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/sprites/cozy/planet.jpg' },
+    ],
+    shortcut: ['/sprites/cozy/planet.jpg'],
+  },
   openGraph: {
     title: `${siteConfig.handle} | ${siteConfig.name}`,
     description: `Portfolio ${siteConfig.handle} (${siteConfig.name}) — ${siteConfig.role} at ${siteConfig.university}.`,

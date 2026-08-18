@@ -100,20 +100,18 @@ export function Navbar() {
               className={cn('group flex items-center gap-2.5 rounded-lg', focusRing)}
             >
               <span
-                className="flex h-9 w-9 items-center justify-center rounded-lg transition-transform group-hover:scale-105"
+                className="flex h-9 w-9 items-center justify-center rounded-full overflow-hidden transition-transform group-hover:scale-110"
                 style={{
-                  background: 'rgba(255,139,76,0.15)',
-                  border: '1px solid rgba(255,139,76,0.4)',
-                  boxShadow: '0 0 12px rgba(255,139,76,0.3)',
+                  border: '1.5px solid rgba(255,200,87,0.6)',
+                  boxShadow: '0 0 14px rgba(255,200,87,0.4)',
                 }}
               >
                 <Image
-                  src="/sprites/rocketSatu.png"
-                  alt=""
-                  width={22}
-                  height={22}
-                  className="h-5 w-5 object-contain transition-transform group-hover:scale-110"
-                  aria-hidden="true"
+                  src="/sprites/cozy/planet.jpg"
+                  alt="Zenith Cosmic Planet"
+                  width={36}
+                  height={36}
+                  className="h-full w-full object-cover transition-transform group-hover:rotate-12 duration-300"
                 />
               </span>
               <span className="font-display text-lg text-comet transition-colors group-hover:text-star">Zenith</span>
