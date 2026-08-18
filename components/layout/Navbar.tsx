@@ -76,7 +76,7 @@ export function Navbar() {
           if (entry.isIntersecting) setActiveSection(entry.target.id)
         })
       },
-      { threshold: 0.3 }
+      { rootMargin: '-15% 0px -45% 0px', threshold: 0.05 }
     )
     document.querySelectorAll('section[id]').forEach((sec) => observer.observe(sec))
     return () => observer.disconnect()
@@ -126,8 +126,8 @@ export function Navbar() {
           </div>
 
           {/* Right group: links + status + sound toggle */}
-          <div className="hidden items-center gap-5 lg:flex">
-            <ul className="flex items-center gap-1.5">
+          <div className="hidden items-center gap-4 lg:flex">
+            <ul className="flex items-center gap-1">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === '/' && activeSection === link.id
                 return (
@@ -139,7 +139,7 @@ export function Navbar() {
                       aria-label={ariaFor(link.label, link.hint)}
                       aria-current={isActive ? 'page' : undefined}
                       className={cn(
-                        'relative z-10 block px-3 py-1.5 font-headline text-sm font-medium transition-colors rounded-lg',
+                        'relative z-10 block px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-colors rounded-lg',
                         focusRing,
                         isActive ? 'text-star font-bold' : 'text-starchart/75 hover:text-starchart'
                       )}
@@ -156,18 +156,23 @@ export function Navbar() {
                   </li>
                 )
               })}
-              <li className="relative">
+
+              {/* Devlog Direct Route Button */}
+              <li className="relative ml-1">
                 <Link
                   href="/devlog"
                   onClick={() => portfolioSounds.playBlip(700)}
-                  title="Devlog"
+                  title="Devlog & Technical Research"
                   className={cn(
-                    'relative z-10 block px-3 py-1.5 font-headline text-sm font-medium transition-colors rounded-lg',
+                    'relative z-10 inline-flex items-center gap-1 px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-all rounded-lg',
                     focusRing,
-                    pathname?.startsWith('/devlog') ? 'text-star font-bold' : 'text-starchart/75 hover:text-starchart'
+                    pathname?.startsWith('/devlog')
+                      ? 'text-star font-bold bg-star/15 border border-star/40 shadow-[0_0_12px_rgba(255,200,87,0.25)]'
+                      : 'text-starchart/80 hover:text-star hover:bg-white/5 border border-transparent'
                   )}
                 >
-                  Devlog
+                  <span>📖</span>
+                  <span>Devlog</span>
                 </Link>
                 {pathname?.startsWith('/devlog') && (
                   <motion.div
@@ -177,23 +182,28 @@ export function Navbar() {
                   />
                 )}
               </li>
-              <li className="relative">
+
+              {/* Arcade Direct Route Button */}
+              <li className="relative ml-1">
                 <Link
                   href="/arcade"
                   onClick={() => portfolioSounds.playStarSparkle()}
-                  title="Arcade — Void Miner"
+                  title="Arcade — Void Miner Game"
                   className={cn(
-                    'relative z-10 block px-3 py-1.5 font-headline text-sm font-medium transition-colors rounded-lg',
+                    'relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 font-headline text-xs xl:text-sm font-bold transition-all rounded-lg',
                     focusRing,
-                    pathname?.startsWith('/arcade') ? 'text-star font-bold' : 'text-starchart/75 hover:text-starchart'
+                    pathname?.startsWith('/arcade')
+                      ? 'text-[var(--color-void)] bg-[var(--color-star)] shadow-[0_0_15px_rgba(255,200,87,0.5)]'
+                      : 'text-[var(--color-star)] bg-[var(--color-nebula)]/60 hover:bg-[var(--color-star)]/20 border border-[var(--color-star)]/40 shadow-[0_0_10px_rgba(255,200,87,0.2)] hover:scale-105'
                   )}
                 >
-                  🕹️ Arcade
+                  <span>🕹️</span>
+                  <span>Arcade</span>
                 </Link>
                 {pathname?.startsWith('/arcade') && (
                   <motion.div
                     layoutId="navbar-active-indicator"
-                    className="absolute inset-0 z-0 rounded-lg border border-star/30 bg-star/10 shadow-[0_0_12px_rgba(255,200,87,0.25)]"
+                    className="absolute inset-0 z-0 rounded-lg border border-star/40 bg-star/15 shadow-[0_0_15px_rgba(255,200,87,0.4)]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
