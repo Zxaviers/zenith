@@ -1,7 +1,3 @@
-// Ported from src/data/projects.js (Vite app). Content unchanged — only
-// the image references moved from ES module imports to public/sprites/
-// paths, since these live outside app/ now.
-
 export interface Project {
   slug?: string
   title: string
@@ -48,8 +44,17 @@ export const projects: Project[] = [
       'Titik awal untuk memahami dasar-dasar pengembangan web sebelum pindah ke framework modern seperti React — jadi pengingat seberapa jauh sudah berkembang sejak proyek ini dibuat.',
   },
   {
-    title: 'Encrypted Artifact #03',
-    desc: 'Deep-space neural telemetry & hardware automation project currently undergoing orbital calibration.',
+    slug: 'jkt48-vault',
+    title: 'JKT48 Vault',
+    desc: 'Comprehensive idol media database, member index, and interactive performance tracking archive.',
+    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+    comingSoon: true,
+  },
+  {
+    slug: 'zenspace',
+    title: 'ZenSpace',
+    desc: 'Minimalist ambient productivity station featuring focus timers, generative cosmic audio, and IoT telemetry.',
+    techStack: ['React', 'Web Audio API', 'Tailwind CSS', 'ESP32'],
     comingSoon: true,
   },
 ]

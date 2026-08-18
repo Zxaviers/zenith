@@ -244,26 +244,68 @@ function MissionCard({
         viewport={{ once: true }}
       >
         <PixelPanel
-          variant="void"
-          className="h-full opacity-60 border-2 border-dashed flex flex-col justify-between p-5"
-          style={{ '--pixel-border-color': 'rgba(255,255,255,0.2)' } as React.CSSProperties}
+          variant="nebula"
+          className="h-full border-2 border-dashed border-[var(--color-star)]/35 flex flex-col justify-between p-5 bg-[var(--color-void-surface)]/70 hover:border-[var(--color-star)]/70 transition-colors"
         >
-          <div
-            className="mb-4 flex w-full items-center justify-center rounded"
-            style={{ aspectRatio: '16/9', background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}
-          >
-            <motion.span
-              className="font-display text-2xl"
-              style={{ color: 'var(--color-teal)' }}
-              animate={reducedMotion ? {} : { opacity: [0.4, 1, 0.4], scale: [0.95, 1, 0.95] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >?</motion.span>
+          <div>
+            <div
+              className="mb-4 flex w-full items-center justify-center rounded overflow-hidden relative"
+              style={{ aspectRatio: '16/9', background: 'var(--color-void-deep)', border: '1px solid rgba(255, 200, 87, 0.25)' }}
+            >
+              <div
+                className="absolute inset-0 opacity-25"
+                style={{
+                  backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,200,87,0.3) 1px, transparent 0)',
+                  backgroundSize: '12px 12px',
+                }}
+              />
+              <motion.span
+                className="font-display text-2xl z-10 text-[var(--color-star)]"
+                animate={reducedMotion ? {} : { opacity: [0.5, 1, 0.5], scale: [0.95, 1.05, 0.95] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+              >
+                ⚙️
+              </motion.span>
+              <span className="absolute bottom-2 right-2 font-stat text-[10px] text-[var(--color-comet)] px-2 py-0.5 rounded bg-black/60 border border-[var(--color-comet)]/30">
+                WIP
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-stat text-xs text-[var(--color-star)] flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-comet)] animate-ping" />
+                <span>On Progress</span>
+              </span>
+              <span className="font-stat text-[10px] text-[var(--color-ink-muted)]">ORBITAL LAB</span>
+            </div>
+
+            <h3 className="mb-2 font-display text-sm md:text-base text-[var(--color-star)]">
+              {project.title}
+            </h3>
+            <p className="font-body text-xs sm:text-sm leading-relaxed mb-4 text-[var(--color-starchart)] opacity-85">
+              {project.desc}
+            </p>
           </div>
-          <span className="font-stat text-xs block mb-1" style={{ color: 'var(--color-teal)' }}>Coming soon</span>
-          <h3 className="mb-2 font-display text-sm" style={{ color: 'var(--color-ink)' }}>{project.title}</h3>
-          <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink-muted)' }}>{project.desc}</p>
-          <div className="mt-4 pt-3 border-t border-white/10 text-right">
-            <span className="font-stat text-xs" style={{ color: 'var(--color-ink-muted)', opacity: 0.5 }}>In progress...</span>
+
+          <div className="mt-auto pt-3 border-t border-white/10">
+            {project.techStack && (
+              <div className="mb-3 flex flex-wrap gap-1.5">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded px-2 py-0.5 font-stat text-[11px] text-[var(--color-star)]"
+                    style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255, 200, 87, 0.25)' }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="text-right">
+              <span className="font-stat text-xs text-[var(--color-comet)]">
+                ⚡ Deployment in progress...
+              </span>
+            </div>
           </div>
         </PixelPanel>
       </motion.div>
