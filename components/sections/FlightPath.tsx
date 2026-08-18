@@ -235,8 +235,8 @@ export function FlightPath() {
               </div>
               <ul className="space-y-2.5 font-stat text-xs md:text-sm">
                 {[
-                  { label: 'Level',        value: `${siteConfig.level.replace(' Explorer', '')} · 94% XP`, highlight: true },
-                  { label: 'Focus',        value: siteConfig.focus,               highlight: false },
+                  { label: 'Level',        value: 'Lv. 21 · 94% XP',              highlight: true },
+                  { label: 'Focus',        value: 'IoT and Web Integration',       highlight: false },
                   { label: 'Based in',     value: siteConfig.location,           highlight: false },
                   { label: 'Status',       value: 'Online 🚀',                   highlight: true },
                 ].map(({ label, value, highlight }) => (

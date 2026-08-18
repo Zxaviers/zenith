@@ -7,8 +7,8 @@ export const siteConfig = {
   role: process.env.NEXT_PUBLIC_SITE_ROLE || 'Web Enthusiast & IoT Embedded Explorer',
   location: process.env.NEXT_PUBLIC_SITE_LOCATION || 'Indonesia 🇮🇩',
   university: process.env.NEXT_PUBLIC_SITE_UNIVERSITY || 'Brawijaya University',
-  level: process.env.NEXT_PUBLIC_SITE_LEVEL || 'Lv. 21 Explorer',
-  focus: process.env.NEXT_PUBLIC_SITE_FOCUS || 'IoT and Web Integration',
+  level: 'Lv. 21 Explorer',
+  focus: 'IoT and Web Integration',
   timezone: process.env.NEXT_PUBLIC_SITE_TIMEZONE || 'UTC+7',
 
   socials: {
