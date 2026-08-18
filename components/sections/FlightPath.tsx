@@ -20,7 +20,7 @@ const MILESTONES: Milestone[] = [
   {
     period: 'Now',
     title: 'Computer Engineering',
-    organization: 'Universitas Brawijaya',
+    organization: 'Brawijaya University',
     duration: '2023 — Present',
     description: [
       'Pursuing Computer Engineering with a strong focus on embedded hardware, microcontrollers, and computer architecture.',

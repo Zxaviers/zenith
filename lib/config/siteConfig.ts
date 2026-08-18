@@ -6,7 +6,7 @@ export const siteConfig = {
   handle: process.env.NEXT_PUBLIC_SITE_HANDLE || 'Zenith',
   role: process.env.NEXT_PUBLIC_SITE_ROLE || 'Web Enthusiast & IoT Embedded Explorer',
   location: process.env.NEXT_PUBLIC_SITE_LOCATION || 'Indonesia 🇮🇩',
-  university: process.env.NEXT_PUBLIC_SITE_UNIVERSITY || 'Universitas Brawijaya',
+  university: process.env.NEXT_PUBLIC_SITE_UNIVERSITY || 'Brawijaya University',
   level: process.env.NEXT_PUBLIC_SITE_LEVEL || 'Lv. 20 Explorer',
   timezone: process.env.NEXT_PUBLIC_SITE_TIMEZONE || 'UTC+7',
 
