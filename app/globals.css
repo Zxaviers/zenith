@@ -370,9 +370,16 @@
     box-shadow: 2px 2px 0 0 #000;
     text-decoration: none;
   }
-  .footer-orbit-link:hover {
-    border-color: rgba(255, 200, 87, 0.5);
-    color: var(--color-teal);
+  /* Twinkle animation for cosmic starfields */
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
   }
 }
 

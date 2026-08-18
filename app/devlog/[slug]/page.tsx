@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { devlogPosts } from '@/lib/data/devlogPosts'
 import { siteConfig } from '@/lib/config/siteConfig'
+import { GlobalStarfield } from '@/components/layout/GlobalStarfield'
 import { Clock, ArrowLeft, Terminal, CheckCircle2, Home, Send } from 'lucide-react'
 
 export function generateStaticParams() {
@@ -35,7 +36,9 @@ export default async function DevlogPostPage({
   if (!post) notFound()
 
   return (
-    <section className="relative px-4 sm:px-6 py-24 scroll-mt-24 min-h-screen">
+    <>
+      <GlobalStarfield starCount={130} />
+      <section className="relative z-10 px-4 sm:px-6 py-24 scroll-mt-24 min-h-screen">
       <div className="mx-auto max-w-3xl">
         {/* Top Navigation Links */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -214,5 +217,6 @@ export default async function DevlogPostPage({
         </PixelPanel>
       </div>
     </section>
+    </>
   )
 }

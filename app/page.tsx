@@ -3,6 +3,7 @@ import { Preloader } from '@/components/layout/Preloader'
 import { ScrollProgress } from '@/components/layout/ScrollProgress'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { GlobalStarfield } from '@/components/layout/GlobalStarfield'
 import { Hero } from '@/components/sections/Hero'
 import { MissionControl } from '@/components/sections/MissionControl'
 import { Constellation } from '@/components/sections/Constellation'
@@ -23,9 +24,10 @@ export default function Home() {
     <>
       <Preloader />
       <ScrollProgress />
+      <GlobalStarfield starCount={160} />
       <Navbar />
 
-      <main className="scroll-smooth transition-all duration-300">
+      <main className="relative z-10 scroll-smooth transition-all duration-300">
         <Hero />
         <MissionControl />
         <Constellation />
