@@ -2,72 +2,155 @@
 
 import { useState, type FormEvent } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
+import { FormGroup } from '@/components/ui/FormGroup'
+import { PixelInput, PixelTextarea } from '@/components/ui/PixelInput'
+import { siteConfig } from '@/lib/config/siteConfig'
+import { portfolioSounds } from '@/lib/audio/retroSounds'
+import { BookOpen, Sparkles, Gamepad2, Rocket, CheckCircle, AlertTriangle, Send } from 'lucide-react'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
-const CONTACT_EMAIL = 'riskimardhani@gmail.com'
-
 export function Transmission() {
   const [status, setStatus] = useState<Status>('idle')
-  const [error, setError] = useState('')
-  const [focusedField, setFocusedField] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const reducedMotion = useReducedMotion() ?? false
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
-    const name    = (form.elements.namedItem('name')    as HTMLInputElement).value.trim()
-    const email   = (form.elements.namedItem('email')   as HTMLInputElement).value.trim()
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim()
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim()
     const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim()
+    const botcheck = (form.elements.namedItem('botcheck') as HTMLInputElement)?.checked
 
+    // Client-side quick checks
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!name || !email || !message) {
+      portfolioSounds.playBlip(300)
       setStatus('error')
-      setError('Please fill in all fields before sending.')
+      setErrorMessage('Harap isi semua kolom transmisi sebelum mengirim.')
       return
     }
     if (!emailPattern.test(email)) {
+      portfolioSounds.playBlip(300)
       setStatus('error')
-      setError("That email doesn't look right — please double-check it.")
+      setErrorMessage('Format alamat email tidak valid.')
       return
     }
 
+    portfolioSounds.playBlip(750)
     setStatus('submitting')
-    setError('')
+    setErrorMessage('')
+    setSuccessMessage('')
 
-    const subject = encodeURIComponent(`[Zenith] Message from ${name}`)
-    const body    = encodeURIComponent(`${message}\n\n— ${name}\n— ${email}`)
-    
-    // Simulate ~800ms transmission animation before opening mail client
-    setTimeout(() => {
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
+    try {
+      const res = await fetch('/api/transmission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message, botcheck }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Gagal mengirim transmisi ke stasiun relay.')
+      }
+
+      portfolioSounds.playStarSparkle()
       setStatus('success')
+      setSuccessMessage(data.message || 'Transmisi berhasil dikirim dan dicatat!')
       form.reset()
-      
-      // Reset success message after some time
-      setTimeout(() => setStatus('idle'), 5000)
-    }, 800)
+    } catch (err: any) {
+      portfolioSounds.playBlip(300)
+      setStatus('error')
+      setErrorMessage(err.message || 'Terjadi gangguan sinyal uplink. Silakan coba lagi.')
+    }
   }
-
-  const inputStyle = (isFocused: boolean) => ({
-    background: 'var(--color-void-deep)',
-    color: 'var(--color-ink)',
-    border: `2px solid ${isFocused ? 'var(--color-teal)' : 'rgba(255,255,255,0.15)'}`,
-    boxShadow: isFocused && !reducedMotion ? '0 0 12px rgba(0,245,196,0.3)' : 'none',
-    outline: 'none',
-  })
-
-  const labelStyle = (isFocused: boolean) => ({
-    color: isFocused ? 'var(--color-teal)' : 'var(--color-ink-muted)',
-    fontWeight: isFocused ? 'bold' : 'normal',
-    textShadow: isFocused && !reducedMotion ? '0 0 8px rgba(0,245,196,0.5)' : 'none',
-  })
 
   return (
     <section id="send-a-transmission" className="relative px-4 sm:px-6 py-24 text-center scroll-mt-24">
+      {/* ── Dual Gateway Reference Cards (Arcade & Devlog) ── */}
+      <div className="mx-auto max-w-5xl mb-16 grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Arcade Gateway Card */}
+        <Link
+          href="/arcade"
+          onClick={() => portfolioSounds.playStarSparkle()}
+          className="group block text-left"
+        >
+          <PixelPanel
+            variant="nebula"
+            className="h-full p-5 border-2 border-[var(--color-star)]/40 hover:border-[var(--color-star)] transition-all shadow-[0_0_20px_rgba(255,200,87,0.15)] group-hover:shadow-[0_0_30px_rgba(255,200,87,0.3)] flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-[11px] text-[var(--color-star)] bg-[var(--color-void-deep)] border border-[var(--color-star)]/30">
+                  <Gamepad2 className="h-3.5 w-3.5" />
+                  <span>ARCADE SECTOR</span>
+                </span>
+                <span className="font-stat text-[10px] text-[var(--color-aurora)] animate-pulse">● LIVE PLAY</span>
+              </div>
+
+              <h3 className="font-display text-sm md:text-base text-[var(--color-star)] mb-1.5 flex items-center gap-1.5">
+                <span>Void Miner: Asteroid Harvester</span>
+                <Rocket className="h-3.5 w-3.5 text-[var(--color-comet)]" />
+              </h3>
+              <p className="font-body text-xs md:text-sm text-[var(--color-ink-muted)] leading-relaxed mb-4">
+                Kemudikan pesawat tempur supersonik, tembak asteroid kristal kuantum dengan laser ganda ujung sayap, dan hadapi shrapnel berbahaya.
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+              <span className="font-stat text-[11px] text-[var(--color-starchart)]">Zero-G Newtonian Physics</span>
+              <span className="px-3.5 py-1.5 rounded bg-[var(--color-star)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
+                Mainkan Arcade →
+              </span>
+            </div>
+          </PixelPanel>
+        </Link>
+
+        {/* Devlog Gateway Card */}
+        <Link
+          href="/devlog"
+          onClick={() => portfolioSounds.playBlip(700)}
+          className="group block text-left"
+        >
+          <PixelPanel
+            variant="nebula"
+            className="h-full p-5 border-2 border-[var(--color-comet)]/40 hover:border-[var(--color-comet)] transition-all shadow-[0_0_20px_rgba(255,139,76,0.15)] group-hover:shadow-[0_0_30px_rgba(255,139,76,0.3)] flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-[11px] text-[var(--color-comet)] bg-[var(--color-void-deep)] border border-[var(--color-comet)]/30">
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>RESEARCH LOGS</span>
+                </span>
+                <span className="font-stat text-[10px] text-[var(--color-star)]">3 ARTIKEL TEKNIS</span>
+              </div>
+
+              <h3 className="font-display text-sm md:text-base text-[var(--color-comet)] mb-1.5 flex items-center gap-1.5">
+                <span>Engineering Devlogs & Research</span>
+                <Sparkles className="h-3.5 w-3.5 text-[var(--color-star)]" />
+              </h3>
+              <p className="font-body text-xs md:text-sm text-[var(--color-ink-muted)] leading-relaxed mb-4">
+                Catatan teknis integrasi ESP32 ADC 16-bit, arsitektur showcase web klien pcb-custom-malang, dan Web Audio API.
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+              <span className="font-stat text-[11px] text-[var(--color-starchart)]">IoT & Web Engineering</span>
+              <span className="px-3.5 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
+                Buka Devlog →
+              </span>
+            </div>
+          </PixelPanel>
+        </Link>
+      </div>
+
       <motion.div
         className="mb-10"
         initial={{ opacity: 0, y: 30 }}
@@ -75,155 +158,101 @@ export function Transmission() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="font-display text-2xl md:text-3xl" style={{ color: 'var(--color-ink)' }}>
+        <h2 className="font-display text-2xl md:text-3xl text-[var(--color-starchart)]">
           Send a Transmission
         </h2>
-        <p className="mt-2 font-body text-base md:text-lg" style={{ color: 'var(--color-ink-muted)' }}>
+        <p className="mt-2 font-body text-base md:text-lg text-[var(--color-ink-muted)]">
           Have a project idea, collaboration, or just want to say hi? I&apos;d love to hear from you.
         </p>
       </motion.div>
 
-      <div className="mx-auto max-w-2xl">
-        <PixelPanel variant="nebula" className="text-left shadow-[6px_6px_0_0_#000] p-6 md:p-8">
-          <div className="mb-6 flex flex-wrap items-center justify-between border-b border-white/10 pb-4 gap-2">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full animate-pulse" style={{ background: 'var(--color-teal)' }} />
-              <span className="font-display text-xs" style={{ color: 'var(--color-teal)' }}>
-                Contact Form · Open
-              </span>
-            </div>
-            <span className="font-stat text-xs font-bold" style={{ color: 'var(--color-ink-muted)' }}>
-              {CONTACT_EMAIL}
-            </span>
-          </div>
+      <div className="mx-auto max-w-xl">
+        <PixelPanel variant="nebula" className="p-6 md:p-8 shadow-[6px_6px_0_0_#000]">
+          <form onSubmit={handleSubmit} noValidate className="space-y-6 text-left">
+            {/* Hidden honeypot field for bot protection */}
+            <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
-          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-            {/* Name */}
-            <div>
-              <label 
-                htmlFor="name" 
-                className="mb-1.5 block font-display text-xs transition-all" 
-                style={labelStyle(focusedField === 'name')}
+            {status === 'error' && (
+              <motion.div 
+                className="p-3.5 bg-red-900/40 border border-red-500/50 rounded-lg font-stat text-xs text-red-200 flex items-start gap-2"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
               >
-                Your Name
-              </label>
-              <input
+                <AlertTriangle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold">STATUS TRANSMISI GAGAL: </span>
+                  <span>{errorMessage}</span>
+                </div>
+              </motion.div>
+            )}
+
+            {status === 'success' && (
+              <motion.div 
+                className="p-3.5 bg-green-900/40 border border-green-500/50 rounded-lg font-stat text-xs text-green-200 flex items-start gap-2"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                <CheckCircle className="h-4 w-4 text-green-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold">TRANSMISI DITERIMA: </span>
+                  <span>{successMessage}</span>
+                </div>
+              </motion.div>
+            )}
+
+            <FormGroup label="Agent / Name" htmlFor="name" required>
+              <PixelInput
                 id="name"
                 name="name"
-                type="text"
+                placeholder="Nama Anda atau callsign..."
                 required
-                autoComplete="name"
-                placeholder="e.g. Ada Lovelace"
-                className="w-full rounded px-4 py-3 font-body transition-all"
-                style={inputStyle(focusedField === 'name')}
-                onFocus={() => setFocusedField('name')}
-                onBlur={() => setFocusedField(null)}
-                onChange={() => status === 'error' && setStatus('idle')}
+                disabled={status === 'submitting'}
               />
-            </div>
+            </FormGroup>
 
-            {/* Email */}
-            <div>
-              <label 
-                htmlFor="email" 
-                className="mb-1.5 block font-display text-xs transition-all" 
-                style={labelStyle(focusedField === 'email')}
-              >
-                Your Email
-              </label>
-              <input
+            <FormGroup label="Comm Frequency / Email" htmlFor="email" required>
+              <PixelInput
                 id="email"
                 name="email"
                 type="email"
+                placeholder="nama@domain.com"
                 required
-                autoComplete="email"
-                placeholder="you@example.com"
-                className="w-full rounded px-4 py-3 font-body transition-all"
-                style={inputStyle(focusedField === 'email')}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                onChange={() => status === 'error' && setStatus('idle')}
+                disabled={status === 'submitting'}
               />
-            </div>
+            </FormGroup>
 
-            {/* Message */}
-            <div>
-              <label 
-                htmlFor="message" 
-                className="mb-1.5 block font-display text-xs transition-all" 
-                style={labelStyle(focusedField === 'message')}
-              >
-                Message
-              </label>
-              <textarea
+            <FormGroup label="Transmission Content / Message" htmlFor="message" required>
+              <PixelTextarea
                 id="message"
                 name="message"
-                rows={4}
+                placeholder="Tuliskan pesan transmisi atau tawaran kolaborasi Anda di sini..."
                 required
-                placeholder="What's on your mind?"
-                className="w-full rounded px-4 py-3 font-body transition-all"
-                style={inputStyle(focusedField === 'message')}
-                onFocus={() => setFocusedField('message')}
-                onBlur={() => setFocusedField(null)}
-                onChange={() => status === 'error' && setStatus('idle')}
+                rows={4}
+                disabled={status === 'submitting'}
               />
-            </div>
+            </FormGroup>
 
-            {/* Error */}
-            {status === 'error' && (
-              <motion.div
-                role="alert"
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded p-3 font-stat text-xs md:text-sm font-bold"
-                style={{ background: 'rgba(255,107,157,0.15)', border: '2px solid var(--color-pink)', color: 'var(--color-pink)' }}
-              >
-                ⚠ {error}
-              </motion.div>
-            )}
-
-            {/* Success */}
-            {status === 'success' && (
-              <motion.div
-                role="status"
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded p-3 font-stat text-xs md:text-sm font-bold"
-                style={{ background: 'rgba(0,245,196,0.12)', border: '2px solid var(--color-teal)', color: 'var(--color-teal)' }}
-              >
-                ✓ Message sent! Your email client should open shortly.
-              </motion.div>
-            )}
-
-            <div className="relative overflow-hidden rounded">
+            <div className="relative pt-2">
               <PixelButton
                 type="submit"
                 variant="comet"
+                className="w-full py-4 text-xs font-bold font-display cursor-pointer"
                 disabled={status === 'submitting'}
-                className="w-full py-4 text-xs font-bold font-display uppercase tracking-wider relative z-10"
               >
                 {status === 'submitting' ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <motion.span
-                      className="h-2 w-2 rounded-full"
-                      style={{ background: 'var(--color-void-deep)' }}
-                      animate={reducedMotion ? {} : { opacity: [1, 0.2, 1] }}
-                      transition={{ duration: 0.8, repeat: Infinity }}
-                    />
-                    Dispatching Transmission...
-                  </span>
+                  <span className="animate-pulse">⚡ Encoding & Dispatching Transmission...</span>
                 ) : (
-                  '📡 Send Message'
+                  '📡 Send Transmission'
                 )}
               </PixelButton>
               
-              {/* Sending Animation Bar */}
+              {/* Sending Animation Bar — GPU accelerated scaleX */}
               {status === 'submitting' && !reducedMotion && (
                 <motion.div 
-                  className="absolute bottom-0 left-0 h-1 bg-white z-20"
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--color-star)] z-20 origin-left"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 />
               )}
             </div>
@@ -240,9 +269,9 @@ export function Transmission() {
 
           <div className="flex justify-center gap-4 pt-2">
             {[
-              { href: 'https://github.com/zxaviers',                 src: '/sprites/github.png',    label: 'GitHub' },
-              { href: 'https://linkedin.com/in/rizky-mardhani1st',   src: '/sprites/linkedin.png',  label: 'LinkedIn' },
-              { href: 'https://www.instagram.com/ryzennth_/',        src: '/sprites/Instagram.png', label: 'Instagram' },
+              { href: siteConfig.socials.github,    src: '/sprites/github.png',    label: 'GitHub' },
+              { href: siteConfig.socials.linkedin,  src: '/sprites/linkedin.png',  label: 'LinkedIn' },
+              { href: siteConfig.socials.instagram, src: '/sprites/Instagram.png', label: 'Instagram' },
             ].map(({ href, src, label }) => (
               <a
                 key={href}
@@ -256,15 +285,15 @@ export function Transmission() {
                   className="rounded-xl p-2.5 transition-all group-hover:scale-110"
                   style={{
                     background: 'var(--color-void-deep)',
-                    border: '2px solid rgba(0,245,196,0.3)',
+                    border: '2px solid rgba(255, 200, 87, 0.3)',
                     boxShadow: '2px 2px 0 0 #000',
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.7)' }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.3)' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 200, 87, 0.7)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 200, 87, 0.3)' }}
                 >
                   <Image src={src} alt="" width={28} height={28} className="h-7 w-7 pixel-asset" />
                 </div>
-                <span className="font-stat text-[9px]" style={{ color: 'var(--color-ink-muted)' }}>{label}</span>
+                <span className="font-stat text-[9px] text-[var(--color-ink-muted)]">{label}</span>
               </a>
             ))}
           </div>

@@ -24,7 +24,7 @@ const variantStyles: Record<
   ghost: {
     style: {
       '--pixel-fill-color': 'var(--color-void-surface)',
-      '--pixel-border-color': 'rgba(240, 238, 255, 0.4)',
+      '--pixel-border-color': 'rgba(245, 233, 214, 0.4)',
     },
     text: 'text-ink',
   },

@@ -1,9 +1,8 @@
-import type { Metadata } from 'next'
-import { Press_Start_2P, Nunito, VT323 } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { Press_Start_2P, Nunito, VT323, Space_Grotesk, Quicksand } from 'next/font/google'
 import './globals.css'
+import { siteConfig } from '@/lib/config/siteConfig'
 
-// Self-hosted at build time by next/font (no runtime request to Google
-// Fonts, per ZENITH_PLAYBOOK.md §3 typography brief).
 const pixelDisplay = Press_Start_2P({
   variable: '--font-press-start-2p',
   weight: '400',
@@ -24,32 +23,46 @@ const stat = VT323({
   display: 'swap',
 })
 
-// Full Metadata API (title template, OG/Twitter tags, JSON-LD) lands in
-// Fase 6. This is the Fase 3 brand-copy pass — same title/description now
-// used by index.html and public/manifest.json, so both apps agree while
-// they coexist.
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-space-grotesk',
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+})
+
+const quicksand = Quicksand({
+  variable: '--font-quicksand',
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+})
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#1b1235',
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zxaviers.site'),
+  metadataBase: new URL(siteConfig.socials.liveSite),
   title: {
-    default: 'Zenith | Computer Engineering Student & Web Developer',
-    template: '%s | Zenith',
+    default: `${siteConfig.handle} | ${siteConfig.name} — ${siteConfig.role}`,
+    template: `%s | ${siteConfig.handle}`,
   },
-  description:
-    'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
+  description: `Portfolio ${siteConfig.handle} (${siteConfig.name}) — ${siteConfig.role} at ${siteConfig.university}.`,
   openGraph: {
-    title: 'Zenith | Computer Engineering Student & Web Developer',
-    description:
-      'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
-    url: 'https://zxaviers.site',
-    siteName: 'Zenith',
+    title: `${siteConfig.handle} | ${siteConfig.name}`,
+    description: `Portfolio ${siteConfig.handle} (${siteConfig.name}) — ${siteConfig.role} at ${siteConfig.university}.`,
+    url: siteConfig.socials.liveSite,
+    siteName: siteConfig.handle,
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zenith | Computer Engineering Student & Web Developer',
-    description:
-      'Portfolio Zenith (Rizky Mardhani) \u2014 Computer Engineering student exploring web development, IoT, and AI.',
+    title: `${siteConfig.handle} | ${siteConfig.name}`,
+    description: `Portfolio ${siteConfig.handle} (${siteConfig.name}) — ${siteConfig.role} at ${siteConfig.university}.`,
   },
 }
 
@@ -58,25 +71,24 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'Person',
-      '@id': 'https://zxaviers.site/#person',
-      name: 'Rizky Mardhani',
-      alternateName: 'Zxaviers',
-      url: 'https://zxaviers.site',
-      description: 'Computer Engineering student exploring web development, IoT, and AI.',
+      '@id': `${siteConfig.socials.liveSite}/#person`,
+      name: siteConfig.name,
+      url: siteConfig.socials.liveSite,
+      description: `${siteConfig.role} at ${siteConfig.university}.`,
       sameAs: [
-        'https://github.com/zxaviers',
-        'https://linkedin.com/in/rizky-mardhani1st',
-        'https://www.instagram.com/ryzennth_/',
+        siteConfig.socials.github,
+        siteConfig.socials.linkedin,
+        siteConfig.socials.instagram,
       ],
     },
     {
       '@type': 'WebSite',
-      '@id': 'https://zxaviers.site/#website',
-      url: 'https://zxaviers.site',
-      name: 'Zenith',
-      description: 'Portfolio Zenith (Rizky Mardhani)',
+      '@id': `${siteConfig.socials.liveSite}/#website`,
+      url: siteConfig.socials.liveSite,
+      name: siteConfig.handle,
+      description: `Portfolio ${siteConfig.handle} (${siteConfig.name})`,
       publisher: {
-        '@id': 'https://zxaviers.site/#person',
+        '@id': `${siteConfig.socials.liveSite}/#person`,
       },
     },
   ],
@@ -88,8 +100,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable}`}>
-      <body className="antialiased">
+    <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}>
+      <body className="antialiased overflow-x-hidden min-h-screen bg-[var(--color-void)] text-[var(--color-starchart)]">
         {children}
         <script
           type="application/ld+json"

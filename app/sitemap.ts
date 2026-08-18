@@ -1,11 +1,12 @@
 import { MetadataRoute } from 'next'
 import { projects } from '@/lib/data/projects'
 import { devlogPosts } from '@/lib/data/devlogPosts'
+import { siteConfig } from '@/lib/config/siteConfig'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://zxaviers.site'
+  const baseUrl = siteConfig.socials.liveSite
 
-  const staticRoutes = ['', '/style-guide', '/devlog'].map((route) => ({
+  const staticRoutes = ['', '/style-guide', '/devlog', '/arcade'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,

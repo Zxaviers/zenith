@@ -1,32 +1,36 @@
 # 🌌 Zenith — Design Specification (Stitch by Google Protocol)
 
-> **Vibe Statement:** *"A warm, cozy, yet cutting-edge retro-futuristic astronomical observatory cockpit. It feels like an indie space-exploring RPG console crossed with a clean, high-precision engineering workstation."*
+> **Vibe Statement:** *"A warm, cozy, yet cutting-edge retro-futuristic astronomical observatory cockpit — an indie space-exploring RPG console crossed with a clean, high-precision engineering workstation."*
+
+Derived from the Stitch project **"Zenith Redo Hero Navbar — Codedex Relaxed"** (design system *Cosmic Explorer*), and implemented across the whole site.
 
 ---
 
 ## 1. Aesthetic Vibe & Emotional Goals
 
-- **Atmospheric Warmth:** Move away from cold, sterile sci-fi blues. Zenith embraces the **"Warm Nebula"** universe: deep void indigos illuminated by comet oranges, starlight golds, and delicate aurora greens.
-- **Crafted Retro-Futurism:** 9-slice clipped pixel-panel geometry, hard 4px offset drop shadows (tactile physical feel), CRT scanline overlays, and soundless kinetic snap physics on all buttons.
-- **Living Star Map Telemetry:** Interfaces are not static boxes. Constellations have pulsing neon connections, trajectory paths follow orbital vectors, and live audio frequency waveforms react during com-link transmissions.
+- **Atmospheric Warmth:** Deep void indigos illuminated by **comet orange**, **star gold**, and delicate **aurora green** — warmth over cold sci-fi. "Hygge in orbit": safe, inviting, sparky.
+- **Crafted Retro-Futurism:** notched 9-slice pixel panels, hard 4px offset drop shadows, an organic gold starfield (no rigid grid), and soundless kinetic snap on buttons.
+- **Living Star Map Telemetry:** constellations with glowing connections, an orbital flight path, a com-link dialogue terminal, and a live equalizer.
 
 ---
 
 ## 2. Core Color & Atmosphere Palette
 
+Tokens are defined Tailwind-v4-native in the `@theme` block of `app/globals.css`.
+
 ```
---color-void:       #1B1235  /* Deep Cosmos Background */
---color-nebula:     #3E2A63  /* Ionized Cloud Panels */
---color-comet:      #FF8B4C  /* Primary Kinetic / Ignition Accent */
---color-star:       #FFC857  /* Secondary Celestial Gold Accent */
---color-starchart:  #F5E9D6  /* High-legibility Warm Cream Typography */
---color-aurora:     #6FCF97  /* Live Signal / Telemetry Green */
+--color-void:      #1B1235  /* Deep cosmos background (html + body) */
+--color-nebula:    #3E2A63  /* Ionized cloud panels / cards / elevated surfaces */
+--color-comet:     #FF8B4C  /* Primary driver — CTAs, key accents, kinetic highlights */
+--color-star:      #FFC857  /* Spotlight — badges, active nav, borders, glows, starlight */
+--color-starchart: #F5E9D6  /* The voice — warm off-white typography */
+--color-aurora:    #6FCF97  /* Affirmation — success / "open to work" / positive status */
 ```
 
-### Gradients & Atmosphere Orbs
-- **Nebula Glow:** `radial-gradient(circle, rgba(62, 42, 99, 0.35) 0%, rgba(27, 18, 53, 0) 70%)`
-- **Comet Core:** `radial-gradient(circle, rgba(255, 139, 76, 0.20) 0%, rgba(27, 18, 53, 0) 60%)`
-- **CRT Glass Glare:** `linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 60%)`
+> Legacy "Void Teal" token names (`--color-teal`, `--color-void-deep`, `--color-ink`, …) remain in `@theme` as **compatibility aliases mapped onto this palette** (`teal → star`, `ink → starchart`, `void-deep → void`, `pink/teal-dim → comet`), so older sections stay themed without renaming every class. New work should use the Warm Nebula names above.
+
+### Elevation & Depth
+Tonal layers + glows instead of soft shadows. Level 0 = void. Level 1 = nebula panels with a 1px `starchart`-10% edge. Active elements gain a **star glow** (soft outer blur of `star` at ~30%). Hard 4px offset black shadow for the pixel-frame tactility.
 
 ---
 
@@ -34,37 +38,26 @@
 
 | Level | Family | Variable | Usage |
 | :--- | :--- | :--- | :--- |
-| **Display Header** | `Press Start 2P` | `--font-display` | Section titles, brand wordmark, launch buttons, HUD callouts |
-| **Body Content** | `Nunito` (Rounded Sans) | `--font-body` | Paragraf narasi, deskripsi proyek, curriculum vitae, dialog text |
-| **Telemetry & Stats** | `VT323` | `--font-stat` | Koordinat rasi bintang, level XP, frekuensi radio, timestamp, tag stack |
+| **Pixel Display** | `Press Start 2P` | `--font-display` | Hero headline, section titles, brand wordmark, HUD labels |
+| **Headline / Label** | `Space Grotesk` | `--font-headline` | Nav links, badges, buttons, small strong labels |
+| **Body** | `Quicksand` (rounded sans) | `--font-body` / `--font-cozy` | Paragraphs, descriptions, dialogue, form text |
+| **Telemetry / Stat** | `VT323` | `--font-stat` | Coordinates, level/XP, radio frequency, timestamps, tags |
 
 ---
 
 ## 4. Component Guidelines & Micro-Interactions
 
-### A. Constellation Asterism Map
-- **SVG Vector Links:** Dashed lines (`stroke-dasharray="3 3"`) connecting skills in authentic geometric asterisms.
-- **Active / Hover State:** Connected lines switch to solid starlight gold (`#FFC857`) with an SVG gaussian blur filter glow (`feGaussianBlur`).
-- **Power Mastery Gauge:** Side telemetry card dynamically fills an animated multi-stop gradient bar (`from-comet via-star to-aurora`) representing skill proficiency.
-
-### B. Cockpit Terminal Dialogue (Mission Control)
-- **Live Signal Visualizer:** 7-bar audio frequency equalizer animating with staggered sine waves.
-- **Status Beacon:** Pulsing aurora green signal node (`#6FCF97`) indicating active communication frequency.
-- **Paging Telemetry:** Interactive step indicators with glow states and soundless next/replay actions.
-
-### C. Orbital Flight Path (Experience Timeline)
-- **Waypoint Guidance:** Vertical gradient trajectory line with illuminated `StarNode` waypoints triggered sequentially on viewport intersection (`whileInView`).
-- **Telemetry Cards:** Level 20 System Engineer status panel and hover-elevated achievement badges.
-
-### D. Tactile PixelButton (Launch Engine)
-- **Kinetics:** On `:active`, element translates `4px 4px` directly into its shadow with zero blur.
-- **Accessibility:** High-contrast `:focus-visible` outline in aurora green (`outline-3 outline-aurora`).
+- **Hero:** organic **twinkling** gold starfield, nebula glows, gold "Lv. 20 Explorer" pill, pixel headline "Hello, I'm Rizky" (Rizky in comet), a **rotating typewriter** subtitle, comet + outlined CTAs, and a right-side orbit ring + illustrated cozy planet + floating rocket.
+- **Navbar:** translucent nebula pill (blur + glow), rocket logo icon + pixel "Zenith" wordmark (comet), star-gold active underline, and an aurora "Open to work" status pill.
+- **Constellation (Skills):** star nodes glow **comet/gold** scaled by mastery, connected by dashed/solid gold asterism lines; side telemetry panel with a comet→star mastery bar.
+- **Mission Control (About):** cockpit com-link terminal — typewriter dialogue, live equalizer, gold "Continue" button.
+- **Flight Path (Experience):** vertical trajectory rail with glowing gold waypoints, operator profile + achievement badges.
+- **Buttons:** Primary = comet fill / void text. Secondary = star fill / void text. Ghost = starchart border + text. `:active` translates 4px into its own shadow. `:focus-visible` = star outline.
 
 ---
 
-## 5. Polish Checklist
+## 5. Motion & Accessibility
 
-- [x] Organic multi-coordinate starfield with no repeating grid patterns.
-- [x] Full accessibility with WCAG AA/AAA contrast compliance across all elements.
-- [x] Edge-rendered Dynamic OpenGraph artwork.
-- [x] Zero third-party SSR dependency issues (React 19 native).
+- **Reduced motion:** honored globally (CSS safety net + Framer Motion `useReducedMotion`) — decorative motion (starfield twinkle, parallax, typewriter, spins) degrades to static; content and function stay intact.
+- **Keyboard:** visible `:focus-visible` star rings on every interactive control; nav links carry plain-language `aria-label`s (e.g. "Constellation — Skills").
+- **Contrast:** starchart / star / comet on void/nebula meet WCAG AA (verify any new combination before shipping).

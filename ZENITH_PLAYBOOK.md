@@ -431,29 +431,56 @@ STOP dan tunggu saya HANYA jika salah satu ini terjadi:
 - Kalau agent berhenti di kondisi stop #1 (kredensial), itu wajar dan bukan kegagalan — tinggal login/link service-nya lalu lanjutkan dengan pesan singkat "lanjutkan dari PROGRESS.md".
 - Kalau butuh audit ulang setelah semua fase selesai, cukup minta agent membaca PROGRESS.md dan Fase 7 checklist lagi, tidak perlu saya buatkan prompt baru untuk itu.
 
+---
+
+## 8. Fase 8 — Design Polish Pass (ditambahkan pasca-review visual live site)
+
+Fase 5-7 (a11y/performa/SEO/QA) selesai secara teknis (build, test, lint semua hijau), tapi itu **bukan jaminan visual benar** — build sukses cuma berarti kode valid, bukan berarti tampil sesuai spek §2/§4. Review manual terhadap screenshot live site menemukan bug nyata yang lolos dari semua fase sebelumnya karena tidak ada fase yang secara eksplisit memverifikasi hasil visual di browser sungguhan.
+
+**Wajib sebelum menjalankan fase ini**: pastikan `origin/main` sudah berisi commit fase terbaru (lihat §9 di bawah — jangan asumsikan commit lokal = sudah live), dan situs sudah ter-redeploy, lalu **screenshot ulang dulu** — sebagian item di bawah mungkin sudah kebetulan terselesaikan oleh Fase 5 (mis. fix kontras bisa saja menyelesaikan teks tombol yang invisible). Coret item yang ternyata sudah beres sebelum menjalankan prompt.
+
+```
+Mode Otonom: perbaikan visual berdasarkan review screenshot live site,
+bukan permintaan redesign — ini bug fixing terhadap spek yang SUDAH
+ditentukan di ZENITH_PLAYBOOK.md §2-4, yang ternyata belum terimplementasi
+penuh saat Fase 4 membangun section.
+
+Perbaiki dalam urutan ini, commit terpisah tiap item, screenshot hasilnya
+(pakai dev server lokal) sebelum dan sesudah tiap perbaikan untuk verifikasi
+nyata (bukan asumsi visual):
+
+1. BUG — Headline hero terpotong. Cek overflow/white-space/max-width/
+   font-size responsive di komponen Hero, pastikan teks penuh tampil di
+   360px/768px/1280px.
+2. BUG — Teks tombol invisible (CTA hero, tombol Send di form kontak,
+   Download CV). Cek token warna teks vs background tombol yang mungkin
+   sama, atau custom Tailwind color token yang tidak ter-resolve di build
+   production.
+3. GAP — Constellation belum sesuai spek §2/§4: tambahkan garis SVG
+   penghubung antar star dalam grup yang sama (dashed/pixel style, warna
+   starchart/aurora opacity rendah), dan glow radius proporsional ke level
+   skill.
+4. GAP — Canvas SecretGame/Secret Level tidak mengikuti tema. Re-skin:
+   background void/nebula, font pixel yang sama dengan sisa situs, aksen
+   comet/star/aurora.
+5. Kosmetik — samakan styling badge Achievements & card Mission Log dengan
+   pola panel border-pixel di section lain; beri frame/border gelap pada
+   thumbnail project berlatar putih (mis. PCM) supaya tidak kontras kasar.
+
+Untuk tiap item: `npm run build:next` untuk pastikan tidak ada regresi,
+commit "zenith: fix - <ringkasan item>".
+
+STOP dan laporkan (dengan screenshot before/after tiap item) setelah SEMUA
+item relevan selesai, atau lebih awal sesuai kondisi stop §7.
+```
 
 ---
 
-## 8. Aturan Tambahan (dikumpulkan dari insiden-insiden sepanjang proyek)
+## 9. Aturan Tambahan (hasil insiden Zed→Antigravity handoff)
 
-1. **Commit lokal ≠ live.** Sebelum menganggap fase selesai atau mendiagnosis
-   bug di situs live, selalu verifikasi `git log` di REMOTE (`git log
-   origin/main`), bukan cuma lokal — dan pastikan branch produksi Netlify
-   memang men-deploy dari commit terbaru itu.
+Dua pelajaran nyata dari migrasi ini, dijadikan aturan baku untuk sisa proyek (termasuk kalau ganti tool/sesi lagi ke depannya):
 
-2. **Build/test/lint hijau ≠ visual benar.** Fase yang menyentuh UI wajib
-   diverifikasi lewat screenshot browser sungguhan sebelum ditandai selesai
-   di PROGRESS.md — bukan hanya lewat exit code build/test.
-
-3. **Pindah tool/sesi (Zed ↔ Antigravity, dst) itu aman** selama sumber
-   kebenarannya tetap ZENITH_PLAYBOOK.md + PROGRESS.md + git history, bukan
-   konteks percakapan. Setelah pindah tool, langkah pertama SELALU: baca
-   kedua file itu + `git log`/`git status`, jangan asumsikan state dari
-   laporan sesi sebelumnya tanpa verifikasi ulang.
-
-4. **Klaim "sudah pakai skill X" WAJIB dibuktikan**, bukan diterima
-   begitu saja: sebutkan path file SKILL.md yang dibaca (jejak view_file)
-   dan satu prinsip konkret dari skill itu yang benar-benar diterapkan di
-   laporan akhir. Kalau skill itu tidak tersedia/tidak ditemukan di
-   environment, laporkan apa adanya — jangan diklaim sudah dipakai padahal
-   tidak.
+1. **Commit lokal ≠ live.** Sebelum menganggap fase selesai atau mendiagnosis bug di situs live, selalu verifikasi `git log --oneline` di REMOTE (`git log origin/main`), bukan cuma lokal — dan pastikan branch produksi Netlify memang men-deploy dari commit terbaru itu. Insiden nyata: Fase 5-7 sempat selesai dan ter-commit rapi di branch lokal `feature/zenith-nextjs-rework`, tapi belum ter-`push`, sehingga situs live masih menjalankan kode Fase 4 selama beberapa waktu tanpa disadari.
+2. **Build/test/lint hijau ≠ visual benar.** Fase yang menyentuh UI (Fase 2, 4, 8) wajib diverifikasi lewat screenshot browser sungguhan sebelum ditandai selesai di `PROGRESS.md`, bukan hanya lewat exit code build/test. Kalau tidak ada akses screenshot langsung, minta agent men-generate screenshot dari dev server lokal sebagai bukti, bukan klaim teks "sudah sesuai spek".
+3. **Pindah tool/sesi (Zed → Antigravity → opencode, dst) itu aman** selama sumber kebenarannya tetap `ZENITH_PLAYBOOK.md` + `PROGRESS.md` + git history — bukan konteks percakapan atau log chat mentah. Setelah pindah tool, langkah pertama SELALU: baca `ZENITH_PLAYBOOK.md` + `PROGRESS.md` + `git log --oneline -30`/`git status`, JANGAN baca log chat lama secara penuh (buang-buang tool call, dan menyerap jalan-buntu lama dengan bobot yang sama seperti keputusan final) — log chat mentah cuma dipakai kalau ada pertanyaan spesifik yang jawabannya tidak ada di 3 sumber itu, lewat `grep`/pencarian terarah, bukan dibaca dari awal.
+4. **Klaim "sudah pakai skill X" WAJIB dibuktikan**, bukan diterima begitu saja: sebutkan path file `SKILL.md` yang dibaca (jejak `view_file`/`Read`) dan satu prinsip konkret dari skill itu yang benar-benar diterapkan, dicantumkan di laporan akhir. Kalau skill itu tidak tersedia/tidak ditemukan di environment, laporkan apa adanya — jangan diklaim sudah dipakai padahal tidak.

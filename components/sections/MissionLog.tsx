@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { PixelButton } from '@/components/ui/PixelButton'
 import { projects, type Project } from '@/lib/data/projects'
+import { portfolioSounds } from '@/lib/audio/retroSounds'
 
 // ── Targeting Reticle (4 corner L-lines) ────────────────────────────────────
 function Reticle({ visible }: { visible: boolean }) {
@@ -17,7 +18,7 @@ function Reticle({ visible }: { visible: boolean }) {
           {(['tl', 'tr', 'bl', 'br'] as const).map((pos) => (
             <motion.div
               key={pos}
-              className="pointer-events-none absolute"
+              className="pointer-events-none absolute z-30"
               style={{
                 top: pos.startsWith('t') ? 6 : undefined,
                 bottom: pos.startsWith('b') ? 6 : undefined,
@@ -25,15 +26,15 @@ function Reticle({ visible }: { visible: boolean }) {
                 right: pos.endsWith('r') ? 6 : undefined,
                 width: 14,
                 height: 14,
-                borderTop: pos.startsWith('t') ? '2px solid var(--color-teal)' : undefined,
-                borderBottom: pos.startsWith('b') ? '2px solid var(--color-teal)' : undefined,
-                borderLeft: pos.endsWith('l') ? '2px solid var(--color-teal)' : undefined,
-                borderRight: pos.endsWith('r') ? '2px solid var(--color-teal)' : undefined,
+                borderTop: pos.startsWith('t') ? '2px solid var(--color-star)' : undefined,
+                borderBottom: pos.startsWith('b') ? '2px solid var(--color-star)' : undefined,
+                borderLeft: pos.endsWith('l') ? '2px solid var(--color-star)' : undefined,
+                borderRight: pos.endsWith('r') ? '2px solid var(--color-star)' : undefined,
               }}
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.15 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.12, ease: 'easeOut' }}
             />
           ))}
         </>
@@ -64,8 +65,8 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
         className="relative w-full max-w-2xl overflow-hidden rounded-xl"
         style={{
           background: 'var(--color-void-surface)',
-          border: '2px solid var(--color-teal)',
-          boxShadow: '0 0 40px rgba(0,245,196,0.25), 8px 8px 0 0 #000',
+          border: '2px solid var(--color-star)',
+          boxShadow: '0 0 40px rgba(255, 200, 87, 0.25), 8px 8px 0 0 #000',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -78,11 +79,10 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
             />
             <div
               className="absolute top-3 right-3 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
-              style={{ background: 'rgba(13,8,22,0.92)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.4)' }}
+              style={{ background: 'rgba(13,8,22,0.92)', color: 'var(--color-star)', border: '1px solid rgba(255, 200, 87, 0.4)' }}
             >
               <motion.span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ background: 'var(--color-teal)' }}
+                className="h-1.5 w-1.5 rounded-full bg-[var(--color-star)]"
                 animate={{ opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
@@ -92,29 +92,29 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
         )}
 
         <div className="p-6">
-          <h3 className="font-display text-xl mb-2" style={{ color: 'var(--color-teal)' }}>
+          <h3 className="font-display text-xl mb-2 text-[var(--color-star)]">
             {project.title}
           </h3>
-          <p className="font-body text-sm leading-relaxed mb-4" style={{ color: 'var(--color-ink)', opacity: 0.9 }}>
+          <p className="font-body text-sm leading-relaxed mb-4 text-[var(--color-starchart)] opacity-90">
             {project.desc}
           </p>
 
           {project.problem && (
             <div className="mb-3 p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] mb-1" style={{ color: 'var(--color-ink-muted)' }}>◉ PROBLEM</p>
-              <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink)', opacity: 0.85 }}>{project.problem}</p>
+              <p className="font-stat text-[10px] mb-1 text-[var(--color-ink-muted)]">◉ PROBLEM</p>
+              <p className="font-body text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.problem}</p>
             </div>
           )}
           {project.solution && (
             <div className="mb-3 p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] mb-1" style={{ color: 'var(--color-teal)' }}>◉ SOLUTION</p>
-              <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink)', opacity: 0.85 }}>{project.solution}</p>
+              <p className="font-stat text-[10px] mb-1 text-[var(--color-star)]">◉ SOLUTION</p>
+              <p className="font-body text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.solution}</p>
             </div>
           )}
           {project.learnings && (
             <div className="mb-4 p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] mb-1" style={{ color: 'var(--color-pink)' }}>◉ LEARNINGS</p>
-              <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--color-ink)', opacity: 0.85 }}>{project.learnings}</p>
+              <p className="font-stat text-[10px] mb-1 text-[var(--color-comet)]">◉ LEARNINGS</p>
+              <p className="font-body text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.learnings}</p>
             </div>
           )}
 
@@ -123,8 +123,8 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
               {project.techStack.map((tech) => (
                 <motion.span
                   key={tech}
-                  className="rounded px-2 py-0.5 font-stat text-xs shadow-[1px_1px_0_0_#000]"
-                  style={{ background: 'var(--color-void-deep)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.25)' }}
+                  className="rounded px-2 py-0.5 font-stat text-xs shadow-[1px_1px_0_0_#000] text-[var(--color-star)]"
+                  style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255, 200, 87, 0.25)' }}
                   whileHover={{ y: -2 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                 >
@@ -152,8 +152,7 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
             )}
             <button
               onClick={onClose}
-              className="ml-auto font-stat text-xs transition-opacity hover:opacity-70"
-              style={{ color: 'var(--color-ink-muted)' }}
+              className="ml-auto font-stat text-xs transition-opacity hover:opacity-70 text-[var(--color-ink-muted)] cursor-pointer"
               aria-label="Close panel"
             >
               ✕ Close
@@ -240,18 +239,13 @@ function MissionCard({
 
       <PixelPanel
         variant="nebula"
-        className="flex flex-col h-full shadow-[6px_6px_0_0_#000] p-5 group cursor-pointer transition-shadow duration-300"
-        style={hovered ? { boxShadow: '0 0 0 2px var(--color-teal), 6px 6px 0 0 #000' } : {}}
-        onClick={() => onExpand(project)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onExpand(project) }}
-        aria-label={`Open details for ${project.title}`}
+        className="flex flex-col h-full shadow-[6px_6px_0_0_#000] p-5 group transition-shadow duration-300"
+        style={hovered ? { boxShadow: '0 0 0 2px var(--color-star), 6px 6px 0 0 #000' } : {}}
       >
         {project.preview && (
           <div
             className="relative mb-4 w-full overflow-hidden rounded"
-            style={{ aspectRatio: '16/9', border: '2px solid rgba(0,245,196,0.2)', background: 'var(--color-void-deep)' }}
+            style={{ aspectRatio: '16/9', border: '2px solid rgba(255, 200, 87, 0.25)', background: 'var(--color-void-deep)' }}
           >
             <Image
               src={project.preview}
@@ -262,15 +256,14 @@ function MissionCard({
             />
             <div
               className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(19,13,26,0.6) 100%)' }}
+              style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(27, 18, 53, 0.6) 100%)' }}
             />
             <div
               className="absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
-              style={{ background: 'rgba(19,13,26,0.9)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.35)' }}
+              style={{ background: 'rgba(27, 18, 53, 0.9)', color: 'var(--color-star)', border: '1px solid rgba(255, 200, 87, 0.35)' }}
             >
               <motion.span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ background: 'var(--color-teal)' }}
+                className="h-1.5 w-1.5 rounded-full bg-[var(--color-star)]"
                 animate={reducedMotion ? {} : { opacity: [1, 0.3, 1], scale: [1, 0.75, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
@@ -279,10 +272,10 @@ function MissionCard({
           </div>
         )}
 
-        <h3 className="mb-2 font-display text-sm md:text-base" style={{ color: 'var(--color-teal)' }}>
+        <h3 className="mb-2 font-display text-sm md:text-base text-[var(--color-star)]">
           {project.title}
         </h3>
-        <p className="font-body text-sm leading-relaxed mb-4 flex-1" style={{ color: 'var(--color-ink)', opacity: 0.9 }}>
+        <p className="font-body text-sm leading-relaxed mb-4 flex-1 text-[var(--color-starchart)] opacity-90">
           {project.desc}
         </p>
 
@@ -292,8 +285,8 @@ function MissionCard({
               {project.techStack.map((tech) => (
                 <motion.span
                   key={tech}
-                  className="rounded px-2 py-0.5 font-stat text-xs shadow-[1px_1px_0_0_#000]"
-                  style={{ background: 'var(--color-void-deep)', color: 'var(--color-teal)', border: '1px solid rgba(0,245,196,0.25)' }}
+                  className="rounded px-2 py-0.5 font-stat text-xs shadow-[1px_1px_0_0_#000] text-[var(--color-star)]"
+                  style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255, 200, 87, 0.25)' }}
                   whileHover={reducedMotion ? {} : { y: -2 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                 >
@@ -303,9 +296,12 @@ function MissionCard({
             </div>
           )}
           <button
-            className="w-full text-center font-stat text-xs pt-2 border-t border-white/5 transition-colors hover:opacity-80"
-            style={{ color: 'var(--color-ink-muted)' }}
-            onClick={(e) => { e.stopPropagation(); onExpand(project) }}
+            type="button"
+            className="w-full text-center font-stat text-xs pt-2 border-t border-white/5 transition-colors hover:text-[var(--color-star)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-star rounded cursor-pointer text-[var(--color-ink-muted)]"
+            onClick={() => {
+              portfolioSounds.playSelect()
+              onExpand(project)
+            }}
             aria-label={`Read full case study for ${project.title}`}
           >
             [ Read full case study → ]
@@ -446,7 +442,7 @@ export function MissionLog() {
           className="absolute left-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
-            border: '2px solid rgba(0,245,196,0.35)',
+            border: '2px solid rgba(255, 200, 87,0.35)',
             boxShadow: '2px 2px 0 0 #000',
             color: 'var(--color-teal)',
           }}
@@ -488,7 +484,7 @@ export function MissionLog() {
           className="absolute right-2 z-10 flex items-center justify-center rounded-lg w-9 h-9 transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
           style={{
             background: 'var(--color-void-surface)',
-            border: '2px solid rgba(0,245,196,0.35)',
+            border: '2px solid rgba(255, 200, 87,0.35)',
             boxShadow: '2px 2px 0 0 #000',
             color: 'var(--color-teal)',
           }}

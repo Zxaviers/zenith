@@ -1,310 +1,249 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useTypewriter } from '@/lib/hooks/useTypewriter'
+import { portfolioSounds } from '@/lib/audio/retroSounds'
+import { siteConfig } from '@/lib/config/siteConfig'
 
-/**
- * VoidShip — Renders the Foozle Void Main Ship using pure CSS sprite animation.
- *
- * Sprite layout (all PNGs from Foozle Void CC0 asset):
- *   ship-base.png          → 48×48, 1 frame (static hull)
- *   engine-burst-sheet.png → 336×96, 7 frames × 48px wide each
- *                            row 0 (y=0)  = Idle frames
- *                            row 1 (y=48) = Powering frames
- *
- * The component stacks the hull + engine as absolutely positioned layers,
- * engine positioned below the ship hull centre, rotated -90deg so the
- * thrust faces downward on-screen (ship faces up, moves up-right).
- */
-function VoidShip({ className = '' }: { className?: string }) {
-  return (
-    <div
-      className={`relative flex flex-col items-center select-none ${className}`}
-      aria-hidden="true"
-    >
-      {/* Drop-shadow teal glow around the whole assembly */}
-      <div className="relative" style={{ filter: 'hue-rotate(180deg) saturate(1.4) drop-shadow(0 0 14px rgba(0,245,196,0.55))' }}>
-        {/* Ship hull — static 48×48 sprite */}
-        <div
-          className="pixel-asset"
-          style={{
-            width: 96,
-            height: 96,
-            backgroundImage: 'url(/sprites/void/ship-base.png)',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: '0 0',
-            backgroundSize: '100% 100%',
-            imageRendering: 'pixelated',
-          }}
-        />
+/** Rotating subtitle phrases (typed out one at a time). */
+const PHRASES = [
+  siteConfig.role,
+  'Building web apps & embedded systems',
+  'React · Next.js · TypeScript · Tailwind',
+  'ESP32 · Arduino · Custom PCB design',
+]
 
-        {/* Engine burst — positioned below hull, animated spritesheet (7 frames) */}
-        <div
-          className="absolute pixel-asset animate-engine-burst"
-          style={{
-            width: 48,
-            height: 48,
-            bottom: -44,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundImage: 'url(/sprites/void/engine-burst-sheet.png)',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: '0 0',
-            backgroundSize: '336px 96px',
-            imageRendering: 'pixelated',
-          }}
-        />
-      </div>
-    </div>
-  )
+interface Star {
+  id: number
+  left: string
+  top: string
+  size: number
+  opacity: number
+  dur: string
+  delay: string
 }
 
-/**
- * VoidPlanet — Renders the animated Earth-like planet sprite from Foozle.
- * Spritesheet: 7392×96px, 154 frames @ 48px each.
- * Displayed at 2× scale (96×96) with CSS steps() animation.
- */
-function VoidPlanet({ className = '' }: { className?: string }) {
-  return (
-    // Outer wrapper: STATIC — drop-shadow here avoids per-frame filter recalc
-    <div
-      className={`relative select-none ${className}`}
-      aria-hidden="true"
-      style={{ filter: 'drop-shadow(0 0 18px rgba(0,245,196,0.3))' }}
-    >
-      {/* Soft outer glow ring — on its own element, not affecting spritesheet */}
-      <div
-        className="absolute inset-0 rounded-full animate-void-pulse"
-        style={{
-          background: 'radial-gradient(circle, rgba(0,245,196,0.18) 0%, transparent 70%)',
-          transform: 'scale(1.6)',
-        }}
-      />
-
-      {/* Planet spritesheet — 154 frames at 2× scale (96×96).
-          NO filter here: filter on a steps()-animated element forces
-          browser to recalculate it every frame → flicker/stutter.
-          Colors kept natural (blue-green Earth) as intentional accent. */}
-      <div
-        className="pixel-asset animate-planet-spin"
-        style={{
-          width: 96,
-          height: 96,
-          backgroundImage: 'url(/sprites/void/planet-earth.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: '0 0',
-          backgroundSize: '14784px 96px',
-          imageRendering: 'pixelated',
-          animationDuration: '8s',
-        }}
-      />
-    </div>
-  )
+/** Organic starfield, generated client-side (no SSR/hydration mismatch). */
+function useStars(count: number): Star[] {
+  const [stars, setStars] = useState<Star[]>([])
+  useEffect(() => {
+    setStars(
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        size: Math.random() * 2.5 + 1,
+        opacity: Math.random() * 0.5 + 0.3,
+        dur: `${Math.random() * 3 + 2}s`,
+        delay: `${Math.random() * 4}s`,
+      }))
+    )
+  }, [count])
+  return stars
 }
 
 export function Hero() {
+  const reduce = useReducedMotion() ?? false
+  const stars = useStars(70)
+  const { displayed: subtitle, isTyping } = useTypewriter(PHRASES, {
+    reducedMotion: reduce,
+    typeSpeed: 45,
+    deleteSpeed: 25,
+    pauseDuration: 1800,
+  })
+
+  const enter = (delay: number) =>
+    reduce
+      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.3 } }
+      : {
+          initial: { opacity: 0, y: 16 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay },
+        }
+
   return (
     <section
       id="home"
-      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden text-center px-4 sm:px-6 pt-28 pb-16 scroll-mt-24"
+      className="relative flex min-h-[92vh] items-center overflow-hidden px-6 pb-20 pt-32 scroll-mt-24"
+      style={{ background: 'var(--color-void)', color: 'var(--color-starchart)' }}
     >
-      {/* ── Layer 0: Solid deep void base ── */}
+      {/* ── Atmospheric nebula glows ── */}
       <div
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{ background: 'var(--color-void-deep)' }}
-        aria-hidden="true"
-      />
-
-      {/* ── Layer 1: Foozle bg-void texture tile, slowly scrolling ── */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 animate-bg-scroll-slow"
-        style={{
-          backgroundImage: 'url(/sprites/void/bg-void.png)',
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: 'auto 100%',
-          backgroundPosition: '0 0',
-          opacity: 0.35,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ── Layer 2: Star sparkles from bg-stars-3.png (faster scroll) ── */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/sprites/void/bg-stars-3.png)',
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: 'auto 60%',
-          backgroundPosition: '0 30%',
-          opacity: 0.55,
-          animation: 'bg-scroll-slow 40s linear infinite reverse',
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ── Layer 3: Ambient teal + purple nebula glow ── */}
-      <div
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] md:h-[800px] md:w-[800px] rounded-full z-0 animate-void-pulse"
-        style={{
-          background:
-            'radial-gradient(ellipse, rgba(0,245,196,0.08) 0%, rgba(45,26,74,0.3) 50%, transparent 80%)',
-          filter: 'blur(60px)',
-        }}
+        className="pointer-events-none absolute -left-48 -top-48 h-[800px] w-[800px] rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(62,42,99,0.35) 0%, rgba(27,18,53,0) 70%)' }}
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute top-1/4 left-1/6 h-[200px] w-[200px] md:h-[320px] md:w-[320px] rounded-full z-0 animate-void-pulse"
-        style={{
-          background: 'radial-gradient(circle, rgba(0,245,196,0.12) 0%, transparent 70%)',
-          filter: 'blur(50px)',
-          animationDelay: '3s',
-        }}
+        className="pointer-events-none absolute -right-40 top-1/4 h-[600px] w-[600px] rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(255,139,76,0.12) 0%, rgba(27,18,53,0) 65%)' }}
         aria-hidden="true"
       />
 
-      {/* ── Layer 4: Orbital trajectory lines ── */}
-      <svg
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-20 z-10"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M -50 280 Q 400 90, 800 350 T 1600 220"
-          fill="none"
-          stroke="var(--color-teal)"
-          strokeWidth="1.5"
-          strokeDasharray="6 8"
-        />
-        <path
-          d="M 80 750 Q 600 420, 1050 580 T 1900 320"
-          fill="none"
-          stroke="var(--color-pink)"
-          strokeWidth="1"
-          strokeDasharray="5 7"
-        />
-      </svg>
-
-      {/* ── Layer 5: Foozle Ship — top-left quadrant ── */}
-      <div
-        className="pointer-events-none absolute left-[6%] top-[14%] z-10 md:left-[10%] md:top-[12%] animate-float-slow"
-        style={{ transform: 'rotate(-15deg) scale(1.5)' }}
-      >
-        <VoidShip />
-      </div>
-
-      {/* ── Layer 6: Foozle Planet — bottom-right quadrant ── */}
-      <div
-        className="pointer-events-none absolute bottom-[8%] right-[5%] z-10 md:right-[8%] md:bottom-[6%] animate-float-slow"
-        style={{ animationDelay: '3s', animationDuration: '18s' }}
-      >
-        <VoidPlanet />
-      </div>
-
-      {/* ── Main Content ── */}
-      <div className="relative z-30 max-w-3xl mx-auto w-full px-4 flex flex-col items-center">
-
-        {/* Badge — satu tempat, bentuk lencana bulat playful */}
-        <motion.div
-          className="mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-body font-bold text-xs sm:text-sm cursor-default select-none"
-          style={{
-            background: 'var(--color-teal)',
-            color: 'var(--color-void-deep)',
-            boxShadow: '0 0 20px rgba(0,245,196,0.45), 2px 2px 0 rgba(0,0,0,0.5)',
-            border: '1px solid rgba(0,245,196,0.6)',
-          }}
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-          <span>Lv. 20 Explorer</span>
-        </motion.div>
-
-        {/* Headline — layered pixel-shadow dipertahankan, warna disesuaikan ke Void Teal */}
-        <motion.h1
-          className="mb-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide leading-snug"
-          style={{
-            color: 'var(--color-ink)',
-            textShadow:
-              '2px 2px 0 #2d1a4a, 4px 4px 0 #1e1030, 6px 6px 0 #130d1a, 8px 8px 0 rgba(0,0,0,0.7)',
-          }}
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Welcome to{' '}
+      {/* ── Twinkling starfield ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {stars.map((s) => (
           <span
+            key={s.id}
+            className="absolute rounded-full"
             style={{
-              color: 'var(--color-teal)',
-              textDecoration: 'underline',
-              textDecorationColor: 'var(--color-pink)',
-              textDecorationThickness: '3px',
-              textUnderlineOffset: '8px',
+              left: s.left,
+              top: s.top,
+              width: s.size,
+              height: s.size,
+              opacity: s.opacity,
+              backgroundColor: 'var(--color-star)',
+              boxShadow: '0 0 5px rgba(255,200,87,0.8)',
+              animation: reduce ? undefined : `twinkle ${s.dur} ease-in-out infinite`,
+              animationDelay: s.delay,
             }}
-          >
-            Zenith
-          </span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p
-          className="mb-8 font-body text-lg sm:text-xl md:text-2xl font-medium max-w-xl mx-auto leading-relaxed"
-          style={{
-            color: 'var(--color-ink)',
-            opacity: 0.9,
-            textShadow: '1px 1px 0 #130d1a',
-          }}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-        >
-          Web Enthusiast &amp; IoT Embedded Explorer
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-wrap items-center justify-center gap-4 pt-2"
-        >
-          {/* Primary CTA — teal fill */}
-          <a
-            href="#mission-log"
-            className="inline-flex items-center justify-center px-6 py-3.5 rounded-xl font-display text-xs sm:text-sm font-bold transition-all hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
-            style={{
-              background: 'var(--color-teal)',
-              color: 'var(--color-void-deep)',
-              boxShadow: '0 4px 20px rgba(0,245,196,0.4), 3px 3px 0 rgba(0,0,0,0.6)',
-            }}
-          >
-            🚀 Launch into Mission Log
-          </a>
-
-          {/* Secondary CTA — outlined */}
-          <a
-            href="#send-a-transmission"
-            className="inline-flex items-center justify-center px-6 py-3.5 rounded-xl font-display text-xs sm:text-sm font-bold transition-all hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400"
-            style={{
-              border: '2px solid rgba(240,238,255,0.7)',
-              color: 'var(--color-ink)',
-              background: 'rgba(45,26,74,0.4)',
-              backdropFilter: 'blur(8px)',
-            }}
-          >
-            📡 Send a Transmission
-          </a>
-        </motion.div>
+          />
+        ))}
       </div>
 
-      {/* ── Footer credit (Bagian 4 requirement) ── */}
-      <div
-        className="absolute bottom-3 right-4 z-20 font-stat text-[10px] pointer-events-none"
-        style={{ color: 'var(--color-ink-muted)', opacity: 0.5 }}
-        aria-hidden="true"
-      >
-        Space assets by Foozle (foozle.io)
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
+        {/* ── Left: content ── */}
+        <div className="flex flex-col items-start gap-6">
+          {/* Badge Group */}
+          <div className="flex flex-wrap items-center gap-3">
+            <motion.div
+              {...enter(0)}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-headline text-sm font-bold shadow-[0_0_15px_rgba(255,200,87,0.4)]"
+              style={{
+                background: 'var(--color-star)',
+                color: 'var(--color-void)',
+              }}
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              {siteConfig.level}
+            </motion.div>
+
+            <motion.div {...enter(0.05)}>
+              <Link
+                href="/arcade"
+                onClick={() => portfolioSounds.playStarSparkle()}
+                className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-stat text-xs text-[var(--color-star)] bg-[var(--color-nebula)]/60 border border-[var(--color-star)]/40 shadow-[0_0_12px_rgba(255,200,87,0.25)] hover:scale-105 transition-transform"
+              >
+                <span>🕹️</span>
+                <span>ARCADE READY: Play Void Miner →</span>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Headline */}
+          <motion.h1
+            {...enter(0.1)}
+            className="font-display text-3xl leading-tight sm:text-4xl md:text-5xl"
+            style={{ color: 'var(--color-starchart)' }}
+          >
+            Hello, I&apos;m <br />
+            <span style={{ color: 'var(--color-comet)' }}>{siteConfig.name.split(' ')[0]}</span>
+          </motion.h1>
+
+          {/* Subtitle — rotating typewriter */}
+          <motion.div {...enter(0.2)} className="min-h-[3.25rem] max-w-lg">
+            <p className="font-cozy text-lg" style={{ color: 'var(--color-starchart)', opacity: 0.9 }}>
+              {subtitle || '\u00A0'}
+              {!reduce && (
+                <motion.span
+                  className="ml-0.5 inline-block font-stat"
+                  style={{ color: 'var(--color-comet)' }}
+                  animate={{ opacity: isTyping ? [1, 0] : 1 }}
+                  transition={{ duration: 0.6, repeat: Infinity }}
+                  aria-hidden="true"
+                >
+                  |
+                </motion.span>
+              )}
+            </p>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div {...enter(0.3)} className="mt-2 flex flex-wrap gap-4">
+            <a
+              href="#mission-log"
+              onClick={() => portfolioSounds.playBlip(700)}
+              className="rounded-lg px-6 py-3 font-headline font-bold transition-all hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
+              style={{
+                background: 'var(--color-comet)',
+                color: 'var(--color-void)',
+                boxShadow: '0 0 18px rgba(255,139,76,0.4)',
+                outlineColor: 'var(--color-star)',
+              }}
+            >
+              Launch into Mission Log
+            </a>
+            <a
+              href="#send-a-transmission"
+              onClick={() => portfolioSounds.playBlip(600)}
+              className="rounded-lg border-2 px-6 py-3 font-headline font-bold transition-all hover:bg-white/5 hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
+              style={{
+                borderColor: 'var(--color-starchart)',
+                color: 'var(--color-starchart)',
+                outlineColor: 'var(--color-star)',
+              }}
+            >
+              Send a Transmission
+            </a>
+          </motion.div>
+        </div>
+
+        {/* ── Right: illustration ── */}
+        <div
+          className="relative mx-auto flex h-[420px] w-full max-w-md items-center justify-center lg:h-[500px]"
+          aria-hidden="true"
+        >
+          {/* Orbit ring */}
+          <div
+            className="absolute aspect-square w-[85%] max-w-[400px] rounded-full border border-dashed"
+            style={{
+              borderColor: 'rgba(255,200,87,0.3)',
+              animation: reduce ? undefined : 'spin 40s linear infinite',
+            }}
+          />
+          {/* Cozy planet (Stitch illustration, hi-res) with interactive hover tilt */}
+          <motion.div
+            className="relative z-10 h-52 w-52 overflow-hidden rounded-full sm:h-64 sm:w-64 cursor-pointer"
+            whileHover={reduce ? {} : { scale: 1.06, rotate: 3 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            style={{
+              boxShadow: '0 0 55px rgba(62,42,99,0.7), inset -18px -18px 40px rgba(27,18,53,0.7)',
+              border: '2px solid rgba(245,233,214,0.25)',
+            }}
+          >
+            <Image
+              src="/sprites/cozy/planet.jpg"
+              alt=""
+              fill
+              sizes="(min-width: 640px) 256px, 208px"
+              quality={90}
+              className="object-cover"
+              priority
+            />
+          </motion.div>
+          {/* Friendly rocket (Foozle sprite) */}
+          <div
+            className="absolute z-20"
+            style={{
+              top: '4%',
+              right: '2%',
+              animation: reduce ? undefined : 'float-slow 6s ease-in-out infinite',
+            }}
+          >
+            <Image
+              src="/sprites/rocketSatu.png"
+              alt=""
+              width={120}
+              height={120}
+              className="h-24 w-24 object-contain sm:h-28 sm:w-28"
+              style={{ filter: 'drop-shadow(0 0 15px rgba(255,139,76,0.5))' }}
+            />
+          </div>
+        </div>
       </div>
     </section>
   )

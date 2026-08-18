@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 
-export const alt = 'Zenith — Astronomical Portfolio of Rizky Mardhani (Zxaviers)'
+export const alt = 'Zenith — Portfolio of Rizky Mardhani'
 export const size = {
   width: 1200,
   height: 630,
@@ -20,7 +20,7 @@ export default async function Image() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'radial-gradient(circle at 50% 30%, #3e2a63 0%, #1b1235 55%, #0d081a 100%)',
+          background: 'radial-gradient(circle at 50% 30%, #3e2a63 0%, #1b1235 55%, #1b1235 100%)',
           padding: '48px 56px',
           fontFamily: 'sans-serif',
           position: 'relative',
@@ -56,8 +56,8 @@ export default async function Image() {
                 width: '14px',
                 height: '14px',
                 borderRadius: '50%',
-                background: '#6fcf97',
-                boxShadow: '0 0 12px #6fcf97',
+                background: '#ffc857',
+                boxShadow: '0 0 12px #ffc857',
               }}
             />
             <span
@@ -101,7 +101,7 @@ export default async function Image() {
               fontWeight: 900,
               color: '#f5e9d6',
               letterSpacing: '0.08em',
-              textShadow: '0 0 30px rgba(255, 139, 76, 0.6), 0 0 60px rgba(255, 200, 87, 0.3)',
+              textShadow: '0 0 30px rgba(255, 200, 87, 0.6), 0 0 60px rgba(255, 139, 76, 0.3)',
               marginBottom: '12px',
             }}
           >
@@ -140,7 +140,7 @@ export default async function Image() {
             >
               OPERATOR:{' '}
               <span style={{ color: '#ffc857', fontWeight: 'bold' }}>
-                ZXAVIERS (RIZKY MARDHANI)
+                RIZKY MARDHANI
               </span>
             </span>
           </div>
@@ -179,13 +179,13 @@ export default async function Image() {
 
           <span
             style={{
-              color: '#6fcf97',
+              color: '#ffc857',
               fontSize: '20px',
               fontWeight: 'bold',
               letterSpacing: '0.05em',
             }}
           >
-            zxaviers.site
+            zenithcode.my.id
           </span>
         </div>
       </div>

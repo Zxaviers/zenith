@@ -1,13 +1,13 @@
-import Image from 'next/image'
+import { siteConfig } from '@/lib/config/siteConfig'
 
 export function Footer() {
   return (
     <footer
       className="relative py-12 text-center text-sm glint-top"
       style={{
-        background: 'rgba(19,13,26,0.97)',
-        borderTop: '1px solid rgba(0,245,196,0.2)',
-        color: 'rgba(240,238,255,0.75)',
+        background: 'rgba(27, 18, 53, 0.97)',
+        borderTop: '1px solid rgba(255, 200, 87, 0.2)',
+        color: 'rgba(245, 233, 214, 0.75)',
         boxShadow: '0 -4px 0 0 #000',
       }}
     >
@@ -23,62 +23,43 @@ export function Footer() {
               backgroundImage: 'url(/sprites/void/planet-earth.png)',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: '0 0',
-              backgroundSize: '5544px 36px',  /* 7392*36/48 = 5544 at 36px height */
+              backgroundSize: '2772px 36px',
               imageRendering: 'pixelated',
-              filter: 'drop-shadow(0 0 8px rgba(0,245,196,0.4))',
+              filter: 'drop-shadow(0 0 8px rgba(255, 200, 87, 0.4))',
               animationDuration: '8s',
             }}
             aria-hidden="true"
           />
           <span
-            className="font-display text-xs tracking-widest"
-            style={{ color: 'var(--color-teal)' }}
+            className="font-display text-xs tracking-widest text-[var(--color-star)]"
           >
-            ZENITH ORBITAL STATION // ALL SYSTEMS NOMINAL
+            {siteConfig.handle.toUpperCase()} ORBITAL STATION // ALL SYSTEMS NOMINAL
           </span>
         </div>
 
-        {/* Orbit Links — CSS hover only (no JS handlers, Server Component safe) */}
+        {/* Orbit Links */}
         <div className="flex flex-wrap items-center justify-center gap-3 py-2">
           {[
-            { href: 'https://github.com/zxaviers', label: '⚡ GitHub' },
-            { href: 'https://linkedin.com/in/rizky-mardhani1st', label: '💼 LinkedIn // Rizky Mardhani' },
-            { href: 'https://www.instagram.com/ryzennth_/', label: '📸 Instagram // @ryzennth_' },
+            { href: siteConfig.socials.github, label: '⚡ GitHub' },
+            { href: siteConfig.socials.linkedin, label: `💼 LinkedIn // ${siteConfig.name}` },
+            { href: siteConfig.socials.instagram, label: '📸 Instagram // @ryzennth_' },
           ].map(({ href, label }) => (
             <a
               key={href}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="footer-orbit-link font-stat text-xs px-3 py-1.5 rounded transition-all"
+              className="footer-orbit-link font-stat text-xs px-3 py-1.5 rounded transition-all hover:text-[var(--color-star)]"
             >
               {label}
             </a>
           ))}
         </div>
 
-        <p className="font-body text-base md:text-lg" style={{ color: 'var(--color-ink)', opacity: 0.85 }}>
-          Made with ❤️ and stardust ✨
-        </p>
-
-        <p className="font-stat text-xs" style={{ color: 'var(--color-ink-muted)', opacity: 0.6 }}>
-          © {new Date().getFullYear()} Zenith // Crafted with precision by Rizky Mardhani
-        </p>
-
-        {/* Wajib: credit CC0 asset — praktik baik meski tidak diwajibkan lisensi */}
-        <p className="font-stat text-[10px]" style={{ color: 'var(--color-ink-muted)', opacity: 0.4 }}>
-          Space assets by{' '}
-          <a
-            href="https://foozle.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline transition-opacity hover:opacity-70"
-          >
-            Foozle (foozle.io)
-          </a>
+        <p className="font-stat text-xs text-[var(--color-ink-muted)] opacity-60">
+          © {new Date().getFullYear()} {siteConfig.handle} // Crafted with precision by {siteConfig.name}
         </p>
       </div>
     </footer>
   )
 }
-

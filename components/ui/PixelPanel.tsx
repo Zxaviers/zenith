@@ -32,7 +32,7 @@ const variantStyles: Record<
   void: {
     style: {
       '--pixel-fill-color': 'var(--color-void-mid)',
-      '--pixel-border-color': 'rgba(0, 245, 196, 0.3)',
+      '--pixel-border-color': 'rgba(255, 200, 87, 0.3)',
     },
     text: 'text-ink',
   },

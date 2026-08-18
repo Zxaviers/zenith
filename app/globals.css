@@ -3,34 +3,46 @@
 /* ============================================================
    Zenith v3 — "Void Teal" design tokens
    Palet diturunkan dari Foozle Void asset pixel (CC0):
-     - bg-deep   → Layer 01 Void background  (#130D1A)
-     - bg-mid    → Nebula shadow layer       (#1E1030)
-     - bg-surface→ Panel surface             (#2D1A4A)
-     - teal      → Burst Engine glow         (#00F5C4)
-     - teal-dim  → Engine dim / hover        (#00BFA0)
-     - pink      → Big Star layer            (#FF6B9D)
-     - ink       → Text: white-lavender      (#F0EEFF)
+     - bg-deep   → Layer 01 Void background  (#1b1235)
+     - bg-mid    → Nebula shadow layer       (#1b1235)
+     - bg-surface→ Panel surface             (#3e2a63)
+     - teal      → Burst Engine glow         (#ffc857)
+     - teal-dim  → Engine dim / hover        (#ff8b4c)
+     - pink      → Big Star layer            (#ff8b4c)
+     - ink       → Text: white-lavender      (#f5e9d6)
      - ink-muted → Text: dim purple          (#9890C4)
    ============================================================ */
 @theme {
-  /* ── Backgrounds ── */
-  --color-void-deep:    #130d1a;
-  --color-void-mid:     #1e1030;
-  --color-void-surface: #2d1a4a;
+  /* ── Warm Nebula (Stitch "Cosmic Explorer") palette ── */
+  --color-void:            #1b1235;
+  --color-nebula:          #3e2a63;
+  --color-comet:           #ff8b4c;
+  --color-star:            #ffc857;
+  --color-starchart:       #f5e9d6;
+  --color-aurora:          #6fcf97;
 
-  /* ── Accents ── */
-  --color-teal:         #00f5c4;
-  --color-teal-dim:     #00bfa0;
-  --color-pink:         #ff6b9d;
+  /* ── Explicit Semantic Tokens ── */
+  --color-star-gold:       #ffc857;
+  --color-comet-orange:    #ff8b4c;
+  --color-starchart-cream: #f5e9d6;
+  --color-aurora-green:    #6fcf97;
 
-  /* ── Text ── */
-  --color-ink:          #f0eeff;
-  --color-ink-muted:    #9890c4;
+  /* ── Legacy & Component Token Aliases ── */
+  --color-void-deep:       #1b1235; /* → void */
+  --color-void-mid:        #1b1235; /* → void */
+  --color-void-surface:    #3e2a63; /* → nebula (panels) */
+  --color-teal:            #ffc857; /* → star (gold accent) */
+  --color-teal-dim:        #ff8b4c; /* → comet */
+  --color-pink:            #ff8b4c; /* → comet */
+  --color-ink:             #f5e9d6; /* → starchart */
+  --color-ink-muted:       #ddc1b4; /* warm muted text */
 
-  /* ── Fonts (tetap sama, tidak berubah) ── */
-  --font-display: var(--font-press-start-2p), cursive;
-  --font-body:    var(--font-nunito), sans-serif;
-  --font-stat:    var(--font-vt323), monospace;
+  /* ── Fonts ── */
+  --font-display:  var(--font-press-start-2p), cursive;
+  --font-body:     var(--font-quicksand), sans-serif;
+  --font-stat:     var(--font-vt323), monospace;
+  --font-headline: var(--font-space-grotesk), sans-serif;
+  --font-cozy:     var(--font-quicksand), sans-serif;
 }
 
 @layer base {
@@ -192,10 +204,10 @@
   to   { background-position: -192px 0; }
 }
 
-/* Planet Earth sprite — 154 frames @ 48px native = 7392px; rendered at 2× = 14784px */
+/* Planet Earth sprite — 77 frames @ 36px = 2772px total width (original 7392x96, 77 frames @ 96px) */
 @keyframes planet-spin {
   from { background-position: 0 0; }
-  to   { background-position: -14784px 0; }
+  to   { background-position: -2772px 0; }
 }
 
 @keyframes float-slow {
@@ -209,6 +221,12 @@
   50%       { opacity: 0.5; transform: scale(1.06); }
 }
 
+/* Starfield twinkle — opacity flicker for the hero stars */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1.15); }
+}
+
 @keyframes teal-flicker {
   0%, 100% { opacity: 1; }
   92%       { opacity: 1; }
@@ -220,7 +238,7 @@
   50% { opacity: 0; }
 }
 
-@keyframes eq-bounce {
+@keyframes eq-rise {
   0%   { height: 4px; }
   100% { height: 18px; }
 }
@@ -244,7 +262,9 @@
 
   .rpg-shadow { box-shadow: 4px 4px 0px 0px #000000; }
 
-  .rpg-shadow-hover { transition: all 0.15s ease; }
+  .rpg-shadow-hover {
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
   .rpg-shadow-hover:hover {
     box-shadow: 6px 6px 0px 0px #000000;
     transform: translate(-2px, -2px);
@@ -263,23 +283,23 @@
 
   /* Glassmorphism panel */
   .void-glass {
-    background: linear-gradient(135deg, rgba(0, 245, 196, 0.04) 0%, rgba(45, 26, 74, 0.6) 100%);
+    background: linear-gradient(135deg, rgba(255, 200, 87, 0.04) 0%, rgba(62, 42, 99, 0.6) 100%);
     backdrop-filter: blur(12px);
   }
 
   /* Teal glow effects */
   .glow-teal {
-    box-shadow: 0 0 15px 2px rgba(0, 245, 196, 0.25);
+    box-shadow: 0 0 15px 2px rgba(255, 200, 87, 0.25);
   }
   .glow-teal-lg {
-    box-shadow: 0 0 30px 6px rgba(0, 245, 196, 0.2);
+    box-shadow: 0 0 30px 6px rgba(255, 200, 87, 0.2);
   }
   .glow-pink {
-    box-shadow: 0 0 15px 2px rgba(255, 107, 157, 0.25);
+    box-shadow: 0 0 15px 2px rgba(255, 139, 76, 0.25);
   }
 
   .glint-top {
-    border-top: 1px solid rgba(0, 245, 196, 0.25);
+    border-top: 1px solid rgba(255, 200, 87, 0.25);
   }
 
   /* Pixel badges */
@@ -316,7 +336,7 @@
     box-shadow: 0 0 6px var(--color-teal);
   }
   .segment-empty {
-    background-color: rgba(240, 238, 255, 0.08);
+    background-color: rgba(245, 233, 214, 0.08);
   }
 
   /* Equalizer */
@@ -324,7 +344,7 @@
     width: 3px;
     background: var(--color-teal);
     border-radius: 1px;
-    animation: eq-bounce 1.2s ease-in-out infinite alternate;
+    animation: eq-rise 1.2s ease-in-out infinite alternate;
   }
   .equalizer-bar:nth-child(2) { animation-delay: 0.2s; }
   .equalizer-bar:nth-child(3) { animation-delay: 0.4s; }
@@ -339,19 +359,43 @@
     .animate-bg-scroll-slow  { animation: bg-scroll-slow 80s linear infinite; }
     .animate-engine-burst    { animation: engine-burst 0.7s steps(7) infinite; }
     .animate-engine-base     { animation: engine-base 0.6s steps(4) infinite; }
-    .animate-planet-spin     { animation: planet-spin 6s steps(154) infinite; }
+    .animate-planet-spin     { animation: planet-spin 6s steps(77) infinite; }
   }
 
   /* Footer orbit link — CSS-only hover, Server Component safe (no JS handlers) */
   .footer-orbit-link {
-    background: rgba(45, 26, 74, 0.6);
-    border: 1px solid rgba(0, 245, 196, 0.15);
+    background: rgba(62, 42, 99, 0.6);
+    border: 1px solid rgba(255, 200, 87, 0.15);
     color: var(--color-ink);
     box-shadow: 2px 2px 0 0 #000;
     text-decoration: none;
   }
   .footer-orbit-link:hover {
-    border-color: rgba(0, 245, 196, 0.5);
+    border-color: rgba(255, 200, 87, 0.5);
     color: var(--color-teal);
+  }
+}
+
+/* ============================================================
+   Reduced-motion safety net.
+   The project's own .animate-* utilities above only turn ON under
+   (prefers-reduced-motion: no-preference), but framework-provided
+   keyframe utilities and a couple of always-on classes
+   (.equalizer-bar, .blinking-cursor) are NOT covered by that gate.
+   This neutralizes all decorative CSS motion for visitors who ask
+   for less. Framer Motion is handled per-component via
+   useReducedMotion.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

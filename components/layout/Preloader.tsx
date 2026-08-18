@@ -55,15 +55,15 @@ export function Preloader() {
           <div className="relative mb-6">
             <div
               className="absolute inset-0 rounded-full blur-xl animate-pulse"
-              style={{ background: 'rgba(0,245,196,0.15)' }}
+              style={{ background: 'rgba(255, 200, 87,0.15)' }}
             />
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Void ship sprite at 2× */}
+              {/* Void ship sprite */}
               <div
-                className="pixel-asset animate-engine-burst"
+                className="pixel-asset"
                 style={{
                   width: 80,
                   height: 80,
@@ -72,7 +72,7 @@ export function Preloader() {
                   backgroundPosition: '0 0',
                   backgroundSize: '100% 100%',
                   imageRendering: 'pixelated',
-                  filter: 'drop-shadow(0 0 16px rgba(0,245,196,0.7)) hue-rotate(160deg) saturate(1.2)',
+                  filter: 'drop-shadow(0 0 16px rgba(255, 200, 87,0.7)) hue-rotate(160deg) saturate(1.2)',
                 }}
                 aria-hidden="true"
               />
@@ -101,7 +101,7 @@ export function Preloader() {
           {/* Progress bar — teal */}
           <div
             className="mt-6 w-48 overflow-hidden rounded-full p-0.5"
-            style={{ background: 'var(--color-void-surface)', border: '1px solid rgba(0,245,196,0.2)' }}
+            style={{ background: 'var(--color-void-surface)', border: '1px solid rgba(255, 200, 87,0.2)' }}
           >
             <motion.div
               className="h-1.5 rounded-full"

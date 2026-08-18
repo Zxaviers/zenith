@@ -36,24 +36,24 @@ export default async function ProjectDetailPage({
       <PixelPanel variant="nebula" className="mx-auto max-w-4xl text-left">
         <Link
           href="/#mission-log"
-          className="mb-6 inline-block font-display text-xs text-comet hover:text-starchart"
+          className="mb-6 inline-block font-display text-xs text-teal hover:text-ink"
         >
           {'< Back to Mission Log'}
         </Link>
 
         {project.preview && (
-          <div className="relative mb-8 w-full max-w-4xl mx-auto aspect-video overflow-hidden rounded-lg bg-void/40 pixel-frame">
+          <div className="relative mb-8 w-full max-w-4xl mx-auto aspect-video overflow-hidden rounded-lg bg-void-deep/40 pixel-frame">
             <Image src={project.preview} alt={project.title} fill sizes="100vw" className="object-cover" />
           </div>
         )}
 
-        <h1 className="mb-2 font-display text-xl text-starchart md:text-2xl">{project.desc}</h1>
-        <p className="mb-8 font-stat text-sm text-starchart/80">{project.title}</p>
+        <h1 className="mb-2 font-display text-xl text-ink md:text-2xl">{project.desc}</h1>
+        <p className="mb-8 font-stat text-sm text-ink-muted">{project.title}</p>
 
         {project.techStack && (
           <div className="mb-8 flex flex-wrap gap-2">
             {project.techStack.map((tech) => (
-              <span key={tech} className="rounded-sm bg-void px-2 py-1 font-stat text-xs text-star">
+              <span key={tech} className="rounded-sm bg-void-deep px-2 py-1 font-stat text-xs text-teal">
                 {tech}
               </span>
             ))}
@@ -63,24 +63,24 @@ export default async function ProjectDetailPage({
         <div className="space-y-8">
           {project.problem && (
             <div>
-              <h2 className="mb-2 font-display text-xs text-comet">Problem</h2>
-              <p className="font-body text-lg leading-relaxed text-starchart/90 md:text-xl">
+              <h2 className="mb-2 font-display text-xs text-teal">Problem</h2>
+              <p className="font-body text-lg leading-relaxed text-ink/90 md:text-xl">
                 {project.problem}
               </p>
             </div>
           )}
           {project.solution && (
             <div>
-              <h2 className="mb-2 font-display text-xs text-comet">Solution</h2>
-              <p className="font-body text-lg leading-relaxed text-starchart/90 md:text-xl">
+              <h2 className="mb-2 font-display text-xs text-teal">Solution</h2>
+              <p className="font-body text-lg leading-relaxed text-ink/90 md:text-xl">
                 {project.solution}
               </p>
             </div>
           )}
           {project.learnings && (
             <div>
-              <h2 className="mb-2 font-display text-xs text-comet">Learnings</h2>
-              <p className="font-body text-lg leading-relaxed text-starchart/90 md:text-xl">
+              <h2 className="mb-2 font-display text-xs text-teal">Learnings</h2>
+              <p className="font-body text-lg leading-relaxed text-ink/90 md:text-xl">
                 {project.learnings}
               </p>
             </div>

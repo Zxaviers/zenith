@@ -4,6 +4,8 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { StarNode } from '@/components/ui/StarNode'
+import { portfolioSounds } from '@/lib/audio/retroSounds'
+import { siteConfig } from '@/lib/config/siteConfig'
 
 // ── Data (unchanged) ──────────────────────────────────────────────────────────
 interface Milestone {
@@ -70,8 +72,8 @@ function AnimatedRail({ reducedMotion }: { reducedMotion: boolean }) {
       <div
         className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full"
         style={{
-          background: 'linear-gradient(to bottom, var(--color-teal), var(--color-teal-dim), var(--color-pink))',
-          boxShadow: '0 0 8px var(--color-teal)',
+          background: 'linear-gradient(to bottom, var(--color-star), var(--color-comet))',
+          boxShadow: '0 0 8px var(--color-star)',
         }}
         aria-hidden="true"
       />
@@ -83,7 +85,7 @@ function AnimatedRail({ reducedMotion }: { reducedMotion: boolean }) {
       {/* Dim base rail (always visible) */}
       <div
         className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full"
-        style={{ background: 'rgba(0,245,196,0.1)' }}
+        style={{ background: 'rgba(255, 200, 87, 0.12)' }}
         aria-hidden="true"
       />
       {/* Bright fill rail — grows with scroll progress */}
@@ -92,8 +94,8 @@ function AnimatedRail({ reducedMotion }: { reducedMotion: boolean }) {
         className="absolute left-3 md:left-4 top-4 bottom-4 w-1 rounded-full origin-top"
         style={{
           scaleY,
-          background: 'linear-gradient(to bottom, var(--color-teal), var(--color-teal-dim), var(--color-pink))',
-          boxShadow: '0 0 10px var(--color-teal)',
+          background: 'linear-gradient(to bottom, var(--color-star), var(--color-comet))',
+          boxShadow: '0 0 12px rgba(255, 200, 87, 0.6)',
         }}
         aria-hidden="true"
       />
@@ -114,9 +116,9 @@ function AnimatedDot({
   return (
     <motion.div
       className="absolute -left-[30px] md:-left-[34px] top-6 z-10"
-      initial={reducedMotion ? {} : { scale: 0.4, opacity: 0 }}
+      initial={reducedMotion ? {} : { scale: 0.92, opacity: 0 }}
       whileInView={reducedMotion ? {} : { scale: 1, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 18, delay: 0.1 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 22, delay: 0.08 }}
       viewport={{ once: true }}
     >
       <StarNode
@@ -142,10 +144,14 @@ export function FlightPath() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="font-display text-2xl md:text-3xl" style={{ color: 'var(--color-ink)' }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full border border-[var(--color-star)]/30 bg-[var(--color-nebula)]/40 font-stat text-xs text-[var(--color-star)] shadow-[0_0_12px_rgba(255,200,87,0.25)]">
+            <span>🚀</span>
+            <span>TRAJECTORY & MILESTONES</span>
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl text-[var(--color-starchart)]">
             Flight Path
           </h2>
-          <p className="mt-2 font-body text-base md:text-lg" style={{ color: 'var(--color-ink-muted)' }}>
+          <p className="mt-2 font-body text-base md:text-lg text-[var(--color-ink-muted)]">
             Where I&apos;ve been, what I&apos;ve built, and where I&apos;m headed
           </p>
         </motion.div>
@@ -176,14 +182,14 @@ export function FlightPath() {
                   <PixelPanel
                     variant="nebula"
                     className="shadow-[4px_4px_0_0_#000] p-5 md:p-6"
-                    style={{ '--pixel-border-color': 'rgba(0,245,196,0.3)' } as React.CSSProperties}
+                    style={{ '--pixel-border-color': 'rgba(255, 200, 87, 0.3)' } as React.CSSProperties}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 mb-3">
                       <div>
-                        <span className="font-stat text-xs font-bold block mb-0.5" style={{ color: 'var(--color-teal)' }}>
+                        <span className="font-stat text-xs font-bold block mb-0.5 text-[var(--color-star)]">
                           {mile.period} · {mile.duration}
                         </span>
-                        <h3 className="font-display text-sm md:text-base" style={{ color: 'var(--color-ink)' }}>
+                        <h3 className="font-display text-sm md:text-base text-[var(--color-starchart)]">
                           {mile.title}
                         </h3>
                       </div>
@@ -199,10 +205,10 @@ export function FlightPath() {
                       </span>
                     </div>
 
-                    <ul className="space-y-2 font-body text-sm md:text-base leading-relaxed" style={{ color: 'var(--color-ink)', opacity: 0.9 }}>
+                    <ul className="space-y-2 font-body text-sm md:text-base leading-relaxed text-[var(--color-starchart)] opacity-90">
                       {mile.description.map((item, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="font-display text-[10px] mt-1" style={{ color: 'var(--color-teal)' }}>▸</span>
+                          <span className="font-display text-[10px] mt-1 text-[var(--color-star)]">▸</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -218,26 +224,25 @@ export function FlightPath() {
             {/* Operator profile */}
             <PixelPanel variant="void" className="shadow-[4px_4px_0_0_#000] p-4 md:p-5">
               <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-                <h3 className="font-display text-xs" style={{ color: 'var(--color-teal)' }}>
+                <h3 className="font-display text-xs text-[var(--color-star)]">
                   About Me
                 </h3>
                 <motion.span
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ background: 'var(--color-teal)' }}
+                  className="h-2.5 w-2.5 rounded-full bg-[var(--color-star)] shadow-[0_0_8px_rgba(255,200,87,0.8)]"
                   animate={reducedMotion ? {} : { opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
               </div>
               <ul className="space-y-2.5 font-stat text-xs md:text-sm">
                 {[
-                  { label: 'Level',        value: 'Lv. 20 · 94% XP', highlight: true },
-                  { label: 'Focus',        value: 'System Engineer',  highlight: false },
-                  { label: 'Based in',     value: 'Indonesia 🇮🇩',    highlight: false },
-                  { label: 'Availability', value: 'Open to work ✓',  highlight: true },
+                  { label: 'Level',        value: `${siteConfig.level} · 94% XP`, highlight: true },
+                  { label: 'Focus',        value: 'System Engineer',             highlight: false },
+                  { label: 'Based in',     value: siteConfig.location,           highlight: false },
+                  { label: 'Status',       value: 'Online 🚀',                   highlight: true },
                 ].map(({ label, value, highlight }) => (
                   <li key={label} className="flex justify-between border-b border-white/5 pb-1.5 last:border-0">
                     <span style={{ color: 'var(--color-ink-muted)' }}>{label}:</span>
-                    <span style={{ color: highlight ? 'var(--color-teal)' : 'var(--color-ink)', fontWeight: highlight ? 'bold' : 'normal' }}>
+                    <span style={{ color: highlight ? 'var(--color-star)' : 'var(--color-starchart)', fontWeight: highlight ? 'bold' : 'normal' }}>
                       {value}
                     </span>
                   </li>
@@ -245,35 +250,36 @@ export function FlightPath() {
               </ul>
             </PixelPanel>
 
-            {/* Badges — hover tilt + scale */}
+            {/* Badges — hover tilt + scale + sparkle sound */}
             <PixelPanel variant="void" className="shadow-[4px_4px_0_0_#000] p-4 md:p-5">
-              <h3 className="font-display text-xs mb-3" style={{ color: 'var(--color-teal)' }}>
+              <h3 className="font-display text-xs mb-3 text-[var(--color-star)]">
                 Badges Unlocked
               </h3>
               <div className="grid grid-cols-3 gap-2">
                 {BADGES.map((b, idx) => (
                   <motion.div
                     key={b.title}
-                    className="flex flex-col items-center justify-center gap-1 rounded p-2 text-center cursor-default"
+                    className="flex flex-col items-center justify-center gap-1 rounded p-2 text-center cursor-pointer select-none"
                     style={{
-                      background: 'rgba(45,26,74,0.5)',
-                      border: '1px solid rgba(0,245,196,0.1)',
+                      background: 'rgba(62, 42, 99, 0.5)',
+                      border: '1px solid rgba(255, 200, 87, 0.15)',
                     }}
-                    initial={reducedMotion ? {} : { opacity: 0, scale: 0.7 }}
+                    initial={reducedMotion ? {} : { opacity: 0, scale: 0.94 }}
                     whileInView={reducedMotion ? {} : { opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: idx * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
+                    transition={{ duration: 0.25, delay: idx * 0.05, type: 'spring', stiffness: 350, damping: 22 }}
                     viewport={{ once: true }}
                     whileHover={reducedMotion ? {} : {
-                      scale: 1.08,
-                      rotate: [0, -2, 2, 0],
-                      borderColor: 'rgba(0,245,196,0.45)',
-                      boxShadow: '0 0 10px rgba(0,245,196,0.2)',
+                      scale: 1.06,
+                      borderColor: 'rgba(255, 200, 87, 0.6)',
+                      boxShadow: '0 0 14px rgba(255, 200, 87, 0.3)',
                     }}
                     whileTap={reducedMotion ? {} : { scale: 0.95 }}
+                    onMouseEnter={() => portfolioSounds.playStarSparkle()}
+                    onClick={() => portfolioSounds.playStarSparkle()}
                   >
                     <span className="text-2xl" aria-hidden="true">{b.icon}</span>
-                    <span className="font-display text-[8px] leading-tight" style={{ color: 'var(--color-teal)' }}>{b.title}</span>
-                    <span className="font-stat text-[9px]" style={{ color: 'var(--color-ink-muted)' }}>{b.detail}</span>
+                    <span className="font-display text-[8px] leading-tight text-[var(--color-star)]">{b.title}</span>
+                    <span className="font-stat text-[9px] text-[var(--color-ink-muted)]">{b.detail}</span>
                   </motion.div>
                 ))}
               </div>

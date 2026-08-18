@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { siteConfig } from '@/lib/config/siteConfig'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://zxaviers.site/sitemap.xml',
+    sitemap: `${siteConfig.socials.liveSite}/sitemap.xml`,
   }
 }

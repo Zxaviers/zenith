@@ -8,7 +8,7 @@ import { MissionControl } from '@/components/sections/MissionControl'
 import { Constellation } from '@/components/sections/Constellation'
 import { FlightPath } from '@/components/sections/FlightPath'
 import { MissionLog } from '@/components/sections/MissionLog'
-import { SecretLevel } from '@/components/sections/SecretLevel'
+import { IoTWorkbench } from '@/components/sections/IoTWorkbench'
 import { Transmission } from '@/components/sections/Transmission'
 
 // Set to false when ready to launch the full portfolio
@@ -31,7 +31,7 @@ export default function Home() {
         <Constellation />
         <FlightPath />
         <MissionLog />
-        <SecretLevel />
+        <IoTWorkbench />
         <Transmission />
       </main>
 

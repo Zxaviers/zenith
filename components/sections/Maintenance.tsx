@@ -34,7 +34,7 @@ export function Maintenance() {
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            'radial-gradient(circle at 50% 45%, rgba(0, 245, 196, 0.12) 0%, rgba(30, 16, 48, 0.4) 50%, transparent 80%)',
+            'radial-gradient(circle at 50% 45%, rgba(255, 200, 87, 0.12) 0%, rgba(30, 16, 48, 0.4) 50%, transparent 80%)',
         }}
         aria-hidden="true"
       />
@@ -56,7 +56,7 @@ export function Maintenance() {
           <div
             className="absolute inset-0 rounded-full animate-pulse"
             style={{
-              background: 'radial-gradient(circle, rgba(0,245,196,0.25) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(255, 200, 87,0.25) 0%, transparent 70%)',
             }}
           />
 
@@ -68,7 +68,7 @@ export function Maintenance() {
             <div
               className="relative"
               style={{
-                filter: 'hue-rotate(180deg) saturate(1.4) drop-shadow(0 0 16px rgba(0,245,196,0.7))',
+                filter: 'hue-rotate(180deg) saturate(1.4) drop-shadow(0 0 16px rgba(255, 200, 87,0.7))',
               }}
             >
               {/* Ship Hull */}
@@ -84,19 +84,19 @@ export function Maintenance() {
                   imageRendering: 'pixelated',
                 }}
               />
-              {/* Engine burst animation */}
+              {/* Engine burst animation — matches 48px native frame width */}
               <div
                 className="absolute pixel-asset animate-engine-burst"
                 style={{
-                  width: 36,
-                  height: 36,
-                  bottom: -32,
+                  width: 48,
+                  height: 48,
+                  bottom: -40,
                   left: '50%',
                   transform: 'translateX(-50%)',
                   backgroundImage: 'url(/sprites/void/engine-burst-sheet.png)',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: '0 0',
-                  backgroundSize: '252px 72px',
+                  backgroundSize: '336px 96px',
                   imageRendering: 'pixelated',
                 }}
               />
@@ -107,8 +107,8 @@ export function Maintenance() {
         {/* Status Pill */}
         <div className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1"
              style={{
-               background: 'rgba(0, 245, 196, 0.1)',
-               border: '1px solid rgba(0, 245, 196, 0.35)',
+               background: 'rgba(255, 200, 87, 0.1)',
+               border: '1px solid rgba(255, 200, 87, 0.35)',
              }}>
           <span className="h-2 w-2 rounded-full animate-ping" style={{ background: 'var(--color-teal)' }} />
           <span className="font-stat text-xs tracking-wider" style={{ color: 'var(--color-teal)' }}>
@@ -175,7 +175,7 @@ export function Maintenance() {
                 className="group flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all hover:scale-105"
                 style={{
                   background: 'var(--color-void-deep)',
-                  border: '1px solid rgba(0, 245, 196, 0.25)',
+                  border: '1px solid rgba(255, 200, 87, 0.25)',
                   boxShadow: '2px 2px 0 0 #000',
                 }}
               >
