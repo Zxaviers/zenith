@@ -36,11 +36,11 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
     dialogue: [
       {
         speaker: 'Zenith',
-        text: 'Rizky is studying Computer Engineering at Politeknik Kota Malang — mastering microcontrollers (ESP32, Arduino) alongside modern web tech (React, Next.js, TypeScript).',
+        text: 'Rizky is studying Computer Engineering at Universitas Brawijaya — mastering microcontrollers (ESP32, Arduino) alongside modern web tech (React, Next.js, TypeScript).',
       },
       {
         speaker: 'Rizky',
-        text: 'Current GPA: 3.73. Not the number I lead with, but it reflects the dedication that goes into both coursework and real-world engineering.',
+        text: 'Focused on Embedded Systems, wireless sensor networks, and building fast, responsive full-stack applications.',
       },
     ],
   },

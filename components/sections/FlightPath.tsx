@@ -20,11 +20,11 @@ const MILESTONES: Milestone[] = [
   {
     period: 'Now',
     title: 'Computer Engineering',
-    organization: 'Politeknik Kota Malang',
+    organization: 'Universitas Brawijaya',
     duration: '2023 — Present',
     description: [
-      'Maintaining a 3.73 GPA across embedded systems, computer architecture, and networking courses.',
-      'Active in laboratory practicums and department technical events.',
+      'Pursuing Computer Engineering with a strong focus on embedded hardware, microcontrollers, and computer architecture.',
+      'Active in faculty laboratory practicums and department technical events.',
     ],
   },
   {
@@ -50,12 +50,12 @@ const MILESTONES: Milestone[] = [
 ]
 
 const BADGES = [
-  { icon: '🎓', title: 'Honor Roll',  detail: '3.73 GPA' },
+  { icon: '🎓', title: 'UB Student',  detail: 'Computer Eng' },
   { icon: '🛠️', title: 'IoT Builder', detail: 'ESP32 & Sensors' },
   { icon: '🚀', title: 'Web Shipper', detail: 'React / Next.js' },
   { icon: '📟', title: 'PCB Crafter', detail: 'Schematic Design' },
-  { icon: '🎪', title: 'Event Staff', detail: 'Poltek Event' },
-  { icon: '👾', title: 'Retro Gamer', detail: 'Secret Level' },
+  { icon: '🎪', title: 'Event Staff', detail: 'UB Events' },
+  { icon: '👾', title: 'Retro Gamer', detail: 'Arcade Vault' },
 ]
 
 // ── Animated rail that fills based on scroll ─────────────────────────────────
