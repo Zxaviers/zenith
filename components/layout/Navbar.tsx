@@ -8,16 +8,33 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Volume2, VolumeX } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { portfolioSounds } from '@/lib/audio/retroSounds'
-import { siteConfig } from '@/lib/config/siteConfig'
 
-const NAV_LINKS = [
-  { label: 'Home',            id: 'home',                hint: 'Home' },
-  { label: 'Mission Control', id: 'mission-control',     hint: 'About' },
-  { label: 'Constellation',   id: 'constellation',       hint: 'Skills' },
-  { label: 'Flight Path',     id: 'flight-path',         hint: 'Experience' },
-  { label: 'Mission Log',     id: 'mission-log',         hint: 'Projects' },
-  { label: 'Hardware Lab',    id: 'iot-workbench',       hint: 'IoT Lab' },
-  { label: 'Transmission',    id: 'send-a-transmission', hint: 'Contact' },
+/**
+ * Sequential Navigation Items matching the exact top-to-bottom page flow:
+ * 1. Home
+ * 2. Mission Control (About)
+ * 3. Constellation (Skills)
+ * 4. Flight Path (Experience)
+ * 5. Mission Log (Projects)
+ * 6. Hardware Lab (IoT Workbench)
+ * 7. Arcade (Void Miner Game)
+ * 8. Devlog (Engineering Research)
+ * 9. Transmission (Contact Form)
+ */
+export type NavItem =
+  | { type: 'section'; label: string; id: string; hint: string }
+  | { type: 'route'; label: string; href: string; hint: string; icon?: string; badge?: string }
+
+const NAV_ITEMS: NavItem[] = [
+  { type: 'section', label: 'Home',            id: 'home',                hint: 'Home' },
+  { type: 'section', label: 'Mission Control', id: 'mission-control',     hint: 'About' },
+  { type: 'section', label: 'Constellation',   id: 'constellation',       hint: 'Skills' },
+  { type: 'section', label: 'Flight Path',     id: 'flight-path',         hint: 'Experience' },
+  { type: 'section', label: 'Mission Log',     id: 'mission-log',         hint: 'Projects' },
+  { type: 'section', label: 'Hardware Lab',    id: 'iot-workbench',       hint: 'IoT Lab' },
+  { type: 'route',   label: 'Arcade',          href: '/arcade',           hint: 'Void Miner Game', icon: '🕹️' },
+  { type: 'route',   label: 'Devlog',          href: '/devlog',           hint: 'Engineering Logs', icon: '📖' },
+  { type: 'section', label: 'Transmission',    id: 'send-a-transmission', hint: 'Contact' },
 ]
 
 const focusRing =
@@ -85,13 +102,13 @@ export function Navbar() {
   const ariaFor = (label: string, hint: string) => (label === hint ? label : `${label} — ${hint}`)
 
   return (
-    <header className="pointer-events-none fixed left-0 right-0 top-0 z-50 px-4 py-4 md:px-6">
+    <header className="pointer-events-none fixed left-0 right-0 top-0 z-50 px-3 py-3.5 md:px-6">
       <div className="pointer-events-auto mx-auto max-w-7xl">
         <nav
           aria-label="Zenith navigation"
-          className="flex items-center justify-between rounded-xl border border-starchart/10 bg-nebula/80 p-3 pl-4 shadow-[0_0_25px_rgba(62,42,99,0.6)] backdrop-blur-md"
+          className="flex items-center justify-between rounded-xl border border-starchart/10 bg-nebula/85 p-2.5 pl-3.5 shadow-[0_0_25px_rgba(62,42,99,0.6)] backdrop-blur-md"
         >
-          {/* Brand: rocket icon + wordmark + live telemetry clock */}
+          {/* Brand: planet icon + wordmark + live telemetry clock */}
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -114,100 +131,83 @@ export function Navbar() {
                   className="h-full w-full object-cover transition-transform group-hover:rotate-12 duration-300"
                 />
               </span>
-              <span className="font-display text-lg text-comet transition-colors group-hover:text-star">Zenith</span>
+              <span className="font-display text-base md:text-lg text-comet transition-colors group-hover:text-star">Zenith</span>
             </Link>
 
             {orbitTime && (
-              <span className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-void-deep)] border border-[var(--color-star)]/35 font-stat text-sm md:text-base font-bold text-[var(--color-star)] tracking-wider shadow-[0_0_15px_rgba(255,200,87,0.2)]">
+              <span className="hidden xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-[var(--color-void-deep)] border border-[var(--color-star)]/35 font-stat text-xs md:text-sm font-bold text-[var(--color-star)] tracking-wider shadow-[0_0_15px_rgba(255,200,87,0.2)]">
                 <span className="h-2 w-2 rounded-full bg-[var(--color-star)] animate-ping" />
                 <span>🛰️ {orbitTime}</span>
               </span>
             )}
           </div>
 
-          {/* Right group: links + status + sound toggle */}
-          <div className="hidden items-center gap-4 lg:flex">
+          {/* Right group: sequential links + sound toggle */}
+          <div className="hidden items-center gap-3 lg:flex">
             <ul className="flex items-center gap-1">
-              {NAV_LINKS.map((link) => {
-                const isActive = pathname === '/' && activeSection === link.id
+              {NAV_ITEMS.map((item) => {
+                if (item.type === 'section') {
+                  const isActive = pathname === '/' && activeSection === item.id
+                  return (
+                    <li key={item.id} className="relative">
+                      <a
+                        href={`#${item.id}`}
+                        onClick={(e) => handleNavClick(e, item.id)}
+                        title={item.hint}
+                        aria-label={ariaFor(item.label, item.hint)}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={cn(
+                          'relative z-10 block px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-colors rounded-lg',
+                          focusRing,
+                          isActive ? 'text-star font-bold' : 'text-starchart/75 hover:text-starchart'
+                        )}
+                      >
+                        {item.label}
+                      </a>
+                      {isActive && (
+                        <motion.div
+                          layoutId="navbar-active-indicator"
+                          className="absolute inset-0 z-0 rounded-lg border border-star/30 bg-star/10 shadow-[0_0_12px_rgba(255,200,87,0.25)]"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </li>
+                  )
+                }
+
+                // Route links (Arcade & Devlog) in precise sequence
+                const isRouteActive = pathname?.startsWith(item.href)
+                const isArcade = item.href === '/arcade'
+
                 return (
-                  <li key={link.id} className="relative">
-                    <a
-                      href={`#${link.id}`}
-                      onClick={(e) => handleNavClick(e, link.id)}
-                      title={link.hint}
-                      aria-label={ariaFor(link.label, link.hint)}
-                      aria-current={isActive ? 'page' : undefined}
+                  <li key={item.href} className="relative">
+                    <Link
+                      href={item.href}
+                      onClick={() => (isArcade ? portfolioSounds.playStarSparkle() : portfolioSounds.playBlip(700))}
+                      title={item.hint}
                       className={cn(
-                        'relative z-10 block px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-colors rounded-lg',
+                        'relative z-10 inline-flex items-center gap-1 px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-all rounded-lg',
                         focusRing,
-                        isActive ? 'text-star font-bold' : 'text-starchart/75 hover:text-starchart'
+                        isRouteActive
+                          ? 'text-star font-bold bg-star/15 border border-star/40 shadow-[0_0_12px_rgba(255,200,87,0.25)]'
+                          : isArcade
+                          ? 'text-[var(--color-star)] bg-[var(--color-void-deep)]/70 hover:bg-[var(--color-star)]/20 border border-[var(--color-star)]/35'
+                          : 'text-starchart/80 hover:text-star hover:bg-white/5 border border-transparent'
                       )}
                     >
-                      {link.label}
-                    </a>
-                    {isActive && (
+                      {item.icon && <span className="text-xs">{item.icon}</span>}
+                      <span>{item.label}</span>
+                    </Link>
+                    {isRouteActive && (
                       <motion.div
                         layoutId="navbar-active-indicator"
-                        className="absolute inset-0 z-0 rounded-lg border border-star/30 bg-star/10 shadow-[0_0_12px_rgba(255,200,87,0.25)]"
+                        className="absolute inset-0 z-0 rounded-lg border border-star/40 bg-star/15 shadow-[0_0_15px_rgba(255,200,87,0.35)]"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
                   </li>
                 )
               })}
-
-              {/* Devlog Direct Route Button */}
-              <li className="relative ml-1">
-                <Link
-                  href="/devlog"
-                  onClick={() => portfolioSounds.playBlip(700)}
-                  title="Devlog & Technical Research"
-                  className={cn(
-                    'relative z-10 inline-flex items-center gap-1 px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-all rounded-lg',
-                    focusRing,
-                    pathname?.startsWith('/devlog')
-                      ? 'text-star font-bold bg-star/15 border border-star/40 shadow-[0_0_12px_rgba(255,200,87,0.25)]'
-                      : 'text-starchart/80 hover:text-star hover:bg-white/5 border border-transparent'
-                  )}
-                >
-                  <span>📖</span>
-                  <span>Devlog</span>
-                </Link>
-                {pathname?.startsWith('/devlog') && (
-                  <motion.div
-                    layoutId="navbar-active-indicator"
-                    className="absolute inset-0 z-0 rounded-lg border border-star/30 bg-star/10 shadow-[0_0_12px_rgba(255,200,87,0.25)]"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </li>
-
-              {/* Arcade Direct Route Button */}
-              <li className="relative ml-1">
-                <Link
-                  href="/arcade"
-                  onClick={() => portfolioSounds.playStarSparkle()}
-                  title="Arcade — Void Miner Game"
-                  className={cn(
-                    'relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 font-headline text-xs xl:text-sm font-bold transition-all rounded-lg',
-                    focusRing,
-                    pathname?.startsWith('/arcade')
-                      ? 'text-[var(--color-void)] bg-[var(--color-star)] shadow-[0_0_15px_rgba(255,200,87,0.5)]'
-                      : 'text-[var(--color-star)] bg-[var(--color-nebula)]/60 hover:bg-[var(--color-star)]/20 border border-[var(--color-star)]/40 shadow-[0_0_10px_rgba(255,200,87,0.2)] hover:scale-105'
-                  )}
-                >
-                  <span>🕹️</span>
-                  <span>Arcade</span>
-                </Link>
-                {pathname?.startsWith('/arcade') && (
-                  <motion.div
-                    layoutId="navbar-active-indicator"
-                    className="absolute inset-0 z-0 rounded-lg border border-star/40 bg-star/15 shadow-[0_0_15px_rgba(255,200,87,0.4)]"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </li>
             </ul>
 
             <span className="h-5 w-px bg-starchart/15" aria-hidden="true" />
@@ -256,52 +256,64 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-              className="mt-2 flex flex-col gap-2 rounded-xl border border-starchart/10 bg-nebula/95 p-4 shadow-[0_8px_32px_rgba(0,0,0,0.7)] backdrop-blur-md lg:hidden"
+              className="mt-2 flex flex-col gap-1.5 rounded-xl border border-starchart/10 bg-nebula/95 p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.7)] backdrop-blur-md lg:hidden"
             >
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.id}
-                  href={`#${link.id}`}
-                  onClick={(e) => handleNavClick(e, link.id)}
-                  title={link.hint}
-                  aria-label={ariaFor(link.label, link.hint)}
-                  className={cn(
-                    'rounded-lg px-4 py-2.5 font-headline text-sm text-starchart transition-colors hover:text-star hover:bg-white/5 active:scale-98',
-                    focusRing
-                  )}
-                >
-                  <span className="text-star mr-1.5">✦</span> {link.label}
-                  {link.hint !== link.label && (
-                    <span className="ml-1.5 font-cozy text-xs lowercase text-starchart/60">· {link.hint}</span>
-                  )}
-                </a>
-              ))}
-              <Link
-                href="/devlog"
-                onClick={() => {
-                  portfolioSounds.playBlip(700)
-                  setMobileMenuOpen(false)
-                }}
-                className={cn(
-                  'rounded-lg px-4 py-2.5 font-headline text-sm text-starchart transition-colors hover:text-star hover:bg-white/5',
-                  focusRing
-                )}
-              >
-                <span className="text-star mr-1.5">✦</span> Devlog
-              </Link>
-              <Link
-                href="/arcade"
-                onClick={() => {
-                  portfolioSounds.playStarSparkle()
-                  setMobileMenuOpen(false)
-                }}
-                className={cn(
-                  'rounded-lg px-4 py-2.5 font-headline text-sm text-starchart transition-colors hover:text-star hover:bg-white/5',
-                  focusRing
-                )}
-              >
-                <span className="text-star mr-1.5">🕹️</span> Arcade (Void Miner)
-              </Link>
+              {NAV_ITEMS.map((item) => {
+                if (item.type === 'section') {
+                  const isActive = pathname === '/' && activeSection === item.id
+                  return (
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      onClick={(e) => handleNavClick(e, item.id)}
+                      title={item.hint}
+                      aria-label={ariaFor(item.label, item.hint)}
+                      className={cn(
+                        'rounded-lg px-3.5 py-2 font-headline text-xs md:text-sm transition-colors',
+                        isActive
+                          ? 'text-star font-bold bg-star/15 border border-star/30'
+                          : 'text-starchart hover:text-star hover:bg-white/5 active:scale-98',
+                        focusRing
+                      )}
+                    >
+                      <span className="text-star mr-1.5">✦</span> {item.label}
+                      {item.hint !== item.label && (
+                        <span className="ml-1.5 font-cozy text-xs lowercase text-starchart/60">· {item.hint}</span>
+                      )}
+                    </a>
+                  )
+                }
+
+                const isRouteActive = pathname?.startsWith(item.href)
+                const isArcade = item.href === '/arcade'
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => {
+                      if (isArcade) portfolioSounds.playStarSparkle()
+                      else portfolioSounds.playBlip(700)
+                      setMobileMenuOpen(false)
+                    }}
+                    className={cn(
+                      'rounded-lg px-3.5 py-2 font-headline text-xs md:text-sm transition-colors flex items-center justify-between',
+                      isRouteActive
+                        ? 'text-star font-bold bg-star/15 border border-star/30'
+                        : isArcade
+                        ? 'text-[var(--color-star)] bg-[var(--color-void-deep)]/80 border border-[var(--color-star)]/35'
+                        : 'text-starchart hover:text-star hover:bg-white/5',
+                      focusRing
+                    )}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>{item.icon || '✦'}</span>
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="font-cozy text-xs text-starchart/60">{item.hint}</span>
+                  </Link>
+                )
+              })}
             </motion.div>
           )}
         </AnimatePresence>
