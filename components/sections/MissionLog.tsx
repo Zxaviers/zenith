@@ -95,7 +95,7 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
               className="relative w-full h-40 sm:h-52 rounded-lg overflow-hidden flex-shrink-0"
               style={{ border: '1px solid rgba(255, 200, 87, 0.3)', background: 'var(--color-void-deep)' }}
             >
-              <Image src={project.preview} alt={project.title} fill className="object-cover" />
+              <Image src={project.preview} alt={project.title} fill sizes="(max-width: 768px) 100vw, 672px" className="object-cover" />
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{ background: 'linear-gradient(180deg, transparent 40%, var(--color-void-surface) 100%)' }}
