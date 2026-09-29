@@ -22,12 +22,12 @@ export interface DevlogPost {
 export const devlogPosts: DevlogPost[] = [
   {
     slug: 'sistem-alignment-esp32',
-    title: 'Dari Sensor ke Layar: Sistem Alignment Kendaraan Berbasis ESP32, ADS1115 & MPU6050',
+    title: 'From Sensor to Screen: ESP32-Based Vehicle Alignment System with ADS1115 & MPU6050',
     date: '2026-07-28',
     readTime: '4 min read',
     category: 'IoT & Embedded',
     excerpt:
-      'Catatan teknis integrasi sensor presisi ADS1115 (16-bit ADC) dan MPU6050 (6-DoF IMU) dengan mikrokontroler ESP32 untuk kalkulasi simulasi toe & camber roda kendaraan secara real-time.',
+      'Technical notes on integrating the ADS1115 precision sensor (16-bit ADC) and MPU6050 (6-DoF IMU) with an ESP32 microcontroller to compute real-time simulated vehicle wheel toe and camber.',
     tags: ['IoT', 'ESP32', 'ADS1115', 'MPU6050', 'React'],
     codeSnippet: {
       language: 'cpp',
@@ -50,22 +50,22 @@ float calculateCamberAngle() {
     },
     callout: {
       type: 'tip',
-      text: 'Gunakan ADC eksternal ADS1115 16-bit daripada ADC internal ESP32 untuk menghindari non-linearitas tegangan di bawah 0.5V dan di atas 2.8V.',
+      text: 'Use the external 16-bit ADS1115 ADC instead of the ESP32 internal ADC to avoid voltage non-linearity below 0.5V and above 2.8V.',
     },
     content: [
-      'Salah satu proyek riset yang paling mendalam di bidang embedded systems yang saya kerjakan di Universitas Brawijaya adalah rancang bangun sistem simulasi alignment (toe dan camber) kendaraan berbasis mikrokontroler ESP32.',
-      'Sistem ini menggabungkan sensor accelerometer & gyroscope MPU6050 untuk mengukur sudut orientasi spasial dan modul ADS1115 (ADC 16-bit I2C) untuk membaca tegangan potensiometer linier dengan presisi milimeter.',
-      'Tantangan terbesarnya adalah memfilter derau (noise) getaran mekanik saat sensor membaca sudut dinamis. Dengan menerapkan complementary filter sederhana pada mikrokontroler, data yang dikirimkan via Wi-Fi/MQTT ke dashboard React menjadi sangat stabil dan responsif tanpa lag.',
+      'One of the most in-depth embedded-systems research projects I worked on at Universitas Brawijaya was designing a microcontroller-based vehicle alignment (toe and camber) simulation system using the ESP32.',
+      'The system combines an MPU6050 accelerometer and gyroscope sensor for spatial orientation angles with an ADS1115 module (16-bit I2C ADC) for reading linear potentiometer voltage with millimeter precision.',
+      'The biggest challenge was filtering mechanical vibration noise while the sensors read dynamic angles. By applying a simple complementary filter on the microcontroller, the data sent via Wi-Fi/MQTT to the React dashboard became highly stable and responsive without lag.',
     ],
   },
   {
     slug: 'showcase-pcb-custom-malang',
-    title: 'Membangun Showcase Klien: Dari Desain PCB Custom hingga CI/CD Pipeline',
+    title: 'Building a Client Showcase: From Custom PCB Design to CI/CD Pipeline',
     date: '2026-06-15',
     readTime: '3 min read',
     category: 'Web Engineering',
     excerpt:
-      'Studi kasus perancangan website client-facing pcb-custom-malang.web.app menggunakan React, Tailwind CSS, dan otomatisasi deployment dengan GitHub Actions & Netlify.',
+      'Case study on designing the client-facing pcb-custom-malang.web.app website using React, Tailwind CSS, and automated deployment with GitHub Actions and Netlify.',
     tags: ['Web Dev', 'React', 'Tailwind CSS', 'CI/CD', 'Netlify'],
     codeSnippet: {
       language: 'yaml',
@@ -89,22 +89,22 @@ jobs:
     },
     callout: {
       type: 'note',
-      text: 'Website dirancang agar calon klien manufaktur elektronika dapat melihat spesifikasi layer, material FR4, dan estimasi waktu fabrikasi secara instan.',
+      text: 'The website is designed so prospective electronics-manufacturing clients can instantly view layer specs, FR4 materials, and fabrication time estimates.',
     },
     content: [
-      'Proyek PCB Custom Malang berawal dari kebutuhan nyata industri fabrikasi hardware lokal di Malang untuk memiliki representasi digital profesional yang jelas dan terpercaya.',
-      'Fokus utama pada website ini adalah kejelasan informasi: katalog layanan cetak single/double layer PCB, estimasi ketebalan tembaga (1oz/2oz), serta jalur pemesanan yang ringkas.',
-      'Dengan arsitektur komponen React yang modular dan utility-first styling dari Tailwind CSS, website dapat memuat halaman secara instan (Lighthouse score 98+) dan diperbarui dengan mudah melalui pipeline CI/CD otomatis setiap kali ada update katalog.',
+      'The PCB Custom Malang project started from a real need among local hardware-fabrication businesses in Malang for a clear, trustworthy professional digital presence.',
+      'The main focus of the site is information clarity: a catalog of single/double-layer PCB printing services, copper thickness estimates (1oz/2oz), and a concise ordering path.',
+      'With a modular React component architecture and Tailwind CSS utility-first styling, the site loads pages instantly (98+ Lighthouse score) and is easy to update through an automated CI/CD pipeline on every catalog change.',
     ],
   },
   {
     slug: 'fisika-suara-void-miner',
-    title: 'Zero-G Inertia & Procedural Audio: Merancang Game Arcade Void Miner di Browser',
+    title: 'Zero-G Inertia and Procedural Audio: Designing the Void Miner Arcade Game for the Browser',
     date: '2026-08-14',
     readTime: '5 min read',
     category: 'Game & Audio',
     excerpt:
-      'Bagaimana mengimplementasikan fisika dorong inersia Newtonian, partikel laser ganda ujung sayap, dan efek suara retro synthesizer murni menggunakan Web Audio API tanpa library eksternal.',
+      'How to implement Newtonian thrust inertia physics, twin-wingtip laser particles, and pure-synthesizer retro sound effects using the Web Audio API with no external libraries.',
     tags: ['Game Dev', 'Canvas 2D', 'Web Audio API', 'TypeScript', 'Physics'],
     codeSnippet: {
       language: 'typescript',
@@ -128,12 +128,12 @@ playLaser() {
     },
     callout: {
       type: 'highlight',
-      text: 'Seluruh efek suara pesawat, tembakan laser, ledakan shrapnel, dan kristal kuantum dibuat 100% secara prosedural via oscillator native tanpa mengunduh file audio eksternal.',
+      text: 'All ship, laser-shot, shrapnel-explosion, and quantum-crystal sound effects are generated 100% procedurally via native oscillators with no external audio files.',
     },
     content: [
-      'Ketika merancang game Void Miner untuk zona Arcade di portofolio ini, tujuannya bukan sekadar game tembak-menembak biasa, melainkan menghadirkan kontrol pesawat luar angkasa dengan fisika inersia (momentum, thrust, dan drag vakum).',
-      'Pesawat tempur dirancang dengan moncong aerodinamis jarum, sayap delta bergaris, dan meriam laser ganda di ujung sayap yang menembakkan berkas plasma kembar secara akurat.',
-      'Untuk audio, daripada membebani bundle web dengan file MP3 yang besar, seluruh suara disintesis secara real-time dengan Web Audio API—menghasilkan respons instan 0ms latency dan nuansa retro arcade 8-bit otentik.',
+      'When designing the Void Miner game for this portfolio Arcade zone, the goal was not just another shoot-em-up, but a spacecraft control experience with inertia physics (momentum, thrust, and vacuum drag).',
+      'The starfighter is designed with an aerodynamic needle nose, striped delta wings, and twin wingtip laser cannons firing accurate twin plasma beams.',
+      'For audio, instead of weighing down the web bundle with large MP3 files, all sounds are synthesized in real time with the Web Audio API — delivering instant 0ms-latency response and an authentic 8-bit retro arcade feel.',
     ],
   },
 ]

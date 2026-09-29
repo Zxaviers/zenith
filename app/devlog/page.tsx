@@ -8,7 +8,7 @@ import { BookOpen, ArrowLeft, Home, Send } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Devlog | Zenith — Rizky Mardhani',
-  description: 'Catatan teknis, arsitektur sistem IoT, dan rekayasa web oleh Rizky Mardhani.',
+  description: 'Technical notes, IoT system architecture, and web engineering by Rizky Mardhani.',
 }
 
 export default function DevlogListPage() {
@@ -33,14 +33,14 @@ export default function DevlogListPage() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[var(--color-void-deep)] border border-[var(--color-star)]/40 font-display text-xs text-[var(--color-star)] hover:bg-[var(--color-star)]/15 transition-all shadow-[0_0_12px_rgba(255,200,87,0.2)]"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>← KEMBALI KE BERANDA (HOME)</span>
+              <span>← BACK TO HOME</span>
             </Link>
 
             <Link
               href="/arcade"
               className="hidden sm:inline-flex items-center gap-1.5 font-stat text-xs text-[var(--color-comet)] hover:underline"
             >
-              <span>🕹️ Mainkan Void Miner →</span>
+              <span>🕹️ Play Void Miner →</span>
             </Link>
           </div>
 
@@ -54,7 +54,7 @@ export default function DevlogListPage() {
               Engineering Logs
             </h1>
             <p className="font-body text-base md:text-lg text-[var(--color-ink-muted)] max-w-xl mx-auto">
-              Dokumentasi teknis, riset mikrokontroler ESP32, arsitektur full-stack, dan eksperimen frontend.
+              Technical documentation, ESP32 microcontroller research, full-stack architecture, and frontend experiments.
             </p>
           </div>
 
@@ -64,10 +64,10 @@ export default function DevlogListPage() {
           <div className="mt-14 pt-8 border-t border-white/10">
             <PixelPanel variant="nebula" className="p-6 text-center border border-white/15 shadow-[4px_4px_0_0_#000]">
               <h3 className="font-display text-base text-[var(--color-star)] mb-2">
-                Ingin berkolaborasi atau membahas proyek teknis?
+                Want to collaborate or discuss a technical project?
               </h3>
               <p className="font-body text-xs md:text-sm text-[var(--color-ink-muted)] mb-5 max-w-md mx-auto">
-                Jelajahi seluruh modul interaktif di beranda utama atau kirimkan pesan transmisi langsung.
+                Explore all interactive modules on the main page or send a transmission message directly.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link
@@ -75,14 +75,14 @@ export default function DevlogListPage() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-void-deep)] border border-[var(--color-star)]/50 font-display text-xs text-[var(--color-star)] hover:bg-[var(--color-star)]/15 transition-all shadow-[2px_2px_0_0_#000]"
                 >
                   <Home className="h-4 w-4" />
-                  <span>KEMBALI KE BERANDA (HOME)</span>
+                  <span>BACK TO HOME</span>
                 </Link>
                 <Link
                   href="/#send-a-transmission"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-comet)] text-[var(--color-void)] font-display text-xs font-bold hover:scale-105 transition-all shadow-[2px_2px_0_0_#000]"
                 >
                   <Send className="h-4 w-4" />
-                  <span>KIRIM TRANSMISI →</span>
+                  <span>SEND TRANSMISSION →</span>
                 </Link>
               </div>
             </PixelPanel>

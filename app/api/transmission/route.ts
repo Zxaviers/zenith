@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     // 2. Input validation
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Nama/Identitas wajib diisi.' },
+        { success: false, message: 'Name/callsign is required.' },
         { status: 400 }
       )
     }
@@ -24,14 +24,14 @@ export async function POST(req: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!email || typeof email !== 'string' || !emailRegex.test(email.trim())) {
       return NextResponse.json(
-        { success: false, message: 'Alamat email tidak valid.' },
+        { success: false, message: 'Invalid email address.' },
         { status: 400 }
       )
     }
 
     if (!message || typeof message !== 'string' || message.trim().length < 5) {
       return NextResponse.json(
-        { success: false, message: 'Pesan transmisi minimal 5 karakter.' },
+        { success: false, message: 'Transmission message must be at least 5 characters.' },
         { status: 400 }
       )
     }
@@ -58,12 +58,12 @@ export async function POST(req: Request) {
 
       const result = await response.json()
       if (!response.ok || !result.success) {
-        throw new Error(result.message || 'Gagal mengirim transmisi melalui gateway email.')
+        throw new Error(result.message || 'Failed to send transmission via the email gateway.')
       }
 
       return NextResponse.json({
         success: true,
-        message: 'Transmisi berhasil dikirim langsung ke inbox email!',
+        message: 'Transmission sent straight to the inbox!',
       })
     }
 
@@ -77,14 +77,14 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Transmisi berhasil diterima dan dicatat ke sistem!',
+      message: 'Transmission received and logged to the system!',
     })
   } catch (error: any) {
     console.error('[TRANSMISSION_ERROR]', error)
     return NextResponse.json(
       {
         success: false,
-        message: error.message || 'Terjadi kesalahan sistem saat mengirim transmisi.',
+        message: error.message || 'A system error occurred while sending the transmission.',
       },
       { status: 500 }
     )

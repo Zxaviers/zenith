@@ -9,14 +9,14 @@ import type { DevlogPost } from '@/lib/data/devlogPosts'
 import { cn } from '@/lib/utils'
 import { Clock, Tag, BookOpen, Sparkles } from 'lucide-react'
 
-const CATEGORIES = ['Semua', 'IoT & Embedded', 'Web Engineering', 'Game & Audio'] as const
+const CATEGORIES = ['All', 'IoT & Embedded', 'Web Engineering', 'Game & Audio'] as const
 type CategoryFilter = typeof CATEGORIES[number]
 
 export function DevlogListClient({ posts }: { posts: DevlogPost[] }) {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('Semua')
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('All')
   const reducedMotion = useReducedMotion() ?? false
 
-  const filteredPosts = selectedCategory === 'Semua'
+  const filteredPosts = selectedCategory === 'All'
     ? posts
     : posts.filter((p) => p.category === selectedCategory)
 
@@ -120,7 +120,7 @@ export function DevlogListClient({ posts }: { posts: DevlogPost[] }) {
                     </div>
 
                     <span className="font-stat text-xs text-[var(--color-star)] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                      <span>Baca Catatan</span>
+                      <span>Read Log</span>
                       <span>→</span>
                     </span>
                   </div>

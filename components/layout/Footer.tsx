@@ -12,7 +12,7 @@ export function Footer() {
       }}
     >
       <div className="mx-auto max-w-4xl px-4 flex flex-col items-center justify-center gap-4">
-        {/* Orbital Station Badge — planet sprite dari Void pack */}
+        {/* Orbital Station Badge — planet sprite from the Void pack */}
         <div className="flex items-center gap-3">
           {/* Animated planet-earth sprite from Foozle */}
           <div

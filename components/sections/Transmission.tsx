@@ -33,13 +33,13 @@ export function Transmission() {
     if (!name || !email || !message) {
       portfolioSounds.playBlip(300)
       setStatus('error')
-      setErrorMessage('Harap isi semua kolom transmisi sebelum mengirim.')
+      setErrorMessage('Please fill in all transmission fields before sending.')
       return
     }
     if (!emailPattern.test(email)) {
       portfolioSounds.playBlip(300)
       setStatus('error')
-      setErrorMessage('Format alamat email tidak valid.')
+      setErrorMessage('Invalid email address format.')
       return
     }
 
@@ -58,17 +58,17 @@ export function Transmission() {
       const data = await res.json()
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Gagal mengirim transmisi ke stasiun relay.')
+        throw new Error(data.message || 'Failed to send transmission to the relay station.')
       }
 
       portfolioSounds.playStarSparkle()
       setStatus('success')
-      setSuccessMessage(data.message || 'Transmisi berhasil dikirim dan dicatat!')
+      setSuccessMessage(data.message || 'Transmission sent and logged!')
       form.reset()
     } catch (err: any) {
       portfolioSounds.playBlip(300)
       setStatus('error')
-      setErrorMessage(err.message || 'Terjadi gangguan sinyal uplink. Silakan coba lagi.')
+      setErrorMessage(err.message || 'Uplink signal disrupted. Please try again.')
     }
   }
 
@@ -100,14 +100,14 @@ export function Transmission() {
                 <Rocket className="h-3.5 w-3.5 text-[var(--color-comet)]" />
               </h3>
               <p className="font-body text-xs md:text-sm text-[var(--color-ink-muted)] leading-relaxed mb-4">
-                Kemudikan pesawat tempur supersonik, tembak asteroid kristal kuantum dengan laser ganda ujung sayap, dan hadapi shrapnel berbahaya.
+                Pilot a supersonic starfighter, blast quantum-crystal asteroids with twin wingtip lasers, and dodge hazardous shrapnel.
               </p>
             </div>
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between">
               <span className="font-stat text-[11px] text-[var(--color-starchart)]">Zero-G Newtonian Physics</span>
               <span className="px-3.5 py-1.5 rounded bg-[var(--color-star)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
-                Mainkan Arcade →
+                Play Arcade →
               </span>
             </div>
           </PixelPanel>
@@ -129,7 +129,7 @@ export function Transmission() {
                   <BookOpen className="h-3.5 w-3.5" />
                   <span>RESEARCH LOGS</span>
                 </span>
-                <span className="font-stat text-[10px] text-[var(--color-star)]">3 ARTIKEL TEKNIS</span>
+                <span className="font-stat text-[10px] text-[var(--color-star)]">3 TECHNICAL ARTICLES</span>
               </div>
 
               <h3 className="font-display text-sm md:text-base text-[var(--color-comet)] mb-1.5 flex items-center gap-1.5">
@@ -137,14 +137,14 @@ export function Transmission() {
                 <Sparkles className="h-3.5 w-3.5 text-[var(--color-star)]" />
               </h3>
               <p className="font-body text-xs md:text-sm text-[var(--color-ink-muted)] leading-relaxed mb-4">
-                Catatan teknis integrasi ESP32 ADC 16-bit, arsitektur showcase web klien pcb-custom-malang, dan Web Audio API.
+                Technical notes on 16-bit ESP32 ADC integration, the pcb-custom-malang client web showcase architecture, and the Web Audio API.
               </p>
             </div>
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between">
               <span className="font-stat text-[11px] text-[var(--color-starchart)]">IoT & Web Engineering</span>
               <span className="px-3.5 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
-                Buka Devlog →
+                Open Devlog →
               </span>
             </div>
           </PixelPanel>
@@ -180,7 +180,7 @@ export function Transmission() {
               >
                 <AlertTriangle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold">STATUS TRANSMISI GAGAL: </span>
+                  <span className="font-bold">TRANSMISSION FAILED: </span>
                   <span>{errorMessage}</span>
                 </div>
               </motion.div>
@@ -194,7 +194,7 @@ export function Transmission() {
               >
                 <CheckCircle className="h-4 w-4 text-green-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold">TRANSMISI DITERIMA: </span>
+                  <span className="font-bold">TRANSMISSION RECEIVED: </span>
                   <span>{successMessage}</span>
                 </div>
               </motion.div>
@@ -204,7 +204,7 @@ export function Transmission() {
               <PixelInput
                 id="name"
                 name="name"
-                placeholder="Nama Anda atau callsign..."
+                placeholder="Your name or callsign..."
                 required
                 disabled={status === 'submitting'}
               />
@@ -215,7 +215,7 @@ export function Transmission() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="nama@domain.com"
+                placeholder="name@domain.com"
                 required
                 disabled={status === 'submitting'}
               />
@@ -225,7 +225,7 @@ export function Transmission() {
               <PixelTextarea
                 id="message"
                 name="message"
-                placeholder="Tuliskan pesan transmisi atau tawaran kolaborasi Anda di sini..."
+                placeholder="Write your transmission message or collaboration proposal here..."
                 required
                 rows={4}
                 disabled={status === 'submitting'}

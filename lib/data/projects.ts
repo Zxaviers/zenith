@@ -22,11 +22,11 @@ export const projects: Project[] = [
     repo: 'https://github.com/Zxaviers',
     techStack: ['React', 'Tailwind CSS', 'Netlify', 'Vercel'],
     problem:
-      'PCB Custom Malang butuh kehadiran online untuk menampilkan layanan pembuatan PCB custom mereka ke calon klien, tanpa harus bergantung pada komunikasi manual satu-per-satu.',
+      'PCB Custom Malang needed an online presence to showcase their custom PCB fabrication services to prospective clients, without relying on manual one-to-one outreach.',
     solution:
-      'Dibangun sebagai situs showcase responsif menggunakan React dan Tailwind CSS, di-hosting di Netlify dengan pipeline CI/CD lewat GitHub dan Vercel untuk deployment yang cepat dan konsisten.',
+      'Built as a responsive showcase site using React and Tailwind CSS, hosted on Netlify with a CI/CD pipeline via GitHub and Vercel for fast, consistent deployments.',
     learnings:
-      'Pengalaman pertama menangani proyek client-facing dari awal sampai deploy — mulai dari memahami kebutuhan bisnis klien, menerjemahkannya ke struktur halaman yang jelas, sampai mengatur alur deployment otomatis.',
+      'First experience handling a client-facing project end to end — from understanding the client business needs, to translating them into a clear page structure, to setting up an automated deployment flow.',
   },
   {
     slug: 'bootstrap-portfolio',
@@ -37,11 +37,11 @@ export const projects: Project[] = [
     repo: 'https://github.com/Zxaviers/Personal',
     techStack: ['HTML5', 'CSS3', 'Bootstrap'],
     problem:
-      'Sebelum situs React/Tailwind ini ada, saya butuh portofolio online sederhana untuk mulai menampilkan diri dan proyek-proyek awal saat masih belajar web development.',
+      'Before this React/Tailwind site existed, I needed a simple online portfolio to start presenting myself and early projects while still learning web development.',
     solution:
-      'Portofolio pertama dibangun dengan HTML, CSS, dan Bootstrap, di-deploy lewat GitHub Pages — fokus ke fundamental: layout responsif, struktur konten yang rapi, dan proses deploy sederhana tanpa tooling build yang rumit.',
+      'The first portfolio was built with HTML, CSS, and Bootstrap, deployed via GitHub Pages — focused on fundamentals: responsive layout, tidy content structure, and a simple deploy process without complex build tooling.',
     learnings:
-      'Titik awal untuk memahami dasar-dasar pengembangan web sebelum pindah ke framework modern seperti React — jadi pengingat seberapa jauh sudah berkembang sejak proyek ini dibuat.',
+      'The starting point for understanding web development basics before moving to modern frameworks like React — a reminder of how far things have come since this project was built.',
   },
   {
     slug: 'jkt48-vault',
@@ -49,11 +49,11 @@ export const projects: Project[] = [
     desc: 'Premium photo gallery & media archive powered by Google Drive storage and Google Sheets database, featuring masonry layout, member filtering, and full-size lightbox viewer.',
     techStack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Google Drive API', 'Google Sheets API'],
     problem:
-      'Kebutuhan platform kurasi dan arsip galeri foto JKT48 yang rapi, cepat, dan mudah dikelola tanpa infrastruktur database berbayar yang rumit.',
+      'Needed a neat, fast, and easy-to-manage JKT48 photo gallery curation and archive platform without complicated paid database infrastructure.',
     solution:
-      'Memanfaatkan Google Drive sebagai file storage (proxied) dan Google Sheets sebagai database dinamis, dibalut antarmuka masonry grid modern Next.js 15, pencarian member, filter kategori, dan admin panel terproteksi.',
+      'Uses Google Drive as proxied file storage and Google Sheets as a dynamic database, wrapped in a modern Next.js 15 masonry-grid interface with member search, category filters, and a protected admin panel.',
     learnings:
-      'Implementasi proxy streaming file Google Drive API, integrasi Google Sheets API via Google Cloud Service Account, dan optimasi performa masonry layout di App Router.',
+      'Implemented proxied Google Drive API file streaming, Google Sheets API integration via a Google Cloud service account, and masonry layout performance optimization in the App Router.',
     comingSoon: true,
   },
   {
@@ -62,11 +62,11 @@ export const projects: Project[] = [
     desc: 'SaaS Unified Cloud Drive that aggregates multiple Google Drive accounts into a single virtual workspace with combined storage quota, file indexing, and smart upload routing.',
     techStack: ['Next.js 15', 'TypeScript', 'PostgreSQL', 'Drizzle ORM', 'Google Drive API', 'Auth.js'],
     problem:
-      'Pengguna sering memiliki beberapa akun Google Drive terpisah dengan kapasitas 15GB terbatas dan repot berganti akun saat mencari atau mengunggah file.',
+      'Users often hold several separate Google Drive accounts with a limited 15GB quota each, and juggling accounts to find or upload files is a hassle.',
     solution:
-      'Platform SaaS yang menggabungkan multi-akun Google Drive ke satu wadah virtual terpadu dengan agregasi total kuota, virtual file indexing, enkripsi token OAuth2 at-rest (AES-GCM), dan smart upload routing otomatis ke akun dengan sisa kuota terbanyak.',
+      'A SaaS platform that merges multiple Google Drive accounts into one unified virtual vault with total quota aggregation, virtual file indexing, at-rest OAuth2 token encryption (AES-GCM), and automatic smart upload routing to the account with the most remaining quota.',
     learnings:
-      'Perancangan skema database Drizzle ORM + Neon PostgreSQL di Edge runtime, arsitektur multi-account OAuth2 aman, dan sinkronisasi kuota real-time.',
+      'Designed the Drizzle ORM + Neon PostgreSQL schema for the Edge runtime, a secure multi-account OAuth2 architecture, and real-time quota sync.',
     comingSoon: true,
   },
 ]

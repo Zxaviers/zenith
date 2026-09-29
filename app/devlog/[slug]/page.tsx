@@ -48,7 +48,7 @@ export default async function DevlogPostPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-void-deep)] border border-white/15 font-display text-xs text-[var(--color-star)] hover:border-[var(--color-star)] transition-all shadow-[0_0_12px_rgba(255,200,87,0.15)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>DAFTAR DEVLOG</span>
+              <span>DEVLOG LIST</span>
             </Link>
 
             <Link
@@ -56,7 +56,7 @@ export default async function DevlogPostPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-void-deep)] border border-white/15 font-display text-xs text-[var(--color-starchart)] hover:text-[var(--color-star)] hover:border-[var(--color-star)] transition-all"
             >
               <Home className="h-3.5 w-3.5" />
-              <span>BERANDA (HOME)</span>
+              <span>HOME</span>
             </Link>
           </div>
 
@@ -133,9 +133,9 @@ export default async function DevlogPostPage({
               <div className="flex items-center justify-between mb-2.5 border-b border-white/10 pb-2">
                 <div className="flex items-center gap-2 text-[var(--color-star)] font-bold">
                   <Terminal className="h-4 w-4" />
-                  <span>KODE TEKNIS ({post.codeSnippet.language.toUpperCase()})</span>
+                  <span>TECHNICAL CODE ({post.codeSnippet.language.toUpperCase()})</span>
                 </div>
-                <span className="text-[10px] text-[var(--color-aurora)]">PRODUKSI READY</span>
+                <span className="text-[10px] text-[var(--color-aurora)]">PRODUCTION READY</span>
               </div>
               <pre className="p-4 rounded bg-[#0b0612] border border-black text-[var(--color-starchart)] overflow-x-auto text-xs leading-relaxed font-mono">
                 <code>{post.codeSnippet.code}</code>
@@ -155,7 +155,7 @@ export default async function DevlogPostPage({
               <CheckCircle2 className="h-5 w-5 text-[var(--color-star)] shrink-0 mt-0.5" />
               <div className="font-body text-sm text-[var(--color-starchart)] leading-relaxed">
                 <span className="font-bold text-[var(--color-star)] font-display mr-1.5">
-                  CATATAN TEKNIS:
+                  TECHNICAL NOTE:
                 </span>
                 {post.callout.text}
               </div>
@@ -181,7 +181,7 @@ export default async function DevlogPostPage({
                 href="/#mission-log"
                 className="px-3 py-1.5 rounded bg-[var(--color-nebula)] text-xs font-stat text-[var(--color-starchart)] hover:text-[var(--color-star)] border border-white/15 transition-colors"
               >
-                Proyek Lainnya →
+                More Projects →
               </Link>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default async function DevlogPostPage({
               className="inline-flex items-center gap-1.5 font-display text-xs text-[var(--color-star)] hover:underline"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Kembali ke Daftar Devlog</span>
+              <span>Back to Devlog List</span>
             </Link>
 
             <div className="flex items-center gap-3">
@@ -202,7 +202,7 @@ export default async function DevlogPostPage({
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[var(--color-void-deep)] border border-white/20 font-display text-xs text-[var(--color-starchart)] hover:text-[var(--color-star)] transition-colors"
               >
                 <Home className="h-3.5 w-3.5" />
-                <span>Beranda Utama</span>
+                <span>Home</span>
               </Link>
 
               <Link
@@ -210,7 +210,7 @@ export default async function DevlogPostPage({
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-xs font-bold hover:scale-105 transition-transform"
               >
                 <Send className="h-3.5 w-3.5" />
-                <span>Kirim Transmisi</span>
+                <span>Send Transmission</span>
               </Link>
             </div>
           </div>
