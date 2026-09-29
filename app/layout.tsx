@@ -110,7 +110,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
