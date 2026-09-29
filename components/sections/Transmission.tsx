@@ -180,9 +180,20 @@ export function Transmission() {
                 animate={{ opacity: 1, height: 'auto' }}
               >
                 <AlertTriangle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">TRANSMISSION FAILED: </span>
-                  <span>{errorMessage}</span>
+                <div className="space-y-1">
+                  <div>
+                    <span className="font-bold">TRANSMISSION FAILED: </span>
+                    <span>{errorMessage}</span>
+                  </div>
+                  <p className="font-body text-xs text-red-200/90">
+                    Prefer email?{' '}
+                    <a
+                      href={`mailto:${siteConfig.socials.email}`}
+                      className="text-[var(--color-star)] underline underline-offset-2 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2 rounded transition-colors"
+                    >
+                      {siteConfig.socials.email}
+                    </a>
+                  </p>
                 </div>
               </motion.div>
             )}
@@ -258,6 +269,16 @@ export function Transmission() {
                 />
               )}
             </div>
+
+            <p className="text-center font-body text-xs text-[var(--color-ink-muted)] pt-2">
+              Prefer email?{' '}
+              <a
+                href={`mailto:${siteConfig.socials.email}`}
+                className="text-[var(--color-star)] underline underline-offset-2 hover:text-[var(--color-comet)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2 rounded transition-colors"
+              >
+                {siteConfig.socials.email}
+              </a>
+            </p>
           </form>
         </PixelPanel>
 
