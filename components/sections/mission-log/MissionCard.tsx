@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
+import { PixelButton } from '@/components/ui/PixelButton'
 import { portfolioSounds } from '@/lib/audio/retroSounds'
 import type { Project } from '@/lib/data/projects'
 
@@ -118,7 +119,7 @@ export function MissionCard({
 
           <div className="mt-auto pt-3 border-t border-white/10">
             {project.techStack && (
-              <div className="mb-3 flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1.5">
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
@@ -130,11 +131,6 @@ export function MissionCard({
                 ))}
               </div>
             )}
-            <div className="text-right">
-              <span className="font-stat text-xs text-[var(--color-comet)]">
-                ⚡ Deployment in progress...
-              </span>
-            </div>
           </div>
         </PixelPanel>
       </motion.div>
@@ -214,17 +210,57 @@ export function MissionCard({
               ))}
             </div>
           )}
-          <button
-            type="button"
-            className="w-full text-center font-stat text-xs pt-2 border-t border-white/5 transition-colors hover:text-[var(--color-star)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-star rounded cursor-pointer text-[var(--color-ink-muted)]"
+
+          {/* Action links: Live and Repo (min touch height 44px) */}
+          {(project.link || project.repo) && (
+            <div className="flex items-center gap-2 flex-wrap mb-2.5">
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => portfolioSounds.playStarSparkle()}
+                  className="flex-1 min-w-[70px]"
+                >
+                  <PixelButton
+                    variant="comet"
+                    className="w-full text-xs py-2 px-3 min-h-[44px] flex items-center justify-center font-bold"
+                  >
+                    🚀 Live
+                  </PixelButton>
+                </a>
+              )}
+              {project.repo && (
+                <a
+                  href={project.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => portfolioSounds.playBlip(700)}
+                  className="flex-1 min-w-[70px]"
+                >
+                  <PixelButton
+                    variant="ghost"
+                    className="w-full text-xs py-2 px-3 min-h-[44px] flex items-center justify-center font-bold"
+                  >
+                    ⚡ Repo
+                  </PixelButton>
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Case study ghost button */}
+          <PixelButton
+            variant="ghost"
+            className="w-full text-xs py-2.5 px-3 min-h-[44px] flex items-center justify-center text-[var(--color-star)] font-display hover:text-white"
             onClick={() => {
               portfolioSounds.playSelect()
               onExpand(project)
             }}
             aria-label={`Read full case study for ${project.title}`}
           >
-            [ Read full case study → ]
-          </button>
+            Case study →
+          </PixelButton>
         </div>
       </PixelPanel>
     </motion.div>

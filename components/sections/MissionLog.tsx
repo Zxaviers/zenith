@@ -2,6 +2,8 @@
 
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { PixelPanel } from '@/components/ui/PixelPanel'
+import { portfolioSounds } from '@/lib/audio/retroSounds'
 import { projects, type Project } from '@/lib/data/projects'
 import { MissionCard } from '@/components/sections/mission-log/MissionCard'
 import { DetailPanel } from '@/components/sections/mission-log/DetailPanel'
@@ -13,7 +15,9 @@ export function MissionLog() {
   const [expandedProject, setExpandedProject] = useState<Project | null>(null)
   const reducedMotion = useReducedMotion() ?? false
 
-  const totalCards = projects.length
+  const shippedProjects = projects.filter((p) => !p.comingSoon)
+  const buildingProjects = projects.filter((p) => p.comingSoon)
+  const totalCards = shippedProjects.length
 
   const scrollToIdx = useCallback((idx: number) => {
     const container = carouselRef.current
@@ -105,7 +109,7 @@ export function MissionLog() {
           role="region"
           aria-label="Mission Log carousel"
         >
-          {projects.map((project, idx) => (
+          {shippedProjects.map((project, idx) => (
             <MissionCard
               key={project.slug ?? project.title}
               project={project}
@@ -147,7 +151,7 @@ export function MissionLog() {
           No scroll-snap, no arrows, no dot indicator.
           ════════════════════════════════════════════════════════════════ */}
       <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6 px-6 mx-auto max-w-6xl">
-        {projects.map((project, idx) => (
+        {shippedProjects.map((project, idx) => (
           <MissionCard
             key={project.slug ?? project.title}
             project={project}
@@ -158,6 +162,80 @@ export function MissionLog() {
           />
         ))}
       </div>
+
+      {/* ════════════════════════════════════════════════════════════════
+          "Building now" block (under main list)
+          Compact strip for WIP projects
+          ════════════════════════════════════════════════════════════════ */}
+      {buildingProjects.length > 0 && (
+        <div className="mt-16 px-4 sm:px-6 mx-auto max-w-6xl">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="font-stat text-sm text-[var(--color-comet)] animate-pulse" aria-hidden="true">
+              ▶
+            </span>
+            <h3 className="font-display text-base md:text-lg text-[var(--color-star)]">
+              Building now
+            </h3>
+            <span className="font-stat text-xs text-[var(--color-ink-muted)]">
+              IN ACTIVE DEVELOPMENT
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {buildingProjects.map((project) => (
+              <motion.div
+                key={project.slug ?? project.title}
+                onClick={() => {
+                  portfolioSounds.playSelect()
+                  setExpandedProject(project)
+                }}
+                className="cursor-pointer group"
+                whileHover={reducedMotion ? {} : { y: -3 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 20 }}
+              >
+                <PixelPanel
+                  variant="nebula"
+                  className="p-5 h-full border border-dashed border-[var(--color-star)]/35 group-hover:border-[var(--color-star)]/70 transition-colors shadow-[4px_4px_0_0_#000] flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h4 className="font-display text-sm md:text-base text-[var(--color-star)] group-hover:text-white transition-colors">
+                        {project.title}
+                      </h4>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-xs text-[var(--color-comet)] bg-[var(--color-void-deep)] border border-[var(--color-comet)]/30 shrink-0">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-comet)] animate-ping" />
+                        <span>In progress</span>
+                      </span>
+                    </div>
+
+                    <p className="font-body text-xs sm:text-sm text-[var(--color-starchart)]/85 line-clamp-2 leading-relaxed mb-4">
+                      {project.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 flex-wrap">
+                    {project.techStack && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.techStack.slice(0, 4).map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded px-2 py-0.5 font-stat text-xs text-[var(--color-star)] bg-[var(--color-void-deep)] border border-[var(--color-star)]/20"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <span className="font-stat text-xs text-[var(--color-star)] group-hover:underline ml-auto flex items-center gap-1">
+                      Details →
+                    </span>
+                  </div>
+                </PixelPanel>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Detail panel overlay (both breakpoints) ── */}
       <AnimatePresence>
