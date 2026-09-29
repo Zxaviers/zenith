@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
 import { portfolioSounds } from '@/lib/audio/retroSounds'
 import type { Project } from '@/lib/data/projects'
 
@@ -215,36 +215,28 @@ export function MissionCard({
           {(project.link || project.repo) && (
             <div className="flex items-center gap-2 flex-wrap mb-2.5">
               {project.link && (
-                <a
+                <PixelLink
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => portfolioSounds.playStarSparkle()}
-                  className="flex-1 min-w-[70px]"
+                  variant="comet"
+                  className="flex-1 min-w-[70px] text-xs py-2 px-3 min-h-[44px] font-bold"
                 >
-                  <PixelButton
-                    variant="comet"
-                    className="w-full text-xs py-2 px-3 min-h-[44px] flex items-center justify-center font-bold"
-                  >
-                    🚀 Live
-                  </PixelButton>
-                </a>
+                  🚀 Live
+                </PixelLink>
               )}
               {project.repo && (
-                <a
+                <PixelLink
                   href={project.repo}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => portfolioSounds.playBlip(700)}
-                  className="flex-1 min-w-[70px]"
+                  variant="ghost"
+                  className="flex-1 min-w-[70px] text-xs py-2 px-3 min-h-[44px] font-bold"
                 >
-                  <PixelButton
-                    variant="ghost"
-                    className="w-full text-xs py-2 px-3 min-h-[44px] flex items-center justify-center font-bold"
-                  >
-                    ⚡ Repo
-                  </PixelButton>
-                </a>
+                  ⚡ Repo
+                </PixelLink>
               )}
             </div>
           )}

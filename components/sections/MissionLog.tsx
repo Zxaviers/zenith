@@ -183,13 +183,15 @@ export function MissionLog() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {buildingProjects.map((project) => (
-              <motion.div
+              <motion.button
+                type="button"
                 key={project.slug ?? project.title}
                 onClick={() => {
                   portfolioSounds.playSelect()
                   setExpandedProject(project)
                 }}
-                className="cursor-pointer group"
+                className="cursor-pointer group text-left w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-star)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-void-deep)] rounded"
+                aria-label={`View project details for ${project.title}`}
                 whileHover={reducedMotion ? {} : { y: -3 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 20 }}
               >
@@ -231,7 +233,7 @@ export function MissionLog() {
                     </span>
                   </div>
                 </PixelPanel>
-              </motion.div>
+              </motion.button>
             ))}
           </div>
         </div>

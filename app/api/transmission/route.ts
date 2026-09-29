@@ -2,7 +2,23 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
+    let body: any
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json(
+        { success: false, message: 'Invalid request body.' },
+        { status: 400 }
+      )
+    }
+
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid payload.' },
+        { status: 400 }
+      )
+    }
+
     const { name, email, message, botcheck } = body
 
     // 1. Bot honeypot protection
@@ -16,13 +32,13 @@ export async function POST(req: Request) {
     // 2. Input validation & length limits
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Name/callsign is required.' },
+        { success: false, message: 'Name is required.' },
         { status: 400 }
       )
     }
     if (name.trim().length > 100) {
       return NextResponse.json(
-        { success: false, message: 'Name/callsign must be 100 characters or fewer.' },
+        { success: false, message: 'Name must be 100 characters or fewer.' },
         { status: 400 }
       )
     }
@@ -43,13 +59,13 @@ export async function POST(req: Request) {
 
     if (!message || typeof message !== 'string' || message.trim().length < 5) {
       return NextResponse.json(
-        { success: false, message: 'Transmission message must be at least 5 characters.' },
+        { success: false, message: 'Message must be at least 5 characters.' },
         { status: 400 }
       )
     }
     if (message.trim().length > 5000) {
       return NextResponse.json(
-        { success: false, message: 'Transmission message must be 5000 characters or fewer.' },
+        { success: false, message: 'Message must be 5000 characters or fewer.' },
         { status: 400 }
       )
     }

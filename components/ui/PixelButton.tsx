@@ -53,3 +53,33 @@ export function PixelButton({
     </button>
   )
 }
+
+export interface PixelLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  variant?: 'comet' | 'ghost'
+  children: ReactNode
+}
+
+export function PixelLink({
+  variant = 'comet',
+  className,
+  style,
+  children,
+  ...props
+}: PixelLinkProps) {
+  const { style: variantStyle, text } = variantStyles[variant]
+
+  return (
+    <a
+      className={cn(
+        'pixel-frame pixel-frame-pressable inline-flex items-center justify-center px-5 py-2.5 font-display text-xs md:text-sm no-underline',
+        text,
+        className
+      )}
+      style={{ ...variantStyle, ...style }}
+      {...props}
+    >
+      <span className="relative z-10">{children}</span>
+    </a>
+  )
+}
+

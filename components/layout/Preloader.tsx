@@ -12,14 +12,7 @@ const BOOT_LOGS = [
 ]
 
 export function Preloader() {
-  const [loading, setLoading] = useState(() => {
-    if (typeof window === 'undefined') return true
-    try {
-      return !sessionStorage.getItem('zenith:boot-seen')
-    } catch {
-      return true
-    }
-  })
+  const [loading, setLoading] = useState(true)
   const [logIndex, setLogIndex] = useState(0)
   const shouldReduceMotion = useReducedMotion()
 
@@ -48,11 +41,11 @@ export function Preloader() {
         if (prev < BOOT_LOGS.length - 1) return prev + 1
         return prev
       })
-    }, 200)
+    }, 160)
 
     const timer = setTimeout(() => {
       dismiss()
-    }, 1100)
+    }, 900)
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -148,7 +141,7 @@ export function Preloader() {
               style={{ background: 'linear-gradient(to right, var(--color-teal-dim), var(--color-teal))' }}
               initial={{ width: '5%' }}
               animate={{ width: '100%' }}
-              transition={{ duration: 1.0, ease: 'easeInOut' }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
             />
           </div>
         </motion.div>

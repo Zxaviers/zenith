@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { StarNode } from '@/components/ui/StarNode'
 import { FormGroup } from '@/components/ui/FormGroup'
@@ -29,6 +29,19 @@ describe('Zenith UI Primitives', () => {
     const button = screen.getByRole('button', { name: /launch telemetry/i })
     expect(button).toBeDefined()
     expect(button.textContent).toContain('Launch Telemetry')
+  })
+
+  it('PixelLink renders anchor without nested button and maintains accessibility', () => {
+    render(
+      <PixelLink href="https://example.com" target="_blank" rel="noopener noreferrer" variant="comet">
+        🚀 Live Demo
+      </PixelLink>
+    )
+    const link = screen.getByRole('link', { name: /live demo/i })
+    expect(link).toBeDefined()
+    expect(link.getAttribute('href')).toBe('https://example.com')
+    // Crucial check: verify that no nested button exists inside the link
+    expect(link.querySelector('button')).toBeNull()
   })
 
   it('PixelPanel renders nested content properly', () => {

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
 import { portfolioSounds } from '@/lib/audio/retroSounds'
 import type { Project } from '@/lib/data/projects'
 
@@ -134,34 +134,40 @@ export function DetailPanel({ project, onClose }: DetailPanelProps) {
         <div className="sticky bottom-0 z-20 flex items-center justify-between gap-2.5 p-3 sm:p-4 bg-[var(--color-void-deep)]/95 border-t border-white/10 backdrop-blur-md flex-wrap">
           <div className="flex items-center gap-2 flex-wrap">
             {project.link && (
-              <a
+              <PixelLink
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => portfolioSounds.playStarSparkle()}
+                variant="comet"
+                className="text-xs sm:text-sm py-2.5 px-4 font-bold min-h-[44px]"
               >
-                <PixelButton variant="comet" className="text-xs sm:text-sm py-2.5 px-4 font-bold min-h-[44px]">
-                  🚀 Live Demo
-                </PixelButton>
-              </a>
+                🚀 Live Demo
+              </PixelLink>
             )}
             {project.repo && (
-              <a
+              <PixelLink
                 href={project.repo}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => portfolioSounds.playBlip(700)}
+                variant="ghost"
+                className="text-xs sm:text-sm py-2.5 px-4 min-h-[44px]"
               >
-                <PixelButton variant="ghost" className="text-xs sm:text-sm py-2.5 px-4 min-h-[44px]">
-                  ⚡ Repo
-                </PixelButton>
-              </a>
+                ⚡ Repo
+              </PixelLink>
             )}
             {project.slug && !project.repo && (
-              <Link href={`/projects/${project.slug}`} onClick={() => portfolioSounds.playBlip(700)}>
-                <PixelButton variant="ghost" className="text-xs sm:text-sm py-2.5 px-4 min-h-[44px]">
-                  📄 Details
-                </PixelButton>
+              <Link
+                href={`/projects/${project.slug}`}
+                onClick={() => portfolioSounds.playBlip(700)}
+                className="pixel-frame pixel-frame-pressable inline-flex items-center justify-center px-5 py-2.5 font-display text-xs sm:text-sm text-ink no-underline min-h-[44px]"
+                style={{
+                  '--pixel-fill-color': 'var(--color-void-surface)',
+                  '--pixel-border-color': 'rgba(245, 233, 214, 0.4)',
+                } as React.CSSProperties}
+              >
+                <span className="relative z-10">📄 Details</span>
               </Link>
             )}
           </div>

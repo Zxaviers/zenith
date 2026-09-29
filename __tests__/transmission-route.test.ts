@@ -176,4 +176,32 @@ describe('POST /api/transmission route handler', () => {
     const dataMsg = await resMsg.json()
     expect(dataMsg.message).toContain('5000 characters')
   })
+
+  it('rejects null, array, or non-object payloads with 400', async () => {
+    // null body in JSON
+    const nullReq = createRequest(null)
+    const resNull = await POST(nullReq)
+    expect(resNull.status).toBe(400)
+    const dataNull = await resNull.json()
+    expect(dataNull.success).toBe(false)
+    expect(dataNull.message).toBe('Invalid payload.')
+
+    // Array body in JSON
+    const arrayReq = createRequest(['invalid', 'array'])
+    const resArray = await POST(arrayReq)
+    expect(resArray.status).toBe(400)
+    const dataArray = await resArray.json()
+    expect(dataArray.message).toBe('Invalid payload.')
+
+    // Empty/missing name
+    const missingNameReq = createRequest({
+      email: 'explorer@zenith.space',
+      message: 'Hello, this is a test transmission.',
+    })
+    const resMissingName = await POST(missingNameReq)
+    expect(resMissingName.status).toBe(400)
+    const dataMissingName = await resMissingName.json()
+    expect(dataMissingName.message).toBe('Name is required.')
+  })
 })
+
