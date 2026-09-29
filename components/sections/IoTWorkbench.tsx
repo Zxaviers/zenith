@@ -45,16 +45,20 @@ const MODULES: Record<SensorModule, SensorConfig> = {
     codeSnippet: `// ESP32 System Telemetry Node
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <ArduinoJson.h>
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 
 void publishTelemetry() {
   uint32_t freeHeap = ESP.getFreeHeap() / 1024;
   int8_t rssi = WiFi.RSSI();
-  
+
   StaticJsonDocument<128> doc;
   doc["cpu_freq_mhz"] = getCpuFrequencyMhz();
   doc["free_heap_kb"] = freeHeap;
   doc["wifi_rssi_dbm"] = rssi;
-  
+
   char buffer[128];
   serializeJson(doc, buffer);
   mqttClient.publish("zenith/esp32/status", buffer);
@@ -80,7 +84,12 @@ void publishTelemetry() {
       { key: 'humidity', label: 'Relative Humidity', min: 20, max: 95, step: 1, unit: '%' },
     ],
     codeSnippet: `// DHT22 High-Precision Environmental Readout
+#include <WiFi.h>
+#include <PubSubClient.h>
 #include "DHTesp.h"
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 DHTesp dht;
 
 void readClimateSensor() {
@@ -177,13 +186,18 @@ uint16_t readLux() {
       { key: 'angle', label: 'Actuator Target Angle', min: 0, max: 180, step: 5, unit: '°' },
     ],
     codeSnippet: `// ESP32 LEDC Hardware PWM Servo Control
+#include <WiFi.h>
+#include <PubSubClient.h>
 #include <ESP32Servo.h>
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 Servo microServo;
 
 void setServoAngle(int angle) {
   microServo.attach(13, 500, 2400); // GPIO 13, 500-2400us
   microServo.write(constrain(angle, 0, 180));
-  
+
   char logMsg[64];
   snprintf(logMsg, sizeof(logMsg), "SERVO_POS:%d_DEG", angle);
   mqttClient.publish("zenith/actuator/servo", logMsg);
