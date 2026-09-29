@@ -111,6 +111,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('zenith:boot-seen'))document.documentElement.setAttribute('data-boot-seen','true')}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="antialiased overflow-x-hidden min-h-screen bg-[var(--color-void)] text-[var(--color-starchart)]">
         {children}
         <script
