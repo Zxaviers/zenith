@@ -217,7 +217,7 @@ export function Constellation() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
               {/* Star map canvas */}
               <div className="lg:col-span-2">
-                <div className="flex justify-between items-center mb-3 px-2 text-[11px] font-stat text-[var(--color-ink-muted)]">
+                <div className="flex justify-between items-center mb-3 px-2 text-xs font-stat text-[var(--color-ink-muted)]">
                   <span className="font-bold text-[var(--color-star)] tracking-wider">
                     ✦ {currentSystem.title.toUpperCase()}
                   </span>
@@ -350,7 +350,7 @@ export function Constellation() {
                           >
                             {/* Skill name pill */}
                             <span
-                              className="font-display text-[9px] md:text-[10px] px-1.5 py-0.5 rounded shadow-[2px_2px_0_0_#000] transition-colors"
+                              className="font-display text-xs px-1.5 py-0.5 rounded shadow-[2px_2px_0_0_#000] transition-colors"
                               style={
                                 isSelected || isHovered
                                   ? {
@@ -372,7 +372,7 @@ export function Constellation() {
 
                             {/* Level badge */}
                             <span
-                              className="font-stat text-[8px] md:text-[9px] mt-0.5 px-1.5 py-0.2 rounded uppercase tracking-wider font-bold"
+                              className="font-stat text-xs mt-0.5 px-1.5 py-0.2 rounded uppercase tracking-wider font-bold"
                               style={{
                                 background: badge.bg,
                                 color: badge.text,
@@ -486,7 +486,7 @@ export function Constellation() {
                         <h4 className="font-display text-xs text-[var(--color-starchart)]">{skill.name}</h4>
                       </div>
                       <span
-                        className="font-stat text-[10px] px-2 py-0.5 rounded uppercase font-bold"
+                        className="font-stat text-xs px-2 py-0.5 rounded uppercase font-bold"
                         style={{
                           background: LEVEL_BADGE[skill.level].bg,
                           color: LEVEL_BADGE[skill.level].text,
@@ -502,7 +502,7 @@ export function Constellation() {
                     </p>
 
                     <div className="space-y-1">
-                      <div className="flex justify-between text-[10px] font-stat text-[var(--color-ink-muted)]">
+                      <div className="flex justify-between text-xs font-stat text-[var(--color-ink-muted)]">
                         <span>MASTERY</span>
                         <span className="text-[var(--color-star)] font-bold">{skill.levelScore}%</span>
                       </div>

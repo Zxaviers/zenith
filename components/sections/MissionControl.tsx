@@ -263,7 +263,7 @@ export function MissionControl() {
                   <motion.button
                     key={inq.title}
                     onClick={() => handleSelectTopic(idx)}
-                    className="px-3 py-2.5 text-left font-display text-[11px] rounded cursor-pointer transition-all"
+                    className="px-3 py-2.5 text-left font-display text-xs rounded cursor-pointer transition-all break-words leading-relaxed"
                     style={
                       isActive
                         ? {

@@ -88,11 +88,11 @@ export function Transmission() {
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-[11px] text-[var(--color-star)] bg-[var(--color-void-deep)] border border-[var(--color-star)]/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-xs text-[var(--color-star)] bg-[var(--color-void-deep)] border border-[var(--color-star)]/30">
                   <Gamepad2 className="h-3.5 w-3.5" />
                   <span>ARCADE SECTOR</span>
                 </span>
-                <span className="font-stat text-[10px] text-[var(--color-aurora)] animate-pulse">● LIVE PLAY</span>
+                <span className="font-stat text-xs text-[var(--color-aurora)] animate-pulse">● LIVE PLAY</span>
               </div>
 
               <h3 className="font-display text-sm md:text-base text-[var(--color-star)] mb-1.5 flex items-center gap-1.5">
@@ -105,8 +105,8 @@ export function Transmission() {
             </div>
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-              <span className="font-stat text-[11px] text-[var(--color-starchart)]">Zero-G Newtonian Physics</span>
-              <span className="px-3.5 py-1.5 rounded bg-[var(--color-star)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
+              <span className="font-stat text-xs text-[var(--color-starchart)]">Zero-G Newtonian Physics</span>
+              <span className="px-3.5 py-1.5 rounded bg-[var(--color-star)] text-[var(--color-void)] font-display text-xs font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
                 Play Arcade →
               </span>
             </div>
@@ -125,11 +125,11 @@ export function Transmission() {
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-[11px] text-[var(--color-comet)] bg-[var(--color-void-deep)] border border-[var(--color-comet)]/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-stat text-xs text-[var(--color-comet)] bg-[var(--color-void-deep)] border border-[var(--color-comet)]/30">
                   <BookOpen className="h-3.5 w-3.5" />
                   <span>RESEARCH LOGS</span>
                 </span>
-                <span className="font-stat text-[10px] text-[var(--color-star)]">3 TECHNICAL ARTICLES</span>
+                <span className="font-stat text-xs text-[var(--color-star)]">3 TECHNICAL ARTICLES</span>
               </div>
 
               <h3 className="font-display text-sm md:text-base text-[var(--color-comet)] mb-1.5 flex items-center gap-1.5">
@@ -142,8 +142,8 @@ export function Transmission() {
             </div>
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-              <span className="font-stat text-[11px] text-[var(--color-starchart)]">IoT & Web Engineering</span>
-              <span className="px-3.5 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-[11px] font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
+              <span className="font-stat text-xs text-[var(--color-starchart)]">IoT & Web Engineering</span>
+              <span className="px-3.5 py-1.5 rounded bg-[var(--color-comet)] text-[var(--color-void)] font-display text-xs font-bold shadow-[2px_2px_0_0_#000] group-hover:scale-105 transition-transform">
                 Open Devlog →
               </span>
             </div>
@@ -267,7 +267,7 @@ export function Transmission() {
             </PixelButton>
           </a>
 
-          <div className="flex justify-center gap-4 pt-2">
+          <div className="flex flex-wrap justify-center gap-4 pt-2">
             {[
               { href: siteConfig.socials.github,    src: '/sprites/github.png',    label: 'GitHub' },
               { href: siteConfig.socials.linkedin,  src: '/sprites/linkedin.png',  label: 'LinkedIn' },
@@ -293,7 +293,7 @@ export function Transmission() {
                 >
                   <Image src={src} alt="" width={28} height={28} className="h-7 w-7 pixel-asset" />
                 </div>
-                <span className="font-stat text-[9px] text-[var(--color-ink-muted)]">{label}</span>
+                <span className="font-stat text-xs text-[var(--color-ink-muted)]">{label}</span>
               </a>
             ))}
           </div>

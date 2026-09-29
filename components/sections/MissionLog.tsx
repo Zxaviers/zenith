@@ -101,7 +101,7 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
                 style={{ background: 'linear-gradient(180deg, transparent 40%, var(--color-void-surface) 100%)' }}
               />
               <div
-                className="absolute top-3 left-3 flex items-center gap-1.5 rounded px-2.5 py-1 font-stat text-[11px]"
+                className="absolute top-3 left-3 flex items-center gap-1.5 rounded px-2.5 py-1 font-stat text-xs"
                 style={{ background: 'rgba(13,8,22,0.92)', color: 'var(--color-star)', border: '1px solid rgba(255, 200, 87, 0.4)' }}
               >
                 <motion.span
@@ -125,21 +125,21 @@ function DetailPanel({ project, onClose }: { project: Project; onClose: () => vo
 
           {project.problem && (
             <div className="p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] sm:text-xs mb-1 text-[var(--color-ink-muted)]">◉ PROBLEM</p>
+              <p className="font-stat text-xs mb-1 text-[var(--color-ink-muted)]">◉ PROBLEM</p>
               <p className="font-body text-xs sm:text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.problem}</p>
             </div>
           )}
 
           {project.solution && (
             <div className="p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] sm:text-xs mb-1 text-[var(--color-star)]">◉ SOLUTION</p>
+              <p className="font-stat text-xs mb-1 text-[var(--color-star)]">◉ SOLUTION</p>
               <p className="font-body text-xs sm:text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.solution}</p>
             </div>
           )}
 
           {project.learnings && (
             <div className="p-3 rounded-lg" style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="font-stat text-[10px] sm:text-xs mb-1 text-[var(--color-comet)]">◉ LEARNINGS</p>
+              <p className="font-stat text-xs mb-1 text-[var(--color-comet)]">◉ LEARNINGS</p>
               <p className="font-body text-xs sm:text-sm leading-relaxed text-[var(--color-starchart)] opacity-85">{project.learnings}</p>
             </div>
           )}
@@ -266,7 +266,7 @@ function MissionCard({
               >
                 ⚙️
               </motion.span>
-              <span className="absolute bottom-2 right-2 font-stat text-[10px] text-[var(--color-comet)] px-2 py-0.5 rounded bg-black/60 border border-[var(--color-comet)]/30">
+              <span className="absolute bottom-2 right-2 font-stat text-xs text-[var(--color-comet)] px-2 py-0.5 rounded bg-black/60 border border-[var(--color-comet)]/30">
                 WIP
               </span>
             </div>
@@ -276,7 +276,7 @@ function MissionCard({
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-comet)] animate-ping" />
                 <span>On Progress</span>
               </span>
-              <span className="font-stat text-[10px] text-[var(--color-ink-muted)]">ORBITAL LAB</span>
+              <span className="font-stat text-xs text-[var(--color-ink-muted)]">ORBITAL LAB</span>
             </div>
 
             <h3 className="mb-2 font-display text-sm md:text-base text-[var(--color-star)]">
@@ -293,7 +293,7 @@ function MissionCard({
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded px-2 py-0.5 font-stat text-[11px] text-[var(--color-star)]"
+                    className="rounded px-2 py-0.5 font-stat text-xs text-[var(--color-star)]"
                     style={{ background: 'var(--color-void-deep)', border: '1px solid rgba(255, 200, 87, 0.25)' }}
                   >
                     {tech}
@@ -349,7 +349,7 @@ function MissionCard({
               style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(27, 18, 53, 0.6) 100%)' }}
             />
             <div
-              className="absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-[10px]"
+              className="absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 font-stat text-xs"
               style={{ background: 'rgba(27, 18, 53, 0.9)', color: 'var(--color-star)', border: '1px solid rgba(255, 200, 87, 0.35)' }}
             >
               <motion.span

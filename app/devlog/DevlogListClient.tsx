@@ -83,7 +83,7 @@ export function DevlogListClient({ posts }: { posts: DevlogPost[] }) {
                     </div>
 
                     <span
-                      className="px-2.5 py-0.5 rounded-full font-stat text-[11px] font-bold border"
+                      className="px-2.5 py-0.5 rounded-full font-stat text-xs font-bold border"
                       style={{
                         background: 'rgba(255, 139, 76, 0.15)',
                         borderColor: 'rgba(255, 139, 76, 0.4)',
@@ -107,7 +107,7 @@ export function DevlogListClient({ posts }: { posts: DevlogPost[] }) {
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded px-2 py-0.5 font-stat text-[10px]"
+                          className="rounded px-2 py-0.5 font-stat text-xs"
                           style={{
                             background: 'var(--color-void-deep)',
                             color: 'var(--color-starchart)',

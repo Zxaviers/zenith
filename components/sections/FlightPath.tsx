@@ -208,7 +208,7 @@ export function FlightPath() {
                     <ul className="space-y-2 font-body text-sm md:text-base leading-relaxed text-[var(--color-starchart)] opacity-90">
                       {mile.description.map((item, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="font-display text-[10px] mt-1 text-[var(--color-star)]">▸</span>
+                          <span className="font-display text-xs mt-1 text-[var(--color-star)]">▸</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -278,8 +278,8 @@ export function FlightPath() {
                     onClick={() => portfolioSounds.playStarSparkle()}
                   >
                     <span className="text-2xl" aria-hidden="true">{b.icon}</span>
-                    <span className="font-display text-[8px] leading-tight text-[var(--color-star)]">{b.title}</span>
-                    <span className="font-stat text-[9px] text-[var(--color-ink-muted)]">{b.detail}</span>
+                    <span className="font-display text-xs leading-tight break-words text-[var(--color-star)]">{b.title}</span>
+                    <span className="font-stat text-xs break-words text-[var(--color-ink-muted)]">{b.detail}</span>
                   </motion.div>
                 ))}
               </div>

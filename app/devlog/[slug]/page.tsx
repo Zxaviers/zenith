@@ -130,12 +130,12 @@ export default async function DevlogPostPage({
           {/* Code Snippet Block (if available) */}
           {post.codeSnippet && (
             <div className="my-8 rounded-lg bg-[var(--color-void-deep)] p-4 border border-white/10 font-stat text-xs shadow-inner">
-              <div className="flex items-center justify-between mb-2.5 border-b border-white/10 pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5 border-b border-white/10 pb-2">
                 <div className="flex items-center gap-2 text-[var(--color-star)] font-bold">
                   <Terminal className="h-4 w-4" />
                   <span>TECHNICAL CODE ({post.codeSnippet.language.toUpperCase()})</span>
                 </div>
-                <span className="text-[10px] text-[var(--color-aurora)]">PRODUCTION READY</span>
+                <span className="text-xs text-[var(--color-aurora)]">PRODUCTION READY</span>
               </div>
               <pre className="p-4 rounded bg-[#0b0612] border border-black text-[var(--color-starchart)] overflow-x-auto text-xs leading-relaxed font-mono">
                 <code>{post.codeSnippet.code}</code>

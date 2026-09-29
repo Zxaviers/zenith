@@ -413,7 +413,7 @@ export function IoTWorkbench() {
                     <Activity className="h-3.5 w-3.5" />
                     HARDWARE SENSOR INJECTION
                   </span>
-                  <span className="font-stat text-[11px] text-[var(--color-ink-muted)]">
+                  <span className="font-stat text-xs text-[var(--color-ink-muted)]">
                     Adjust dials to mutate telemetry
                   </span>
                 </div>
@@ -497,14 +497,14 @@ export function IoTWorkbench() {
                     <Terminal className="h-3.5 w-3.5" />
                     <span>LIVE MQTT PACKET STREAM</span>
                   </div>
-                  <span className="text-[10px] text-[var(--color-aurora)]">QoS 1 · BROKER READY</span>
+                  <span className="text-xs text-[var(--color-aurora)]">QoS 1 · BROKER READY</span>
                 </div>
 
-                <pre className="p-3 rounded bg-[#0f0917] border border-black text-[var(--color-starchart)] overflow-x-auto text-[11px] leading-relaxed font-mono">
+                <pre className="p-3 rounded bg-[#0f0917] border border-black text-[var(--color-starchart)] overflow-x-auto text-xs leading-relaxed font-mono">
                   <code>{payloadJson}</code>
                 </pre>
 
-                <div className="mt-2.5 flex items-center justify-between text-[10px] text-[var(--color-ink-muted)]">
+                <div className="mt-2.5 flex items-center justify-between text-xs text-[var(--color-ink-muted)]">
                   <span>LAST TRANSMIT: {lastTxTime}</span>
                   <span className="text-[var(--color-star)]">PROTO: MQTT/TCP 1883</span>
                 </div>
@@ -520,14 +520,14 @@ export function IoTWorkbench() {
                   <button
                     onClick={handleCopyCode}
                     type="button"
-                    className="flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--color-nebula)] border border-white/15 text-[var(--color-starchart)] hover:text-[var(--color-star)] transition-colors cursor-pointer text-[10px]"
+                    className="flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--color-nebula)] border border-white/15 text-[var(--color-starchart)] hover:text-[var(--color-star)] transition-colors cursor-pointer text-xs"
                   >
                     {copied ? <Check className="h-3 w-3 text-[var(--color-aurora)]" /> : <Copy className="h-3 w-3" />}
                     <span>{copied ? 'Copied!' : 'Copy Code'}</span>
                   </button>
                 </div>
 
-                <pre className="p-3 rounded bg-[#0f0917] border border-black text-[var(--color-starchart)] overflow-x-auto text-[10px] leading-relaxed font-mono max-h-[160px] overflow-y-auto">
+                <pre className="p-3 rounded bg-[#0f0917] border border-black text-[var(--color-starchart)] overflow-x-auto text-xs leading-relaxed font-mono max-h-[160px] overflow-y-auto">
                   <code>{activeModule.codeSnippet}</code>
                 </pre>
               </div>
