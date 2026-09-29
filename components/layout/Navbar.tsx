@@ -11,30 +11,31 @@ import { portfolioSounds } from '@/lib/audio/retroSounds'
 
 /**
  * Sequential Navigation Items matching the exact top-to-bottom page flow:
- * 1. Home
- * 2. Mission Control (About)
- * 3. Constellation (Skills)
- * 4. Flight Path (Experience)
- * 5. Mission Log (Projects)
- * 6. Hardware Lab (IoT Workbench)
- * 7. Arcade (Void Miner Game)
- * 8. Devlog (Engineering Research)
- * 9. Transmission (Contact Form)
+ * (No separate Home item — the logo already links home with aria-label "Zenith — home".
+ *  The scroll-spy observer queries `section[id]` in the DOM, not this array,
+ *  so removing Home does not break active-state tracking.)
+ * 1. About (Mission Control)
+ * 2. Skills (Constellation)
+ * 3. Experience (Flight Path)
+ * 4. Projects (Mission Log)
+ * 5. IoT Lab (Hardware Lab)
+ * 6. Arcade (Void Miner)
+ * 7. Devlog (Engineering Logs)
+ * 8. Contact (Transmission)
  */
 export type NavItem =
   | { type: 'section'; label: string; id: string; hint: string }
   | { type: 'route'; label: string; href: string; hint: string; icon?: string; badge?: string }
 
 const NAV_ITEMS: NavItem[] = [
-  { type: 'section', label: 'Home',            id: 'home',                hint: 'Home' },
-  { type: 'section', label: 'Mission Control', id: 'mission-control',     hint: 'About' },
-  { type: 'section', label: 'Constellation',   id: 'constellation',       hint: 'Skills' },
-  { type: 'section', label: 'Flight Path',     id: 'flight-path',         hint: 'Experience' },
-  { type: 'section', label: 'Mission Log',     id: 'mission-log',         hint: 'Projects' },
-  { type: 'section', label: 'Hardware Lab',    id: 'iot-workbench',       hint: 'IoT Lab' },
-  { type: 'route',   label: 'Arcade',          href: '/arcade',           hint: 'Void Miner Game', icon: '🕹️' },
-  { type: 'route',   label: 'Devlog',          href: '/devlog',           hint: 'Engineering Logs', icon: '📖' },
-  { type: 'section', label: 'Transmission',    id: 'send-a-transmission', hint: 'Contact' },
+  { type: 'section', label: 'About',      id: 'mission-control',     hint: 'Mission Control' },
+  { type: 'section', label: 'Skills',     id: 'constellation',       hint: 'Constellation' },
+  { type: 'section', label: 'Experience', id: 'flight-path',         hint: 'Flight Path' },
+  { type: 'section', label: 'Projects',   id: 'mission-log',         hint: 'Mission Log' },
+  { type: 'section', label: 'IoT Lab',    id: 'iot-workbench',       hint: 'Hardware Lab' },
+  { type: 'route',   label: 'Arcade',     href: '/arcade',           hint: 'Void Miner', icon: '🕹️' },
+  { type: 'route',   label: 'Devlog',     href: '/devlog',           hint: 'Engineering Logs', icon: '📖' },
+  { type: 'section', label: 'Contact',    id: 'send-a-transmission', hint: 'Transmission' },
 ]
 
 const focusRing =
