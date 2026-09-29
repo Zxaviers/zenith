@@ -238,7 +238,6 @@ export function FlightPath() {
                   { label: 'Level',        value: 'Lv. 21 · 94% XP',              highlight: true },
                   { label: 'Focus',        value: 'IoT and Web Integration',       highlight: false },
                   { label: 'Based in',     value: siteConfig.location,           highlight: false },
-                  { label: 'Status',       value: 'Online 🚀',                   highlight: true },
                 ].map(({ label, value, highlight }) => (
                   <li key={label} className="flex justify-between border-b border-white/5 pb-1.5 last:border-0">
                     <span style={{ color: 'var(--color-ink-muted)' }}>{label}:</span>
