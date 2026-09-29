@@ -435,8 +435,10 @@ export function IoTWorkbench() {
                           max={ctrl.max}
                           step={ctrl.step}
                           value={val}
+                          aria-label={ctrl.label}
+                          aria-valuetext={`${val} ${ctrl.unit}`}
                           onChange={(e) => handleSliderChange(ctrl.key, parseFloat(e.target.value))}
-                          className="w-full h-2 rounded-lg bg-[var(--color-nebula)] appearance-none cursor-pointer accent-[var(--color-star)] focus:outline-none"
+                          className="w-full h-2 rounded-lg bg-[var(--color-nebula)] appearance-none cursor-pointer accent-[var(--color-star)] focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2"
                         />
                       </div>
                     )

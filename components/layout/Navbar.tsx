@@ -196,7 +196,7 @@ export function Navbar() {
                           : 'text-starchart/80 hover:text-star hover:bg-white/5 border border-transparent'
                       )}
                     >
-                      {item.icon && <span className="text-xs">{item.icon}</span>}
+                      {item.icon && <span className="text-xs" aria-hidden="true">{item.icon}</span>}
                       <span>{item.label}</span>
                     </Link>
                     {isRouteActive && (
@@ -277,7 +277,7 @@ export function Navbar() {
                         focusRing
                       )}
                     >
-                      <span className="text-star mr-1.5">✦</span> {item.label}
+                      <span className="text-star mr-1.5" aria-hidden="true">✦</span> {item.label}
                       {item.hint !== item.label && (
                         <span className="ml-1.5 font-cozy text-xs lowercase text-starchart/60">· {item.hint}</span>
                       )}
@@ -308,7 +308,7 @@ export function Navbar() {
                     )}
                   >
                     <span className="flex items-center gap-1.5">
-                      <span>{item.icon || '✦'}</span>
+                      <span aria-hidden="true">{item.icon || '✦'}</span>
                       <span>{item.label}</span>
                     </span>
                     <span className="font-cozy text-xs text-starchart/60">{item.hint}</span>

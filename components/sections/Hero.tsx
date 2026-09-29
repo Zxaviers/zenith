@@ -64,7 +64,7 @@ export function Hero() {
                 onClick={() => portfolioSounds.playStarSparkle()}
                 className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-stat text-xs text-[var(--color-star)] bg-[var(--color-nebula)]/60 border border-[var(--color-star)]/40 shadow-[0_0_12px_rgba(255,200,87,0.25)] hover:scale-105 transition-transform"
               >
-                <span>🕹️</span>
+                <span aria-hidden="true">🕹️</span>
                 <span>ARCADE READY: Play Void Miner →</span>
               </Link>
             </motion.div>

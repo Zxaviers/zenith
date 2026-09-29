@@ -414,13 +414,13 @@ function StarMapIndicator({
 }) {
   return (
     // md:hidden — only shown on mobile where carousel is active
-    <div className="md:hidden flex items-center justify-center gap-2 mt-6" role="tablist" aria-label="Mission selector position">
+    <div className="md:hidden flex items-center justify-center gap-2 mt-6">
       {Array.from({ length: count }).map((_, i) => (
         <button
           key={i}
-          role="tab"
-          aria-selected={i === active}
-          aria-label={`Go to mission ${i + 1}`}
+          type="button"
+          aria-label={`Go to project ${i + 1}`}
+          aria-current={i === active ? true : undefined}
           onClick={() => onDotClick(i)}
           className="relative flex items-center justify-center transition-all focus-visible:outline-none"
           style={{ width: 28, height: 12 }}

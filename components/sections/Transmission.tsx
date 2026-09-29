@@ -174,6 +174,7 @@ export function Transmission() {
 
             {status === 'error' && (
               <motion.div 
+                role="alert"
                 className="p-3.5 bg-red-900/40 border border-red-500/50 rounded-lg font-stat text-xs text-red-200 flex items-start gap-2"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -188,6 +189,7 @@ export function Transmission() {
 
             {status === 'success' && (
               <motion.div 
+                role="status"
                 className="p-3.5 bg-green-900/40 border border-green-500/50 rounded-lg font-stat text-xs text-green-200 flex items-start gap-2"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -240,9 +242,9 @@ export function Transmission() {
                 disabled={status === 'submitting'}
               >
                 {status === 'submitting' ? (
-                  <span className="animate-pulse">⚡ Encoding & Dispatching Transmission...</span>
+                  <span className="animate-pulse"><span aria-hidden="true">⚡</span> Encoding & Dispatching Transmission...</span>
                 ) : (
-                  '📡 Send Transmission'
+                  <><span aria-hidden="true">📡</span> Send Transmission</>
                 )}
               </PixelButton>
               
@@ -263,7 +265,7 @@ export function Transmission() {
         <div className="mt-10 flex flex-col items-center gap-6">
           <a href="/CV-Rizky-Mardhani.pdf" download="CV-Rizky-Mardhani.pdf">
             <PixelButton variant="ghost" className="px-6 py-3 text-xs font-display">
-              📄 Download CV
+              <span aria-hidden="true">📄</span> Download CV
             </PixelButton>
           </a>
 

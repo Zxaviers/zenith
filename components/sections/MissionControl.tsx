@@ -198,6 +198,7 @@ export function MissionControl() {
             {/* Step dots */}
             <div
               className="absolute top-2.5 right-3 flex gap-1"
+              role="img"
               aria-label={`Message ${stepIndex + 1} of ${currentTopic.dialogue.length}`}
             >
               {currentTopic.dialogue.map((_, i) => (
