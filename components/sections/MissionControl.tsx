@@ -23,7 +23,7 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
       },
       {
         speaker: 'Zenith',
-        text: 'Zenith is the central hub: full-stack applications, custom firmware, and tactile hardware engineering. One platform, two worlds.',
+        text: 'Zenith here — full-stack applications, custom firmware, and tactile hardware engineering. One platform, two worlds.',
       },
       {
         speaker: 'Rizky',
@@ -36,7 +36,7 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
     dialogue: [
       {
         speaker: 'Zenith',
-        text: 'Rizky is studying Computer Engineering at Brawijaya University — mastering microcontrollers (ESP32, Arduino) alongside modern web tech (React, Next.js, TypeScript).',
+        text: 'Zenith here — Rizky is studying Computer Engineering at Brawijaya University, mastering microcontrollers (ESP32, Arduino) alongside modern web tech (React, Next.js, TypeScript).',
       },
       {
         speaker: 'Rizky',
@@ -53,7 +53,7 @@ const INQUIRIES: { title: string; dialogue: Dialogue[] }[] = [
       },
       {
         speaker: 'Zenith',
-        text: 'If you want the specifics — explore the Constellation skill tree or inspect the Mission Log below.',
+        text: 'Telemetry ready — if you want the specifics, explore the Constellation skill tree or inspect the Mission Log below.',
       },
     ],
   },
@@ -128,6 +128,25 @@ export function MissionControl() {
           </p>
         </motion.div>
 
+        {/* Static Overview Card — Accessible, crawlable, readable without JS */}
+        <PixelPanel variant="nebula" className="mb-6 p-5 md:p-7 shadow-[4px_4px_0_0_#000] border border-[var(--color-star)]/20">
+          <div className="flex items-center gap-2 mb-3 font-stat text-xs text-[var(--color-star)]">
+            <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-aurora)]" aria-hidden="true" />
+            <span className="tracking-wide">OPERATOR DOSSIER</span>
+          </div>
+          <p className="font-body text-base md:text-lg text-[var(--color-starchart)] leading-relaxed">
+            I&apos;m Rizky Mardhani, a Computer Engineering student at Brawijaya University (FILKOM). I build web apps with React, Next.js and TypeScript, and embedded IoT hardware with ESP32, MQTT and custom PCBs. Right now I&apos;m building ZenSpace and JKT48 Vault and working on custom PCB designs.
+          </p>
+        </PixelPanel>
+
+        {/* Short label above the chat */}
+        <div className="mb-3 px-1">
+          <p className="font-headline text-xs md:text-sm text-[var(--color-ink-muted)] flex items-center gap-2">
+            <span aria-hidden="true" className="text-[var(--color-star)]">💬</span>
+            <span>Prefer a conversation? Pick a topic:</span>
+          </p>
+        </div>
+
         <PixelPanel variant="nebula" className="relative shadow-[6px_6px_0_0_#000] p-4 md:p-6">
           {/* ── Speaker header ── */}
           <div className="mb-6 flex flex-wrap items-center justify-between border-b border-white/10 pb-4 gap-3">
@@ -159,7 +178,7 @@ export function MissionControl() {
                   {currentDialogue.speaker}
                 </h3>
                 <p className="font-body text-xs mt-0.5 text-[var(--color-ink-muted)]">
-                  {isRizky ? 'Rizky Mardhani · Engineer' : 'Zenith · System AI'}
+                  {isRizky ? 'Rizky Mardhani · Computer Engineering student' : 'Zenith · System AI'}
                 </p>
               </div>
             </div>
@@ -195,6 +214,11 @@ export function MissionControl() {
               boxShadow: 'inset 3px 3px 0 0 rgba(0,0,0,0.8)',
             }}
           >
+            {/* Screen reader live region: full static text of current message */}
+            <div className="sr-only" aria-live="polite" aria-atomic="true">
+              {currentDialogue.speaker}: {currentDialogue.text}
+            </div>
+
             {/* Step dots */}
             <div
               className="absolute top-2.5 right-3 flex gap-1"
@@ -218,6 +242,7 @@ export function MissionControl() {
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
                 className="pt-2 font-body text-base md:text-xl leading-relaxed text-[var(--color-starchart)]"
+                aria-hidden="true"
               >
                 {/* Phase 1: waiting → show typing indicator */}
                 {isWaiting ? (
