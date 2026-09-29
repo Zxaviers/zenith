@@ -79,12 +79,12 @@ export function Preloader() {
             </motion.div>
           </div>
 
-          <h1
+          <p
             className="font-display text-2xl tracking-wider md:text-3xl"
             style={{ color: 'var(--color-ink)' }}
           >
             ZENITH
-          </h1>
+          </p>
 
           {/* Boot stream — teal color */}
           <div className="mt-4 h-6 font-stat text-sm md:text-base" style={{ color: 'var(--color-teal)' }}>

@@ -483,7 +483,7 @@ export function Constellation() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-xl">{skill.icon}</span>
-                        <h4 className="font-display text-xs text-[var(--color-starchart)]">{skill.name}</h4>
+                        <h3 className="font-display text-xs text-[var(--color-starchart)]">{skill.name}</h3>
                       </div>
                       <span
                         className="font-stat text-xs px-2 py-0.5 rounded uppercase font-bold"
