@@ -19,9 +19,8 @@ import { portfolioSounds } from '@/lib/audio/retroSounds'
  * 3. Experience (Flight Path)
  * 4. Projects (Mission Log)
  * 5. IoT Lab (Hardware Lab)
- * 6. Arcade (Void Miner)
- * 7. Devlog (Engineering Logs)
- * 8. Contact (Transmission)
+ * 6. Devlog (Engineering Logs)
+ * 7. Contact (Transmission)
  */
 export type NavItem =
   | { type: 'section'; label: string; id: string; hint: string }
@@ -33,7 +32,6 @@ const NAV_ITEMS: NavItem[] = [
   { type: 'section', label: 'Experience', id: 'flight-path',         hint: 'Flight Path' },
   { type: 'section', label: 'Projects',   id: 'mission-log',         hint: 'Mission Log' },
   { type: 'section', label: 'IoT Lab',    id: 'iot-workbench',       hint: 'Hardware Lab' },
-  { type: 'route',   label: 'Arcade',     href: '/arcade',           hint: 'Void Miner', icon: '🕹️' },
   { type: 'route',   label: 'Devlog',     href: '/devlog',           hint: 'Engineering Logs', icon: '📖' },
   { type: 'section', label: 'Contact',    id: 'send-a-transmission', hint: 'Transmission' },
 ]
@@ -176,23 +174,20 @@ export function Navbar() {
                   )
                 }
 
-                // Route links (Arcade & Devlog) in precise sequence
+                // Route links (Devlog)
                 const isRouteActive = pathname?.startsWith(item.href)
-                const isArcade = item.href === '/arcade'
 
                 return (
                   <li key={item.href} className="relative">
                     <Link
                       href={item.href}
-                      onClick={() => (isArcade ? portfolioSounds.playStarSparkle() : portfolioSounds.playBlip(700))}
+                      onClick={() => portfolioSounds.playBlip(700)}
                       title={item.hint}
                       className={cn(
                         'relative z-10 inline-flex items-center gap-1 px-2.5 py-1.5 font-headline text-xs xl:text-sm font-medium transition-all rounded-lg',
                         focusRing,
                         isRouteActive
                           ? 'text-star font-bold bg-star/15 border border-star/40 shadow-[0_0_12px_rgba(255,200,87,0.25)]'
-                          : isArcade
-                          ? 'text-[var(--color-star)] bg-[var(--color-void-deep)]/70 hover:bg-[var(--color-star)]/20 border border-[var(--color-star)]/35'
                           : 'text-starchart/80 hover:text-star hover:bg-white/5 border border-transparent'
                       )}
                     >
@@ -286,23 +281,19 @@ export function Navbar() {
                 }
 
                 const isRouteActive = pathname?.startsWith(item.href)
-                const isArcade = item.href === '/arcade'
 
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => {
-                      if (isArcade) portfolioSounds.playStarSparkle()
-                      else portfolioSounds.playBlip(700)
+                      portfolioSounds.playBlip(700)
                       setMobileMenuOpen(false)
                     }}
                     className={cn(
                       'rounded-lg px-3.5 py-2 font-headline text-xs md:text-sm transition-colors flex items-center justify-between',
                       isRouteActive
                         ? 'text-star font-bold bg-star/15 border border-star/30'
-                        : isArcade
-                        ? 'text-[var(--color-star)] bg-[var(--color-void-deep)]/80 border border-[var(--color-star)]/35'
                         : 'text-starchart hover:text-star hover:bg-white/5',
                       focusRing
                     )}
