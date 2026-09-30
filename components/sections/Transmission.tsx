@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
 import { FormGroup } from '@/components/ui/FormGroup'
 import { PixelInput, PixelTextarea } from '@/components/ui/PixelInput'
 import { siteConfig } from '@/lib/config/siteConfig'
@@ -284,11 +284,14 @@ export function Transmission() {
 
         {/* Social links */}
         <div className="mt-10 flex flex-col items-center gap-6">
-          <a href="/CV-Rizky-Mardhani.pdf" download="CV-Rizky-Mardhani.pdf">
-            <PixelButton variant="ghost" className="px-6 py-3 text-xs font-display">
-              <span aria-hidden="true">📄</span> Download CV
-            </PixelButton>
-          </a>
+          <PixelLink
+            href="/CV-Rizky-Mardhani.pdf"
+            download="CV-Rizky-Mardhani.pdf"
+            variant="ghost"
+            className="px-6 py-3 text-xs font-display"
+          >
+            <span aria-hidden="true">📄</span> Download CV
+          </PixelLink>
 
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             {[

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { PixelPanel } from '@/components/ui/PixelPanel'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelLink } from '@/components/ui/PixelButton'
 import { projects } from '@/lib/data/projects'
 
 export async function generateStaticParams() {
@@ -88,9 +88,15 @@ export default async function ProjectDetailPage({
         </div>
 
         {project.link && (
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="mt-10 inline-block">
-            <PixelButton variant="comet">Visit Live Site →</PixelButton>
-          </a>
+          <PixelLink
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="comet"
+            className="mt-10"
+          >
+            Visit Live Site →
+          </PixelLink>
         )}
       </PixelPanel>
     </section>

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink, pixelLinkClass, pixelLinkStyle } from '@/components/ui/PixelButton'
 import { portfolioSounds } from '@/lib/audio/retroSounds'
 import type { Project } from '@/lib/data/projects'
 
@@ -161,11 +161,8 @@ export function DetailPanel({ project, onClose }: DetailPanelProps) {
               <Link
                 href={`/projects/${project.slug}`}
                 onClick={() => portfolioSounds.playBlip(700)}
-                className="pixel-frame pixel-frame-pressable inline-flex items-center justify-center px-5 py-2.5 font-display text-xs sm:text-sm text-ink no-underline min-h-[44px]"
-                style={{
-                  '--pixel-fill-color': 'var(--color-void-surface)',
-                  '--pixel-border-color': 'rgba(245, 233, 214, 0.4)',
-                } as React.CSSProperties}
+                className={pixelLinkClass('ghost', 'text-xs sm:text-sm py-2.5 px-4 min-h-[44px]')}
+                style={pixelLinkStyle('ghost')}
               >
                 <span className="relative z-10">📄 Details</span>
               </Link>

@@ -1,17 +1,19 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
+export type PixelButtonVariant = 'comet' | 'ghost'
+
 export interface PixelButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * `comet` → primary CTA: teal fill, deep bg text.
    * `ghost` → secondary action: void-surface fill, ink text.
    */
-  variant?: 'comet' | 'ghost'
+  variant?: PixelButtonVariant
   children: ReactNode
 }
 
 const variantStyles: Record<
-  NonNullable<PixelButtonProps['variant']>,
+  PixelButtonVariant,
   { style: Record<string, string>; text: string }
 > = {
   comet: {
@@ -28,6 +30,24 @@ const variantStyles: Record<
     },
     text: 'text-ink',
   },
+}
+
+export function pixelLinkClass(
+  variant: PixelButtonVariant = 'comet',
+  extra?: string
+): string {
+  const { text } = variantStyles[variant]
+  return cn(
+    'pixel-frame pixel-frame-pressable inline-flex items-center justify-center px-5 py-2.5 font-display text-xs md:text-sm no-underline',
+    text,
+    extra
+  )
+}
+
+export function pixelLinkStyle(
+  variant: PixelButtonVariant = 'comet'
+): React.CSSProperties {
+  return variantStyles[variant].style as React.CSSProperties
 }
 
 export function PixelButton({
@@ -55,7 +75,7 @@ export function PixelButton({
 }
 
 export interface PixelLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  variant?: 'comet' | 'ghost'
+  variant?: PixelButtonVariant
   children: ReactNode
 }
 
@@ -66,16 +86,10 @@ export function PixelLink({
   children,
   ...props
 }: PixelLinkProps) {
-  const { style: variantStyle, text } = variantStyles[variant]
-
   return (
     <a
-      className={cn(
-        'pixel-frame pixel-frame-pressable inline-flex items-center justify-center px-5 py-2.5 font-display text-xs md:text-sm no-underline',
-        text,
-        className
-      )}
-      style={{ ...variantStyle, ...style }}
+      className={pixelLinkClass(variant, className)}
+      style={{ ...pixelLinkStyle(variant), ...style }}
       {...props}
     >
       <span className="relative z-10">{children}</span>
