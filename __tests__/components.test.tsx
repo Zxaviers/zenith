@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { PixelButton } from '@/components/ui/PixelButton'
+import Link from 'next/link'
+import { PixelButton, PixelLink, pixelLinkClass, pixelLinkStyle } from '@/components/ui/PixelButton'
 import { PixelPanel } from '@/components/ui/PixelPanel'
 import { StarNode } from '@/components/ui/StarNode'
 import { FormGroup } from '@/components/ui/FormGroup'
@@ -29,6 +30,32 @@ describe('Zenith UI Primitives', () => {
     const button = screen.getByRole('button', { name: /launch telemetry/i })
     expect(button).toBeDefined()
     expect(button.textContent).toContain('Launch Telemetry')
+  })
+
+  it('PixelLink renders anchor without nested button and maintains accessibility', () => {
+    render(
+      <PixelLink href="https://example.com" target="_blank" rel="noopener noreferrer" variant="comet">
+        🚀 Live Demo
+      </PixelLink>
+    )
+    const link = screen.getByRole('link', { name: /live demo/i })
+    expect(link).toBeDefined()
+    expect(link.getAttribute('href')).toBe('https://example.com')
+    // Crucial check: verify that no nested button exists inside the link
+    expect(link.querySelector('button')).toBeNull()
+  })
+
+  it('Next.js Link styled with pixelLinkClass and pixelLinkStyle renders cleanly without nested button', () => {
+    render(
+      <Link href="/arcade" className={pixelLinkClass('comet')} style={pixelLinkStyle('comet')}>
+        <span className="relative z-10">Return to Mission Base</span>
+      </Link>
+    )
+    const link = screen.getByRole('link', { name: /return to mission base/i })
+    expect(link).toBeDefined()
+    expect(link.getAttribute('href')).toBe('/arcade')
+    expect(link.querySelector('button')).toBeNull()
+    expect(link.className).toContain('pixel-frame')
   })
 
   it('PixelPanel renders nested content properly', () => {

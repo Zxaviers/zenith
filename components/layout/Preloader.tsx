@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const BOOT_LOGS = [
   'INITIALIZING ZENITH v3...',
@@ -16,28 +16,50 @@ export function Preloader() {
   const [logIndex, setLogIndex] = useState(0)
   const shouldReduceMotion = useReducedMotion()
 
+  const dismiss = useCallback(() => {
+    try {
+      sessionStorage.setItem('zenith:boot-seen', 'true')
+    } catch {}
+    setLoading(false)
+  }, [])
+
   useEffect(() => {
     if (shouldReduceMotion) {
       setLoading(false)
       return
     }
 
+    try {
+      if (sessionStorage.getItem('zenith:boot-seen')) {
+        setLoading(false)
+        return
+      }
+    } catch {}
+
     const interval = setInterval(() => {
       setLogIndex((prev) => {
         if (prev < BOOT_LOGS.length - 1) return prev + 1
         return prev
       })
-    }, 280)
+    }, 160)
 
     const timer = setTimeout(() => {
-      setLoading(false)
-    }, 1600)
+      dismiss()
+    }, 900)
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        dismiss()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
 
     return () => {
       clearInterval(interval)
       clearTimeout(timer)
+      window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [shouldReduceMotion])
+  }, [shouldReduceMotion, dismiss])
 
   if (shouldReduceMotion) return null
 
@@ -45,12 +67,23 @@ export function Preloader() {
     <AnimatePresence>
       {loading && (
         <motion.div
+          data-preloader-overlay=""
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center px-6 text-center select-none"
           style={{ background: 'var(--color-void-deep)' }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 0.45, ease: 'easeInOut' }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
+          {/* Skip button — visible, keyboard-focusable */}
+          <button
+            type="button"
+            onClick={dismiss}
+            aria-label="Skip intro"
+            className="absolute top-6 right-6 px-3.5 py-1.5 font-stat text-xs text-[var(--color-star)] hover:text-white bg-[var(--color-void)]/90 border border-[var(--color-star)]/40 hover:border-[var(--color-star)] rounded transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2 cursor-pointer shadow-[2px_2px_0_0_#000]"
+          >
+            Skip [Esc] →
+          </button>
+
           {/* Ship sprite with teal glow */}
           <div className="relative mb-6">
             <div
@@ -108,7 +141,7 @@ export function Preloader() {
               style={{ background: 'linear-gradient(to right, var(--color-teal-dim), var(--color-teal))' }}
               initial={{ width: '5%' }}
               animate={{ width: '100%' }}
-              transition={{ duration: 1.4, ease: 'easeInOut' }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
             />
           </div>
         </motion.div>

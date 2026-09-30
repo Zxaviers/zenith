@@ -32,10 +32,10 @@ const SKILL_SYSTEMS: Record<
     skills: [
       { id: 'react',      name: 'React.js',        level: 'Proficient', levelScore: 92, description: 'Core engine for modern interactive web apps — component architecture, custom hooks, and state management.', icon: '⚛️', x: 50, y: 38, category: 'web' },
       { id: 'nextjs',     name: 'Next.js',          level: 'Proficient', levelScore: 88, description: 'App router, SSR, SSG, edge performance optimizations, and API routes.', icon: '▲', x: 25, y: 24, category: 'web' },
-      { id: 'typescript', name: 'TypeScript',        level: 'Proficient', levelScore: 86, description: 'Type safety, interfaces, refactoring confidence, and large-scale app stability.', icon: '🔷', x: 75, y: 24, category: 'web' },
+      { id: 'typescript', name: 'TypeScript',        level: 'Proficient', levelScore: 88, description: 'Type safety, interfaces, refactoring confidence, and large-scale app stability.', icon: '🔷', x: 75, y: 24, category: 'web' },
       { id: 'tailwind',   name: 'Tailwind CSS',     level: 'Proficient', levelScore: 94, description: 'Rapid UI engineering, design system tokens, responsive utilities, and micro-animations.', icon: '🎨', x: 50, y: 68, category: 'web' },
       { id: 'htmlcss',    name: 'HTML5 & CSS3',     level: 'Proficient', levelScore: 96, description: 'Semantic markup, accessibility, Grid, Flexbox, responsive layouts, and SVG animation.', icon: '🌐', x: 22, y: 62, category: 'web' },
-      { id: 'javascript', name: 'JavaScript ES6+',  level: 'Proficient', levelScore: 92, description: 'Modern async programming, DOM APIs, event loops, and high-performance client scripting.', icon: '⚡', x: 78, y: 62, category: 'web' },
+      { id: 'javascript', name: 'JavaScript ES6+',  level: 'Proficient', levelScore: 90, description: 'Modern async programming, DOM APIs, event loops, and high-performance client scripting.', icon: '⚡', x: 78, y: 62, category: 'web' },
     ],
     links: [
       ['react', 'nextjs'],
@@ -53,9 +53,9 @@ const SKILL_SYSTEMS: Record<
     skills: [
       { id: 'esp32',      name: 'ESP32 Wi-Fi/BT',       level: 'Proficient', levelScore: 90, description: 'Dual-core microcontroller programming, HTTP/MQTT wireless, sensor interfacing, smart device firmware.', icon: '📡', x: 50, y: 32, category: 'iot' },
       { id: 'arduino',    name: 'Arduino C++',           level: 'Proficient', levelScore: 88, description: 'Hardware abstraction, GPIO control, PWM signals, analog sensors, and rapid prototyping.', icon: '🔌', x: 25, y: 28, category: 'iot' },
-      { id: 'sensors',    name: 'Sensor Networks',       level: 'Familiar',   levelScore: 82, description: 'Interfacing ultrasonic, temperature, humidity, load cells, and optical encoders.', icon: '🧭', x: 75, y: 28, category: 'iot' },
+      { id: 'sensors',    name: 'Sensor Networks',       level: 'Familiar',   levelScore: 78, description: 'Interfacing ultrasonic, temperature, humidity, load cells, and optical encoders.', icon: '🧭', x: 75, y: 28, category: 'iot' },
       { id: 'pcb',        name: 'PCB Schematic Design',  level: 'Familiar',   levelScore: 78, description: 'Circuit routing, footprint creation, component selection, EasyEDA prototyping, and manufacturing prep.', icon: '📟', x: 50, y: 68, category: 'iot' },
-      { id: 'cplusplus',  name: 'C / C++',              level: 'Proficient', levelScore: 85, description: 'Low-level memory management, embedded algorithms, timing loops, and hardware driver development.', icon: '⚙️', x: 24, y: 62, category: 'iot' },
+      { id: 'cplusplus',  name: 'C / C++',              level: 'Familiar',   levelScore: 80, description: 'Low-level memory management, embedded algorithms, timing loops, and hardware driver development.', icon: '⚙️', x: 24, y: 62, category: 'iot' },
     ],
     links: [
       ['esp32', 'arduino'],
@@ -69,10 +69,10 @@ const SKILL_SYSTEMS: Record<
     title: 'Tools & DevOps',
     subtitle: 'Version control, build tooling & developer workflow',
     skills: [
-      { id: 'git',    name: 'Git & GitHub',          level: 'Proficient', levelScore: 92, description: 'Branching workflows, version control discipline, remote sync, and open-source collaboration.', icon: '🐙', x: 50, y: 32, category: 'tools' },
-      { id: 'vscode', name: 'VS Code & Antigravity',  level: 'Proficient', levelScore: 95, description: 'Custom IDE setups, keyboard shortcuts, linting automation, and AI pair programming.', icon: '💻', x: 25, y: 30, category: 'tools' },
-      { id: 'vite',   name: 'Vite & Build Tools',    level: 'Proficient', levelScore: 90, description: 'Module bundling, HMR, PostCSS pipelines, and bundle size optimization.', icon: '⚡', x: 75, y: 30, category: 'tools' },
-      { id: 'figma',  name: 'Figma & Stitch',        level: 'Familiar',   levelScore: 82, description: 'UI/UX wireframing, design tokens, pixel-art sprite creation, and vibe-to-code design systems.', icon: '🎯', x: 50, y: 68, category: 'tools' },
+      { id: 'git',    name: 'Git & GitHub',          level: 'Proficient', levelScore: 90, description: 'Branching workflows, version control discipline, remote sync, and open-source collaboration.', icon: '🐙', x: 50, y: 32, category: 'tools' },
+      { id: 'vscode', name: 'VS Code & Antigravity',  level: 'Proficient', levelScore: 92, description: 'Custom IDE setups, keyboard shortcuts, linting automation, and AI pair programming.', icon: '💻', x: 25, y: 30, category: 'tools' },
+      { id: 'vite',   name: 'Vite & Build Tools',    level: 'Familiar',   levelScore: 78, description: 'Module bundling, HMR, PostCSS pipelines, and bundle size optimization.', icon: '⚡', x: 75, y: 30, category: 'tools' },
+      { id: 'figma',  name: 'Figma & Stitch',        level: 'Familiar',   levelScore: 75, description: 'UI/UX wireframing, design tokens, pixel-art sprite creation, and vibe-to-code design systems.', icon: '🎯', x: 50, y: 68, category: 'tools' },
       { id: 'linux',  name: 'Linux / Terminal',      level: 'Familiar',   levelScore: 80, description: 'Bash scripting, package management, CLI automation, and SSH remote server navigation.', icon: '🐧', x: 24, y: 62, category: 'tools' },
     ],
     links: [
@@ -426,7 +426,7 @@ export function Constellation() {
                       <div className="mb-4 space-y-2">
                         <div className="flex justify-between items-center font-stat text-xs text-[var(--color-ink-muted)]">
                           <span className="text-[var(--color-star)] font-bold">Proficiency Telemetry</span>
-                          <span className="text-[var(--color-starchart)] font-bold">{selectedSkill.levelScore}%</span>
+                          <span className="text-[var(--color-starchart)] font-bold">{selectedSkill.level}</span>
                         </div>
                         <div className="segment-bar py-1">
                           {Array.from({ length: 10 }).map((_, idx) => {
@@ -503,8 +503,8 @@ export function Constellation() {
 
                     <div className="space-y-1">
                       <div className="flex justify-between text-xs font-stat text-[var(--color-ink-muted)]">
-                        <span>MASTERY</span>
-                        <span className="text-[var(--color-star)] font-bold">{skill.levelScore}%</span>
+                        <span>PROFICIENCY</span>
+                        <span className="text-[var(--color-star)] font-bold">{skill.level}</span>
                       </div>
                       <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                         <div

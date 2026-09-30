@@ -9,7 +9,6 @@ import { siteConfig } from '@/lib/config/siteConfig'
 
 /** Rotating subtitle phrases (typed out one at a time). */
 const PHRASES = [
-  siteConfig.role,
   'Building web apps & embedded systems',
   'React · Next.js · TypeScript · Tailwind',
   'ESP32 · Arduino · Custom PCB design',
@@ -41,7 +40,7 @@ export function Hero() {
     >
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
         {/* ── Left: content ── */}
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-5">
           {/* Badge Group */}
           <div className="flex flex-wrap items-center gap-3">
             <motion.div
@@ -57,17 +56,6 @@ export function Hero() {
               </svg>
               <span>Lv. 21 Explorer</span>
             </motion.div>
-
-            <motion.div {...enter(0.05)}>
-              <Link
-                href="/arcade"
-                onClick={() => portfolioSounds.playStarSparkle()}
-                className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-stat text-xs text-[var(--color-star)] bg-[var(--color-nebula)]/60 border border-[var(--color-star)]/40 shadow-[0_0_12px_rgba(255,200,87,0.25)] hover:scale-105 transition-transform"
-              >
-                <span aria-hidden="true">🕹️</span>
-                <span>ARCADE READY: Play Void Miner →</span>
-              </Link>
-            </motion.div>
           </div>
 
           {/* Headline */}
@@ -80,9 +68,17 @@ export function Hero() {
             <span style={{ color: 'var(--color-comet)' }}>{siteConfig.name.split(' ')[0]}</span>
           </motion.h1>
 
-          {/* Subtitle — rotating typewriter */}
-          <motion.div {...enter(0.2)} className="min-h-[3.25rem] max-w-lg">
-            <p className="font-cozy text-lg" style={{ color: 'var(--color-starchart)', opacity: 0.9 }}>
+          {/* Role Tagline — static visible line */}
+          <motion.p
+            {...enter(0.15)}
+            className="font-headline text-lg sm:text-xl font-medium text-[var(--color-star)]"
+          >
+            {siteConfig.role}
+          </motion.p>
+
+          {/* Subtitle — rotating typewriter (details) */}
+          <motion.div {...enter(0.2)} className="min-h-[3.25rem] max-w-lg" aria-hidden="true">
+            <p className="font-cozy text-base sm:text-lg" style={{ color: 'var(--color-starchart)', opacity: 0.85 }}>
               {subtitle || '\u00A0'}
               {!reduce && (
                 <motion.span
@@ -90,7 +86,6 @@ export function Hero() {
                   style={{ color: 'var(--color-comet)' }}
                   animate={{ opacity: isTyping ? [1, 0] : 1 }}
                   transition={{ duration: 0.6, repeat: Infinity }}
-                  aria-hidden="true"
                 >
                   |
                 </motion.span>
@@ -99,7 +94,7 @@ export function Hero() {
           </motion.div>
 
           {/* CTAs */}
-          <motion.div {...enter(0.3)} className="mt-2 flex flex-wrap gap-4">
+          <motion.div {...enter(0.3)} className="mt-1 flex flex-wrap gap-4">
             <a
               href="#mission-log"
               onClick={() => portfolioSounds.playBlip(700)}
@@ -125,6 +120,18 @@ export function Hero() {
             >
               Send a Transmission
             </a>
+          </motion.div>
+
+          {/* ARCADE READY badge — visually secondary, no glow, smaller */}
+          <motion.div {...enter(0.35)} className="pt-1">
+            <Link
+              href="/arcade"
+              onClick={() => portfolioSounds.playStarSparkle()}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-stat text-xs text-[var(--color-ink-muted)] hover:text-[var(--color-star)] bg-[var(--color-void-deep)] border border-white/10 hover:border-[var(--color-star)]/40 transition-colors"
+            >
+              <span aria-hidden="true">🕹️</span>
+              <span>ARCADE READY: Play Void Miner →</span>
+            </Link>
           </motion.div>
         </div>
 

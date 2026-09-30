@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { pixelLinkClass, pixelLinkStyle } from '@/components/ui/PixelButton'
 
 export default function NotFound() {
   return (
@@ -8,8 +8,12 @@ export default function NotFound() {
       <p className="mb-8 font-body text-lg text-ink-muted md:text-xl">
         This coordinate doesn&apos;t exist in this galaxy.
       </p>
-      <Link href="/">
-        <PixelButton variant="comet">Return to Base</PixelButton>
+      <Link
+        href="/"
+        className={pixelLinkClass('comet')}
+        style={pixelLinkStyle('comet')}
+      >
+        <span className="relative z-10">Return to Base</span>
       </Link>
     </section>
   )

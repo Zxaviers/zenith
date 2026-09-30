@@ -110,7 +110,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${pixelDisplay.variable} ${body.variable} ${stat.variable} ${spaceGrotesk.variable} ${quicksand.variable}`}
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('zenith:boot-seen'))document.documentElement.setAttribute('data-boot-seen','true')}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="antialiased overflow-x-hidden min-h-screen bg-[var(--color-void)] text-[var(--color-starchart)]">
         {children}
         <script

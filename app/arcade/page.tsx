@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { VoidMinerGame } from '@/components/sections/VoidMinerGame'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { pixelLinkClass, pixelLinkStyle } from '@/components/ui/PixelButton'
 import { GlobalStarfield } from '@/components/layout/GlobalStarfield'
 
 export const metadata: Metadata = {
@@ -17,10 +17,12 @@ export default function ArcadePage() {
         <div className="relative z-10 mx-auto max-w-5xl">
           {/* Navigation & Header */}
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-            <Link href="/">
-              <PixelButton variant="comet" className="text-xs py-2 px-3 font-display">
-                ← Return to Mission Base
-              </PixelButton>
+            <Link
+              href="/"
+              className={pixelLinkClass('comet', 'text-xs py-2 px-3 font-display')}
+              style={pixelLinkStyle('comet')}
+            >
+              <span className="relative z-10">← Return to Mission Base</span>
             </Link>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-star)]/30 bg-[var(--color-nebula)]/40 font-stat text-xs text-[var(--color-star)]">
               <span className="animate-pulse">🔴</span>

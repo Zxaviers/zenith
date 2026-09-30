@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { PixelPanel } from '@/components/ui/PixelPanel'
-import { PixelButton } from '@/components/ui/PixelButton'
+import { PixelButton, PixelLink } from '@/components/ui/PixelButton'
 import { FormGroup } from '@/components/ui/FormGroup'
 import { PixelInput, PixelTextarea } from '@/components/ui/PixelInput'
 import { siteConfig } from '@/lib/config/siteConfig'
@@ -180,9 +180,20 @@ export function Transmission() {
                 animate={{ opacity: 1, height: 'auto' }}
               >
                 <AlertTriangle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">TRANSMISSION FAILED: </span>
-                  <span>{errorMessage}</span>
+                <div className="space-y-1">
+                  <div>
+                    <span className="font-bold">TRANSMISSION FAILED: </span>
+                    <span>{errorMessage}</span>
+                  </div>
+                  <p className="font-body text-xs text-red-200/90">
+                    Prefer email?{' '}
+                    <a
+                      href={`mailto:${siteConfig.socials.email}`}
+                      className="text-[var(--color-star)] underline underline-offset-2 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2 rounded transition-colors"
+                    >
+                      {siteConfig.socials.email}
+                    </a>
+                  </p>
                 </div>
               </motion.div>
             )}
@@ -258,16 +269,29 @@ export function Transmission() {
                 />
               )}
             </div>
+
+            <p className="text-center font-body text-xs text-[var(--color-ink-muted)] pt-2">
+              Prefer email?{' '}
+              <a
+                href={`mailto:${siteConfig.socials.email}`}
+                className="text-[var(--color-star)] underline underline-offset-2 hover:text-[var(--color-comet)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-star)] focus-visible:outline-offset-2 rounded transition-colors"
+              >
+                {siteConfig.socials.email}
+              </a>
+            </p>
           </form>
         </PixelPanel>
 
         {/* Social links */}
         <div className="mt-10 flex flex-col items-center gap-6">
-          <a href="/CV-Rizky-Mardhani.pdf" download="CV-Rizky-Mardhani.pdf">
-            <PixelButton variant="ghost" className="px-6 py-3 text-xs font-display">
-              <span aria-hidden="true">📄</span> Download CV
-            </PixelButton>
-          </a>
+          <PixelLink
+            href="/CV-Rizky-Mardhani.pdf"
+            download="CV-Rizky-Mardhani.pdf"
+            variant="ghost"
+            className="px-6 py-3 text-xs font-display"
+          >
+            <span aria-hidden="true">📄</span> Download CV
+          </PixelLink>
 
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             {[

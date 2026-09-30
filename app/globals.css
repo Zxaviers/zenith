@@ -56,6 +56,11 @@
     color: var(--color-ink);
     font-family: var(--font-body);
   }
+
+  /* Pre-paint boot overlay suppression for returning visitors in same session */
+  html[data-boot-seen='true'] [data-preloader-overlay] {
+    display: none !important;
+  }
 }
 
 /* ============================================================
