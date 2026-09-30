@@ -70,8 +70,8 @@ const SKILL_SYSTEMS: Record<
     subtitle: 'Version control, build tooling & developer workflow',
     skills: [
       { id: 'git',    name: 'Git & GitHub',          level: 'Proficient', levelScore: 90, description: 'Branching workflows, version control discipline, remote sync, and open-source collaboration.', icon: '🐙', x: 50, y: 32, category: 'tools' },
-      { id: 'vscode', name: 'VS Code & Antigravity',  level: 'Proficient', levelScore: 92, description: 'Custom IDE setups, keyboard shortcuts, linting automation, and AI pair programming.', icon: '💻', x: 25, y: 30, category: 'tools' },
-      { id: 'vite',   name: 'Vite & Build Tools',    level: 'Familiar',   levelScore: 78, description: 'Module bundling, HMR, PostCSS pipelines, and bundle size optimization.', icon: '⚡', x: 75, y: 30, category: 'tools' },
+      { id: 'vscode', name: 'VS Code & Antigravity',  level: 'Familiar',   levelScore: 80, description: 'Custom IDE setups, keyboard shortcuts, linting automation, and AI pair programming.', icon: '💻', x: 25, y: 30, category: 'tools' },
+      { id: 'vite',   name: 'Vite & Build Tools',    level: 'Basic',      levelScore: 65, description: 'Bundling and dev-server fundamentals: modules, HMR, and PostCSS setup.', icon: '⚡', x: 75, y: 30, category: 'tools' },
       { id: 'figma',  name: 'Figma & Stitch',        level: 'Familiar',   levelScore: 75, description: 'UI/UX wireframing, design tokens, pixel-art sprite creation, and vibe-to-code design systems.', icon: '🎯', x: 50, y: 68, category: 'tools' },
       { id: 'linux',  name: 'Linux / Terminal',      level: 'Familiar',   levelScore: 80, description: 'Bash scripting, package management, CLI automation, and SSH remote server navigation.', icon: '🐧', x: 24, y: 62, category: 'tools' },
     ],
